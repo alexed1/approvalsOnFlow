@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ifCriteriaNotMet__c</fullName>
+    <description>Specifies what to do for records that don’t meet the entry criteria. Valid values are:
+ApproveRecord—Approve the request and execute all final approval actions.
+RejectRecord—Reject the request and execute all final rejection actions. This option is available only for the first step in the approval process.
+GotoNextStep—Skip to the next approval step. If you select this option for the first approval step, and a record doesn’t meet the entry criteria for any other step, the record is rejected.</description>
+    <externalId>false</externalId>
+    <label>ifCriteriaNotMet</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ApproveRecord</fullName>
+                <default>false</default>
+                <label>ApproveRecord</label>
+            </value>
+            <value>
+                <fullName>RejectRecord</fullName>
+                <default>false</default>
+                <label>RejectRecord</label>
+            </value>
+            <value>
+                <fullName>GotoNextStep</fullName>
+                <default>false</default>
+                <label>GotoNextStep</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
