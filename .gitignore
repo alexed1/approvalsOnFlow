@@ -6,6 +6,8 @@
 # Salesforce cache
 .sfdx/
 
+force-app/main/default/profiles
+
 # Logs
 logs
 *.log
