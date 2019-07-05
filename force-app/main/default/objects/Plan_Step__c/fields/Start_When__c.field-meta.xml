@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Start_When__c</fullName>
+    <externalId>false</externalId>
+    <label>Start_When__c</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Step 2</fullName>
+                <default>false</default>
+                <label>Step 2</label>
+            </value>
+            <value>
+                <fullName>Step1</fullName>
+                <default>false</default>
+                <label>Step1</label>
+            </value>
+            <value>
+                <fullName>st1</fullName>
+                <default>false</default>
+                <label>st1</label>
+            </value>
+            <value>
+                <fullName>Clear Record</fullName>
+                <default>false</default>
+                <label>Clear Record</label>
+            </value>
+            <value>
+                <fullName>Wait For Approval</fullName>
+                <default>false</default>
+                <label>Wait For Approval</label>
+            </value>
+            <value>
+                <fullName>Send Approval Request</fullName>
+                <default>false</default>
+                <label>Send Approval Request</label>
+            </value>
+            <value>
+                <fullName>Create Contact</fullName>
+                <default>false</default>
+                <label>Create Contact</label>
+            </value>
+            <value>
+                <fullName>Create Account</fullName>
+                <default>false</default>
+                <label>Create Account</label>
+            </value>
+            <value>
+                <fullName>Send Email</fullName>
+                <default>false</default>
+                <label>Send Email</label>
+            </value>
+            <value>
+                <fullName>Create User</fullName>
+                <default>false</default>
+                <label>Create User</label>
+            </value>
+            <value>
+                <fullName>Create Account`</fullName>
+                <default>false</default>
+                <label>Create Account`</label>
+            </value>
+            <value>
+                <fullName>Send Email Test Button Width ABCDEF</fullName>
+                <default>false</default>
+                <label>Send Email Test Button Width ABCDEF</label>
+            </value>
+            <value>
+                <fullName>asdfasdf</fullName>
+                <default>false</default>
+                <label>asdfasdf</label>
+            </value>
+            <value>
+                <fullName>TestAdmin1</fullName>
+                <default>false</default>
+                <label>TestAdmin1</label>
+            </value>
+            <value>
+                <fullName>JD Step 1SD</fullName>
+                <default>false</default>
+                <label>JD Step 1SD</label>
+            </value>
+            <value>
+                <fullName>NewTestStep</fullName>
+                <default>false</default>
+                <label>NewTestStep</label>
+            </value>
+            <value>
+                <fullName>JDtest sttep</fullName>
+                <default>false</default>
+                <label>JDtest sttep</label>
+            </value>
+            <value>
+                <fullName>JDStep1</fullName>
+                <default>false</default>
+                <label>JDStep1</label>
+            </value>
+            <value>
+                <fullName>JDTest Step 1</fullName>
+                <default>false</default>
+                <label>JDTest Step 1</label>
+            </value>
+            <value>
+                <fullName>Test Step 1 Case Plan 1</fullName>
+                <default>false</default>
+                <label>Test Step 1 Case Plan 1</label>
+            </value>
+            <value>
+                <fullName>Test Plan</fullName>
+                <default>false</default>
+                <label>Test Plan</label>
+            </value>
+            <value>
+                <fullName>SD new Steps 1</fullName>
+                <default>false</default>
+                <label>SD new Steps 1</label>
+            </value>
+            <value>
+                <fullName>SD New Steps</fullName>
+                <default>false</default>
+                <label>SD New Steps</label>
+            </value>
+            <value>
+                <fullName>SD New Plan Step</fullName>
+                <default>false</default>
+                <label>SD New Plan Step</label>
+            </value>
+            <value>
+                <fullName>JD Step 2</fullName>
+                <default>false</default>
+                <label>JD Step 2</label>
+            </value>
+            <value>
+                <fullName>Step 3</fullName>
+                <default>false</default>
+                <label>Step 3</label>
+            </value>
+            <value>
+                <fullName>Step 1</fullName>
+                <default>false</default>
+                <label>Step 1</label>
+            </value>
+            <value>
+                <fullName>Test Case Step new Flow</fullName>
+                <default>false</default>
+                <label>Test Case Step new Flow</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

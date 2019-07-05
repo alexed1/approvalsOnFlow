@@ -1,0 +1,17 @@
+<aura:component controller="FlowListController" implements="lightning:availableForFlowScreens" access="global" >
+	
+  
+    <!--flowNames is the list of api names of the flows returned from the org -->
+    <aura:attribute name="flowNames" type="String[]" />
+    <!--the comboBox control takes options in a specific form -->
+    <aura:attribute name="comboBoxOptionObject" type="Object" />
+    <aura:attribute name="selectedFlowApiName" type="String" />
+    <aura:attribute name="showActiveFlowsOnly" type="Boolean" default='false' />
+    <aura:attribute name="label" type="String" default="Select a Flow:" />
+    <aura:attribute name="required" type="Boolean" default="True" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    
+    <lightning:combobox name="flowSelector" value="{! v.selectedFlowApiName }" label="{! v.label }" required="{! v.required}" options="{! v.comboBoxOptionObject }" onchange="{! c.handleChange }"/>
+
+    
+</aura:component>

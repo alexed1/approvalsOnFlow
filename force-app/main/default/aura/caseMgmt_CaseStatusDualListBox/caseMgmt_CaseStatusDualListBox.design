@@ -1,0 +1,11 @@
+<!--
+ - Created by Shubham on 1/24/2019.
+ -->
+
+<design:component>
+    <design:attribute name="StatusOrder" label="New Status Order"/>
+    <design:attribute name="SelectedStatusOrder" label="Order From Case Plan"/>
+    <design:attribute name="isEditScreen" label="Is Edit"/>
+    <design:attribute name="SelectedValue" label="Returned Values"/>
+
+</design:component>

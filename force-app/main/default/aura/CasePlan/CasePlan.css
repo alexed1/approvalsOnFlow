@@ -1,0 +1,95 @@
+/**
+ * Created by Shubham on 1/29/2019.
+ */
+.THIS .hr-margin{
+    margin : 0.5rem 0 0.5rem 0;
+}
+.THIS .a-button {
+    display: block;
+    width: 85%;
+    min-height: 36px;
+    background: rgba(0, 109, 210, 1);
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    text-decoration:none;
+}
+.THIS .req-step{
+    color : red;
+
+}
+.THIS .button-balance{
+    width:100%;
+}
+
+.THIS .avoid-clicks {
+    font-weight: bold;
+    padding: 8px;
+    text-align: center;
+    pointer-events: none;
+    background: #c5c4c4 !important;
+    color: #444141;
+    display: block;
+    border-radius: 5px;
+    width: 85%;
+    min-height: 36px;
+    text-decoration:none;
+    /*border:1px solid green;*/
+}
+
+.THIS .slds-gutters {
+    margin-right: -.75rem;
+    margin-left: -.75rem;
+    padding: 2px !important;
+}
+.THIS .slds-gutters .slds-col {
+    /* padding-right: .75rem; */
+    padding-left: .75rem !important;
+}
+.THIS .img-setting{
+    max-width: 56%;
+    height: auto;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+.THIS .step-sub-heading{
+    padding-left: 55px;
+}
+.THIS .parent-icon{
+    display: block;
+    margin: 0.5rem 0;
+    border-top: 1px solid rgb(221, 219, 218);
+    height: 1px;
+    clear: both;
+
+}
+.THIS .col-1-parent{
+    padding-right: 0px 1important;
+    padding-left: 0px !important;
+}
+.THIS .col-2-parent{
+    padding-right: 0px !important;
+    text-align: center !important;
+    padding-left: 0.5px !important;
+}
+.THIS .col-3-parent{
+    padding-left: 0.5px !important;
+    padding-right: 0px !important;
+}
+.THIS .row-parent{
+    padding-left: 10px!important;
+    padding-right: 10px !important;
+}
+.THIS .button-transition{
+    width: 45%;
+}
+
+.THIS span .slds-icon-text-default {
+    fill: rgb(251, 250, 249);
+}
+
+.THIS .slds-button_icon-border {
+    color: rgb(249, 248, 247) !important;
+}

@@ -1,0 +1,18 @@
+<aura:component description="csvPicklist" implements="lightning:availableForFlowScreens" access="global">
+    <aura:handler name="init" action="{!c.invoke}" value="{!this}"/>
+    <aura:attribute name="selectedString" type="String" default="" description="Store Selected String"/>
+    <aura:attribute name="labelPicklist" type="String" description="Picklist Label Where we are goint use this picklist"/>
+    <aura:attribute name="CSVString" type="String" description="A string of picklist choices stored in CSV format"/>
+   	<aura:attribute name="commaSeparatedFinalList" type="List" description="A comma separated list suitable for providing as options "/>
+	<aura:attribute name="listType" type="String" description="allowable values: simple, complex. signals whether the incoming string is a simple CSV or a CSV where each member is further split via semicolon "/>
+
+    <lightning:select label="{!v.labelPicklist}" value="{!v.selectedString}" name="CSVPicker">
+        <option value=""> Specify...</option>
+        <aura:iteration items="{!v.commaSeparatedFinalList}" var="option">
+            <option label="{!option.label}" value="{!option.value}">{!option.label}</option>
+        </aura:iteration>
+    </lightning:select>
+    
+
+
+</aura:component>
