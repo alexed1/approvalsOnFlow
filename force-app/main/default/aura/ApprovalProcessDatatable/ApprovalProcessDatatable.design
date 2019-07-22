@@ -1,0 +1,11 @@
+<design:component>
+    <design:attribute name="columnsStr" label="Columns" required="true"/>
+    <design:attribute name="recordId" label="Record Id" />
+    <design:attribute name="key" label="Key" />
+    <design:attribute name="maxRowSelection" label="Max Rows That Can be selected" />
+    <design:attribute name="numOfRowsSelected" label="Num of Rows Selected" />
+    <design:attribute name="approvalProcessDefinitionCollection" label="Approval Process Definition Collection"/>
+    <design:attribute name="approvalProcessStepDefinitionCollection" label="Approval Process Step Definition Collection"/>
+    <design:attribute name="isDefinition" label="Use for Definition? (as opposed to Step Definition)" required="true"/>
+
+</design:component>
