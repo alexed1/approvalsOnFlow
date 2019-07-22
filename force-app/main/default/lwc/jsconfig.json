@@ -2,7 +2,23 @@
     "compilerOptions": {
         "experimentalDecorators": true,
         "baseUrl": ".",
-        "paths": {}
+        "paths": {
+            "c/addNewShares": [
+                "addNewShares/addNewShares.js"
+            ],
+            "c/existingShares": [
+                "existingShares/existingShares.js"
+            ],
+            "c/lwcLogger": [
+                "lwcLogger/lwcLogger.js"
+            ],
+            "c/sharingButtonSupport": [
+                "sharingButtonSupport/sharingButtonSupport.js"
+            ],
+            "c/submitterWrapperLWC": [
+                "submitterWrapperLWC/submitterWrapperLWC.js"
+            ]
+        }
     },
     "include": [
         "**/*",

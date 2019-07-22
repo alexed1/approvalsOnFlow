@@ -1,0 +1,5 @@
+<template>
+    <template if:true={wiredSharings}>
+      <lightning-datatable data={tableData} columns={columns} key-field="UserOrGroupId" hide-checkbox-column="true" onrowaction={handleRowAction}></lightning-datatable>
+    </template>
+</template>
