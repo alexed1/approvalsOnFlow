@@ -5,18 +5,18 @@
         <div slot="actions">
             <lightning-button-group>
                 <lightning-button onclick={refreshExisting} label="Refresh"></lightning-button>
-                <lightning-button onclick={navBack} label={label.BackButton}></lightning-button>
+                
             </lightning-button-group>
         </div>
 
         <div class="slds-m-horizontal_medium">
             <lightning-tabset variant="scoped">
-                <lightning-tab label={label.ViewCurrentPermissions}>
+                <lightning-tab label={editTabName}>
                     <c-existing-shares record-id={recordId}></c-existing-shares>
                    
                 </lightning-tab>
-                <lightning-tab label={label.AddNewPermission}>
-                   <c-add-new-shares record-id={recordId}></c-add-new-shares>
+                <lightning-tab label={addTabName}>
+                   <c-add-new-members record-id={recordId}></c-add-new-members>
                    
                 </lightning-tab>
             </lightning-tabset>

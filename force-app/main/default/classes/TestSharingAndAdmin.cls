@@ -1,37 +1,37 @@
 @isTest
-private class TestLightningSharing {
+private class TestSharingAndAdmin {
 
 	static testMethod void testSOSL() {
-  	LightningSharing.doSOSL('McLaughlin', 'Lead');
+  	AdminTools.doSOSL('McLaughlin', 'Lead');
   }
 
   static testMethod void testReturning() {
 
-    string uq = LightningSharing.getReturning('User');
+    string uq = AdminTools.getReturning('User');
     system.assertEquals(uq, 'User(Id, Name, UserType WHERE UserType in (\'Standard\', \'PowerCustomerSuccess\', \'PowerPartner\'))');
 
-    uq = LightningSharing.getReturning('Group');
+    uq = AdminTools.getReturning('Group');
     system.assertEquals(uq, 'Group(Id, Name, Type)');
 
-    uq = LightningSharing.getReturning('Custom__c');
+    uq = AdminTools.getReturning('Custom__c');
     system.assertEquals(uq, 'Custom__c(Id, Name)');
 
-  	uq = LightningSharing.getReturning('Lead');
+  	uq = AdminTools.getReturning('Lead');
     system.assertEquals(uq, 'Lead(Id, Name)');
 
   }
 
   static testMethod void testuserTypes() {
-  	LightningSharing.huh('PowerCustomerSuccess');
-  	LightningSharing.huh('PowerPartner');
-  	LightningSharing.huh('CustomerSuccess');
-  	LightningSharing.huh('CsnOnly');
-  	LightningSharing.huh('CSPLitePortal');
-  	system.assertEquals('MadeUpStuff', LightningSharing.huh('MadeUpStuff'));
+  	SharingActions.huh('PowerCustomerSuccess');
+  	SharingActions.huh('PowerPartner');
+  	SharingActions.huh('CustomerSuccess');
+  	SharingActions.huh('CsnOnly');
+  	SharingActions.huh('CSPLitePortal');
+  	system.assertEquals('MadeUpStuff', SharingActions.huh('MadeUpStuff'));
   }
 
   static testMethod void testInnerClass(){
-  	LightningSharing.sharingHolder sh = new LightningSharing.sharingHolder();
+  	SharingActions.sharingHolder sh = new SharingActions.sharingHolder();
   	sh.UserOrGroupName = 'test';
   	sh.SubType = 'test';
   	sh.UserOrGroupType = 'test';
@@ -50,7 +50,7 @@ private class TestLightningSharing {
   static testMethod void testGetSharings() {
   	list<lead> l = [select id from lead];
 		try {
-  		LightningSharing.getSharings(l[0].id);
+  		SharingActions.getSharings(l[0].id);
 		} catch (AuraHandledException ahe){
 
 		}
@@ -58,7 +58,7 @@ private class TestLightningSharing {
   	list<Opportunity> o = [select id from Opportunity];
 
 		try {
-  		LightningSharing.getSharings(l[0].id);
+  		SharingActions.getSharings(l[0].id);
 		} catch (AuraHandledException ahe){
 
 		}
@@ -66,20 +66,20 @@ private class TestLightningSharing {
     list<PrivateTestObject__c> ptos = [select id from PrivateTestObject__c];
     list<ReadOnlyTestObject__c> rotos = [select id from ReadOnlyTestObject__c];
 
-    LightningSharing.getSharings(ptos[0].id);
-    LightningSharing.getSharings(rotos[0].id);
+    SharingActions.getSharings(ptos[0].id);
+    SharingActions.getSharings(rotos[0].id);
   }
 
   static testMethod void testcanIEditPermsAdmin() {
   	list<lead> l = [select id from lead];
-  	LightningSharing.canIEditPerms(l[0].id);
+  	SharingActions.canIEditPerms(l[0].id);
 
     list<PrivateTestObject__c> ptos = [select id from PrivateTestObject__c];
     list<ReadOnlyTestObject__c> rotos = [select id from ReadOnlyTestObject__c];
 
-    boolean perm = LightningSharing.canIEditPerms(ptos[0].id);
+    boolean perm = SharingActions.canIEditPerms(ptos[0].id);
     system.assertEquals(perm, true);
-    perm = LightningSharing.canIEditPerms(rotos[0].id);
+    perm = SharingActions.canIEditPerms(rotos[0].id);
     system.assertEquals(perm, true);
 
   }
@@ -93,8 +93,8 @@ private class TestLightningSharing {
     boolean perm2;
 
   	system.runAs(u){
-      perm1 =LightningSharing.canIEditPerms(ptos[0].id);
-      perm2 =LightningSharing.canIEditPerms(rotos[0].id);
+      perm1 =SharingActions.canIEditPerms(ptos[0].id);
+      perm2 =SharingActions.canIEditPerms(rotos[0].id);
   	}
 
     system.assertEquals(perm1, true);
@@ -108,9 +108,9 @@ private class TestLightningSharing {
     list<PrivateTestObject__c> ptos = [select Id from PrivateTestObject__c];
   	user u = createUsers(1)[0];
 
-    LightningSharing.upsertPerm(u.id, ptos[0].id, 'Edit');
+    SharingActions.upsertPerm(u.id, ptos[0].id, 'Edit');
 
-  	LightningSharing.deletePerm(u.id, ptos[0].id);
+  	SharingActions.deletePerm(u.id, ptos[0].id);
   }
 
 
@@ -122,46 +122,46 @@ private class TestLightningSharing {
 
   	user u = createUsers(1)[0];
 
-    LightningSharing.upsertPerm(u.id, ptos[0].id, 'Edit');
-    LightningSharing.upsertPerm(u.id, ptos[0].id, 'Read');
-    LightningSharing.upsertPerm(u.id, ptos[0].id, 'Edit');
+    SharingActions.upsertPerm(u.id, ptos[0].id, 'Edit');
+    SharingActions.upsertPerm(u.id, ptos[0].id, 'Read');
+    SharingActions.upsertPerm(u.id, ptos[0].id, 'Edit');
 
-    LightningSharing.getSharings(ptos[0].id);
+    SharingActions.getSharings(ptos[0].id);
 
-    LightningSharing.deletePerm(u.id, ptos[0].id);
+    SharingActions.deletePerm(u.id, ptos[0].id);
 
 
-    LightningSharing.upsertPerm(u.id, rotos[0].id, 'Edit');
-    LightningSharing.getSharings(rotos[0].id);
-    LightningSharing.deletePerm(u.id, rotos[0].id);
+    SharingActions.upsertPerm(u.id, rotos[0].id, 'Edit');
+    SharingActions.getSharings(rotos[0].id);
+    SharingActions.deletePerm(u.id, rotos[0].id);
 
   	try {
-  		LightningSharing.upsertPerm(u.id, o[0].id, 'Edit');
-  		LightningSharing.deletePerm(u.id, o[0].id);
+  		SharingActions.upsertPerm(u.id, o[0].id, 'Edit');
+  		SharingActions.deletePerm(u.id, o[0].id);
   	} catch (exception e){
   		//ok, sharing may not be on
   		system.debug(e);
   	}
 
   	try {
-  		LightningSharing.upsertPerm(u.id, o[0].id, 'Read');
-  		LightningSharing.deletePerm(u.id, o[0].id);
+  		SharingActions.upsertPerm(u.id, o[0].id, 'Read');
+  		SharingActions.deletePerm(u.id, o[0].id);
   	} catch (exception e){
   		system.debug(e);
   		//ok, sharing may not be on
   	}
 
   	try {
-  		LightningSharing.upsertPerm(u.id, l[0].id, 'Edit');
-  		LightningSharing.deletePerm(u.id, l[0].id);
+  		SharingActions.upsertPerm(u.id, l[0].id, 'Edit');
+  		SharingActions.deletePerm(u.id, l[0].id);
   	} catch (exception e){
   		//ok, sharing may not be on
   		system.debug(e);
   	}
 
   	try {
-  		LightningSharing.upsertPerm(u.id, l[0].id, 'Read');
-  		LightningSharing.deletePerm(u.id, l[0].id);
+  		SharingActions.upsertPerm(u.id, l[0].id, 'Read');
+  		SharingActions.deletePerm(u.id, l[0].id);
   	} catch (exception e){
   		system.debug(e);
   		//ok, sharing may not be on
@@ -169,22 +169,22 @@ private class TestLightningSharing {
   }
 
   static testMethod void testStringStuff(){
-  	LightningSharing.getLookupField('Account');
-  	LightningSharing.getAccessLevelField('Account');
-  	system.assertEquals('AccountShare', LightningSharing.getSharingTableName('Account'));
+  	AdminTools.getLookupField('Account');
+  	AdminTools.getAccessLevelField('Account');
+  	system.assertEquals('AccountShare', SharingActions.getSharingTableName('Account'));
 
-  	LightningSharing.getLookupField('Custom__c');
-  	LightningSharing.getAccessLevelField('Custom__c');
-  	LightningSharing.getSharingTableName('Custom__c');
-		system.assertEquals('Custom__Share', LightningSharing.getSharingTableName('Custom__c'));
+  	AdminTools.getLookupField('Custom__c');
+  	AdminTools.getAccessLevelField('Custom__c');
+  	SharingActions.getSharingTableName('Custom__c');
+		system.assertEquals('Custom__Share', SharingActions.getSharingTableName('Custom__c'));
 
-		system.assertEquals('Namespace__Custom__Share', LightningSharing.getSharingTableName('Namespace__Custom__c'));
+		system.assertEquals('Namespace__Custom__Share', SharingActions.getSharingTableName('Namespace__Custom__c'));
   }
 
 
   static testMethod void testBuildQuery(){
   	list<lead> l = [select id from lead];
-  	LightningSharing.buildQuery(l[0].id);
+  	SharingActions.buildQuery(l[0].id);
   }
 
   static testMethod void testcanIEditPermsNonAdmin() {
@@ -194,18 +194,14 @@ private class TestLightningSharing {
 
   	list<user> users = createUsers(1);
 
-    LightningSharing.upsertPerm(users[0].id, ptos[0].id, 'Edit');
-    LightningSharing.upsertPerm(users[0].id, rotos[0].id, 'Edit');
+    SharingActions.upsertPerm(users[0].id, ptos[0].id, 'Edit');
+    SharingActions.upsertPerm(users[0].id, rotos[0].id, 'Edit');
 
   	System.RunAs(users[0]){
 
-      //LightningSharing.getSharings(l[0].id);
-      //LightningSharing.getSharings(ptos[0].id);
-      //LightningSharing.getSharings(rotos[0].id);
-
-      //system.assert(LightningSharing.canIEditPerms(l[0].id), false);
-  		system.assertEquals(LightningSharing.canIEditPerms(ptos[0].id), false);
-      system.assertEquals(LightningSharing.canIEditPerms(rotos[0].id), false);
+       
+  		system.assertEquals(SharingActions.canIEditPerms(ptos[0].id), false);
+      system.assertEquals(SharingActions.canIEditPerms(rotos[0].id), false);
 
   	}
   }
@@ -227,17 +223,17 @@ private class TestLightningSharing {
     test.startTest();
     system.RunAs(createAdmin()){
 
-      //LightningSharing.upsertPerm(groups[0].id, l[0].id, 'Read');
-      LightningSharing.upsertPerm(groups[0].id, ptos[0].id, 'Read');
-      //LightningSharing.upsertPerm(groups[0].id, rotos[0].id, 'Read');
+       
+      SharingActions.upsertPerm(groups[0].id, ptos[0].id, 'Read');
+     
 
 			try{
-      	LightningSharing.getSharings(l[0].id);
+      	SharingActions.getSharings(l[0].id);
 			} catch (AuraHandledException ahe){
 
 			}
-      LightningSharing.getSharings(ptos[0].id);
-      LightningSharing.getSharings(rotos[0].id);
+      SharingActions.getSharings(ptos[0].id);
+      SharingActions.getSharings(rotos[0].id);
     }
     test.stopTest();
 
@@ -247,11 +243,11 @@ private class TestLightningSharing {
 		// should not exist--accounts are public r/w
 
 		// not assertable because I don't know what the sharing is like in the destination org!
-		LightningSharing.sharingExists('Account');
+		SharingActions.sharingExists('Account');
 
 
-		System.assertEquals(true, LightningSharing.sharingExists('ltngsharing__PrivateTestObject__c'));
-		System.assertEquals(true, LightningSharing.sharingExists('ltngsharing__ReadOnlyTestObject__c'));
+		System.assertEquals(true, SharingActions.sharingExists('ltngsharing__PrivateTestObject__c'));
+		System.assertEquals(true, SharingActions.sharingExists('ltngsharing__ReadOnlyTestObject__c'));
 
 		// Map<String, Schema.SObjectType> tokens = Schema.getGlobalDescribe();
 		// for (string s:tokens.keySet()){
@@ -314,8 +310,8 @@ private class TestLightningSharing {
 
 		u.FirstName = 'A';
 		u.LastName = 'S';
-		u.Email = 'test@testLightningSharing2017.com';
-		u.Username = 'astest@testLightningSharing2017.com';
+		u.Email = 'test@testAdminTools2017.com';
+		u.Username = 'astest@testAdminTools2017.com';
 		u.Alias = 'astest';
 		u.ProfileId = p.Id;
 		u.TimeZoneSidKey    = 'America/Denver';
@@ -336,10 +332,10 @@ private class TestLightningSharing {
 
 		for (integer i=0; i<numberOfUsers; i++){
 			string x = string.valueOf(i);
-			User u = new User(Alias = 't'+x, Email='standarduser'+x+'@testLightningSharing2017.msm',
+			User u = new User(Alias = 't'+x, Email='standarduser'+x+'@testAdminTools2017.msm',
 				EmailEncodingKey='UTF-8', LastName='Testing' + x, LanguageLocaleKey='en_US',
 				LocaleSidKey='en_US', ProfileId = p.Id,
-				TimeZoneSidKey='America/Los_Angeles', UserName='standarduser'+x+'@testLightningSharing2017.msm');
+				TimeZoneSidKey='America/Los_Angeles', UserName='standarduser'+x+'@testAdminTools2017.msm');
 			users.add(u);
 		}
 

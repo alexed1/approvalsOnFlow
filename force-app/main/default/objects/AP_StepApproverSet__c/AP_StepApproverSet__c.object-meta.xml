@@ -152,12 +152,12 @@
     <enableSearch>true</enableSearch>
     <enableSharing>false</enableSharing>
     <enableStreamingApi>false</enableStreamingApi>
-    <label>AP_StepApproverList</label>
+    <label>AP_StepApproverSet</label>
     <nameField>
-        <label>AP_StepApproverList Name</label>
+        <label>StepApproverSet Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>AP_StepApproverLists</pluralLabel>
+    <pluralLabel>AP_StepApproverSets</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <startsWith>Vowel</startsWith>

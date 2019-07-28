@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <choices>
+        <name>approverType_adhoc</name>
+        <choiceText>Let the submitter choose the approver manually.</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>adhoc</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>approverType_multiple</name>
+        <choiceText>Build approver list</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>multiple</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>approverType_queue</name>
+        <choiceText>Automatically assign to queue.</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>queue</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>approverType_userHierarchyField</name>
+        <choiceText>Automatically assign using the user field selected earlier. ([hierarchy role field name])</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>hierarchy</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <name>Which_Approver_Type</name>
+        <label>Which Approver Type?</label>
+        <locationX>395</locationX>
+        <locationY>53</locationY>
+        <defaultConnectorLabel>Single Member</defaultConnectorLabel>
+        <rules>
+            <name>Build_List</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ApproverType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>approverType_multiple</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>screenSelect_Approvers</targetReference>
+            </connector>
+            <label>Build List</label>
+        </rules>
+    </decisions>
+    <interviewLabel>AP Manage Step Approvers {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>AP Manage Step Approvers</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <name>screenSelect_Approvers</name>
+        <label>Select Approvers</label>
+        <locationX>578</locationX>
+        <locationY>51</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Select_Approvers</name>
+            <fieldText>&lt;p&gt;Select Approvers&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Specify_Approvers</name>
+        <label>Specify Approvers</label>
+        <locationX>228</locationX>
+        <locationY>51</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Which_Approver_Type</targetReference>
+        </connector>
+        <fields>
+            <name>ApproverType</name>
+            <choiceReferences>approverType_adhoc</choiceReferences>
+            <choiceReferences>approverType_userHierarchyField</choiceReferences>
+            <choiceReferences>approverType_queue</choiceReferences>
+            <choiceReferences>approverType_multiple</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>ApproverType</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>Specify_Approvers</startElementReference>
+    <status>Draft</status>
+</Flow>

@@ -1,15 +1,15 @@
 import { LightningElement, api, track, wire } from 'lwc';
 
 import Search from '@salesforce/label/c.Search';
-import PublicGroups from '@salesforce/label/c.PublicGroups';
-import Roles from '@salesforce/label/c.Roles';
+import Queues from '@salesforce/label/c.Queues';
+import RelatedUsers from '@salesforce/label/c.RelatedUsers';
 import Users from '@salesforce/label/c.Users';
 import For from '@salesforce/label/c.For';
 import TooManyResultsMessage from '@salesforce/label/c.TooManyResultsMessage';
 import Type3 from '@salesforce/label/c.TooManyResultsMessage';
 
-import getSharings from '@salesforce/apex/LightningSharing.getSharings';
-import doSOSL from '@salesforce/apex/LightningSharing.doSOSL';
+import getSharings from '@salesforce/apex/SharingActions.getSharings';
+import doSOSL from '@salesforce/apex/AdminTools.doSOSL';
 
 import { logger, logError }  from 'c/lwcLogger';
 
@@ -23,7 +23,7 @@ import {
   shareDelete
 } from 'c/sharingButtonSupport';
 
-export default class AddNewShares extends LightningElement {
+export default class addNewMembers extends LightningElement {
   @api log = false;
   @api recordId;
   @api foo;
@@ -35,7 +35,7 @@ export default class AddNewShares extends LightningElement {
     For
   };
   @track searchString = '';
-  source = 'addNewShares';
+  source = 'addNewMembers';
 
   get tooManyResults() {
     return this.searchResults.length > 199;
@@ -50,8 +50,8 @@ export default class AddNewShares extends LightningElement {
   _refreshable;
 
   types = [
-    { value: 'group', label: PublicGroups },
-    { value: 'userrole', label: Roles },
+    { value: 'relatedUser', label: RelatedUsers },
+    { value: 'queue', label: Queues },
     { value: 'user', label: Users }
   ];
 

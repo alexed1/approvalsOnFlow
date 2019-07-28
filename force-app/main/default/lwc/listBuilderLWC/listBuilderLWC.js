@@ -1,6 +1,5 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import { getRecordUi } from 'lightning/uiRecordApi';
-import { NavigationMixin } from 'lightning/navigation';
 
 import BackButton from '@salesforce/label/c.Back';
 import ViewCurrentPermissions from '@salesforce/label/c.ViewCurrentPermissions';
@@ -8,11 +7,15 @@ import AddNewPermission from '@salesforce/label/c.AddNewPermission';
 
 import { logger, logError }  from 'c/lwcLogger';
 
-export default class LightningSharingWrapper extends NavigationMixin( LightningElement ) {
+export default class ListBuilder extends  LightningElement  {
   @api recordId;
   @api ruleName;
+
+  @api editTabName;
+  @api addTabName;
+
   @api log = false;
-  source = 'LightningSharingWrapper';
+  source = 'ListBuilder';
 
   @track cardTitle = '';
   label = {
@@ -44,15 +47,7 @@ export default class LightningSharingWrapper extends NavigationMixin( LightningE
     }
   }
 
-  navBack() {
-    this[NavigationMixin.Navigate]({
-      type: 'standard__recordPage',
-      attributes: {
-        recordId: this.recordId,
-        actionName: 'view'
-      }
-    });
-  }
+ 
 
   refreshExisting() {
     const existing = this.template.querySelector('c-existing-shares');

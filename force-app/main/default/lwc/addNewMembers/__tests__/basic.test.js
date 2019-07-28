@@ -2,9 +2,9 @@
 import { createElement } from 'lwc';
 
 // Import module under test by convention <namespace>/<moduleName>
-import addNewShares from 'ltngsharing/addNewShares';
-import getSharings from '@salesforce/apex/LightningSharing.getSharings';
-import doSOSL from '@salesforce/apex/LightningSharing.doSOSL';
+import addNewMembers from 'ltngsharing/addNewMembers';
+import getSharings from '@salesforce/apex/SharingActions.getSharings';
+import doSOSL from '@salesforce/apex/AdminTools.doSOSL';
 
 import {registerApexTestWireAdapter } from '@salesforce/wire-service-jest-util';
 
@@ -16,7 +16,7 @@ describe('loads outer component with data', () => {
     // const getRecordUIWireAdapter = registerLdsTestWireAdapter(getRecordUi);
     
     const element = createElement('ltngsharing-add-new-shares', {
-      is: addNewShares
+      is: addNewMembers
     });
     await document.body.appendChild(element);
 
@@ -33,7 +33,7 @@ describe('loads outer component with data', () => {
   it('loads with existing', async () => {
 
     const element = createElement('ltngsharing-add-new-shares', {
-      is: addNewShares
+      is: addNewMembers
     });
     document.body.appendChild(element);
 

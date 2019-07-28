@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="lightningSharingWrapper">
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="ListBuilder">
     <apiVersion>46.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>SubmitterWrapperLWC</masterLabel>
+    <masterLabel>ListBuilder</masterLabel>
     <description>This is a demo component.</description>
 
     <targets>
@@ -15,13 +15,13 @@
             <property name="ruleName" type="String" role="inputOnly" />
             <property name="recordId" type="String" role="inputOnly" />
         </targetConfig>
-    -->
-        <targetConfig targets="lightning__RecordPage">
-            
+         -->
+        <targetConfig targets="lightning__RecordPage">   
             <objects>
-                <object>Account</object>
-                
+                <object>Account</object>           
             </objects>
+            <property name="editTabName" type="String" />
+            <property name="addTabName" type="String" />
         </targetConfig>
     </targetConfigs>
 

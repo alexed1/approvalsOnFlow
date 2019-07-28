@@ -3,8 +3,8 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c/addNewShares": [
-                "addNewShares/addNewShares.js"
+            "c/addNewMembers": [
+                "addNewMembers/addNewMembers.js"
             ],
             "c/existingShares": [
                 "existingShares/existingShares.js"
@@ -15,8 +15,8 @@
             "c/sharingButtonSupport": [
                 "sharingButtonSupport/sharingButtonSupport.js"
             ],
-            "c/submitterWrapperLWC": [
-                "submitterWrapperLWC/submitterWrapperLWC.js"
+            "c/listBuilderLWC": [
+                "ListBuilderLWC/ListBuilderLWC.js
             ]
         }
     },

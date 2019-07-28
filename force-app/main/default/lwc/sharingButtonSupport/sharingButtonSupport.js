@@ -1,5 +1,5 @@
-import upsertPerm from '@salesforce/apex/LightningSharing.upsertPerm';
-import deletePerm from '@salesforce/apex/LightningSharing.deletePerm';
+import upsertPerm from '@salesforce/apex/SharingActions.upsertPerm';
+import deletePerm from '@salesforce/apex/SharingActions.deletePerm';
 import { logger } from 'c/lwcLogger';
 
 const sharingButtonColumns = [

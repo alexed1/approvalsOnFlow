@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Type__c</fullName>
+    <description>Combined with the specified name, this identifies an assigned approver. Valid values are:
+adhoc—The approver for the step must be selected manually. For the first step, the submitter selects the approver. For the second and later steps, the approver for the previous step selects the approver. For this value, exclude the name field.
+user—A user in your organization. For this value, enter a username for the name field.
+userHierarchyField—A user specified in a standard or custom user hierarchy field, such as the standard Manager field. For this value, exclude the name field. The user hierarchy field must be defined in the nextAutomatedApprovers for the approval process.
+relatedUserField—A user specified in a user lookup field on the submitted record, such as the Last Modified By field. For this value, enter the name of the user lookup field for the name field.
+queue—Automatically assign to a queue. For this value, enter the name of the queue for the name field.</description>
     <externalId>false</externalId>
     <label>Type</label>
     <required>false</required>

@@ -2,7 +2,7 @@ import { LightningElement, api, wire, track } from 'lwc';
 import { refreshApex } from '@salesforce/apex';
 import { NavigationMixin } from 'lightning/navigation';
 
-import getSharings from '@salesforce/apex/LightningSharing.getSharings';
+import getSharings from '@salesforce/apex/SharingActions.getSharings';
 
 import {
   buttonStylingSingle,
