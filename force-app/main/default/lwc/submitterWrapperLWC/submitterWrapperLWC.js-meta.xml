@@ -6,15 +6,16 @@
     <description>This is a demo component.</description>
 
     <targets>
-        <target>lightning__FlowScreen</target>  
+        <!-- <target>lightning__FlowScreen</target>  -->
         <target>lightning__RecordPage</target> 
     </targets>
 
     <targetConfigs>
-        <targetConfig targets="lightning__FlowScreen" >
+       <!-- <targetConfig targets="lightning__FlowScreen" >
             <property name="ruleName" type="String" role="inputOnly" />
             <property name="recordId" type="String" role="inputOnly" />
         </targetConfig>
+    -->
         <targetConfig targets="lightning__RecordPage">
             
             <objects>

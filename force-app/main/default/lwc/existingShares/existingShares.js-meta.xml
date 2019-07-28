@@ -2,7 +2,7 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="existingShares">
     <apiVersion>46.0</apiVersion>
     <isExposed>false</isExposed>
-    <targets>
+   <!-- <targets>
         <target>lightning__FlowScreen</target>  
     </targets>
     <targetConfigs>
@@ -11,4 +11,5 @@
              
         </targetConfig>
     </targetConfigs>
+-->
 </LightningComponentBundle>

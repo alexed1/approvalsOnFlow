@@ -3,12 +3,14 @@
     <apiVersion>46.0</apiVersion>
     <isExposed>false</isExposed>
     <targets>
-        <target>lightning__FlowScreen</target>  
+        <!-- <target>lightning__FlowScreen</target>  -->
     </targets>
-    <targetConfigs>
+    <!--
+        <targetConfigs>
         <targetConfig targets="lightning__FlowScreen" >
             <property name="foo" type="String" role="inputOnly" />
              
         </targetConfig>
     </targetConfigs>
+-->
 </LightningComponentBundle>
