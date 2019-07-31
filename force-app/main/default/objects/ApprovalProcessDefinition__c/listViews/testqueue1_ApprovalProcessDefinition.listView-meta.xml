@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>testqueue1_ApprovalProcessDefinition</fullName>
+    <filterScope>Queue</filterScope>
+    <label>testqueue1</label>
+    <queue>testqueue1</queue>
+    <sharedTo>
+        <allInternalUsers/>
+    </sharedTo>
+</ListView>

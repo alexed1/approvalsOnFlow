@@ -3,6 +3,8 @@ import { LightningElement, api, track, wire } from 'lwc';
 import Search from '@salesforce/label/c.Search';
 import Queues from '@salesforce/label/c.Queues';
 import RelatedUsers from '@salesforce/label/c.RelatedUsers';
+import PublicGroups from '@salesforce/label/c.PublicGroups';
+
 import Users from '@salesforce/label/c.Users';
 import For from '@salesforce/label/c.For';
 import TooManyResultsMessage from '@salesforce/label/c.TooManyResultsMessage';
@@ -50,8 +52,8 @@ export default class addNewMembers extends LightningElement {
   _refreshable;
 
   types = [
-    { value: 'relatedUser', label: RelatedUsers },
-    { value: 'queue', label: Queues },
+    { value: 'group', label: PublicGroups },
+    { value: 'userrole', label: Roles },
     { value: 'user', label: Users }
   ];
 

@@ -9,14 +9,17 @@
             "c/existingShares": [
                 "existingShares/existingShares.js"
             ],
+            "c/listBuilder": [
+                "listBuilder/listBuilder.js"
+            ],
             "c/lwcLogger": [
                 "lwcLogger/lwcLogger.js"
             ],
+            "c/manageStepApprovers": [
+                "manageStepApprovers/manageStepApprovers.js"
+            ],
             "c/sharingButtonSupport": [
                 "sharingButtonSupport/sharingButtonSupport.js"
-            ],
-            "c/listBuilderLWC": [
-                "ListBuilderLWC/ListBuilderLWC.js
             ]
         }
     },

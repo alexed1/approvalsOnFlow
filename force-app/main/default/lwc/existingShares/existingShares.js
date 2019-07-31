@@ -15,7 +15,7 @@ import { logger, logError }  from 'c/lwcLogger';
 
 export default class ExistingShares extends NavigationMixin(LightningElement) {
   @api recordId;
-  @api foo;
+  
   @track tableData = [];
   source = 'ExistingShares';
 
