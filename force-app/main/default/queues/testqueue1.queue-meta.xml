@@ -4,10 +4,7 @@
     <name>testqueue1</name>
     <queueMembers>
         <users>
-            <user>integration@00d8a0000009hq7uam.com</user>
-            <user>aedelsteinalskjdf@salesforce.com</user>
-            <user>insightssecurity@00d8a0000009hq7uam.com</user>
-            <user>test-fykie46kxxsv@example.com</user>
+     
         </users>
     </queueMembers>
     <queueSobject>
@@ -33,9 +30,6 @@
     </queueSobject>
     <queueSobject>
         <sobjectType>Image</sobjectType>
-    </queueSobject>
-    <queueSobject>
-        <sobjectType>KnowledgeArticleVersion</sobjectType>
     </queueSobject>
     <queueSobject>
         <sobjectType>Lead</sobjectType>

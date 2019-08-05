@@ -228,7 +228,7 @@
             <targetReference>Specify_Approvers</targetReference>
         </connector>
         <filters>
-            <field>StepApproverList__c</field>
+            <field>StepApproverSet__c</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>curStepApproverSet.Id</elementReference>
