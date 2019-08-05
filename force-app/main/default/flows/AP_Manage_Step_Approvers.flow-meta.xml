@@ -1,5 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <assignments>
+        <name>Set_Type_to_Adhoc</name>
+        <label>Set Type to Adhoc</label>
+        <locationX>567</locationX>
+        <locationY>333</locationY>
+        <assignmentItems>
+            <assignToReference>curApprover.Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Adhoc</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curStepApproverSet.ApproverSetType__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>adhoc</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Approver</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Type_to_Build_List</name>
+        <label>Set Type to Build List</label>
+        <locationX>773</locationX>
+        <locationY>261</locationY>
+        <assignmentItems>
+            <assignToReference>curStepApproverSet.ApproverSetType__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>list</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Approver</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>User can define a role in the parent approval process, and users with that role become the approved approvers for this step</description>
+        <name>Set_Type_to_Hierarchy</name>
+        <label>Set Type to Hierarchy</label>
+        <locationX>405</locationX>
+        <locationY>559</locationY>
+        <assignmentItems>
+            <assignToReference>curApprover.Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>UserHierarchyField</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curStepApproverSet.ApproverSetType__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>hierarchy</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Approver</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Type_to_Queue</name>
+        <label>Set Type to Queue</label>
+        <locationX>449</locationX>
+        <locationY>459</locationY>
+        <assignmentItems>
+            <assignToReference>curApprover.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Select_Queue</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprover.Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Queue</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curStepApproverSet.ApproverSetType__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>queue</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Approver</targetReference>
+        </connector>
+    </assignments>
     <choices>
         <name>approverType_adhoc</name>
         <choiceText>Let the submitter choose the approver manually.</choiceText>
@@ -32,12 +125,23 @@
             <stringValue>hierarchy</stringValue>
         </value>
     </choices>
+    <choices>
+        <name>currentValueApproverSetType</name>
+        <choiceText>{!defaultStepApproverType}</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>same</stringValue>
+        </value>
+    </choices>
     <decisions>
         <name>Which_Approver_Type</name>
         <label>Which Approver Type?</label>
         <locationX>395</locationX>
         <locationY>53</locationY>
-        <defaultConnectorLabel>Single Member</defaultConnectorLabel>
+        <defaultConnector>
+            <targetReference>Set_Type_to_Hierarchy</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Hierarchy Field</defaultConnectorLabel>
         <rules>
             <name>Build_List</name>
             <conditionLogic>and</conditionLogic>
@@ -53,7 +157,52 @@
             </connector>
             <label>Build List</label>
         </rules>
+        <rules>
+            <name>Use_Queue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ApproverType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>approverType_queue</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Type_to_Queue</targetReference>
+            </connector>
+            <label>Use Queue</label>
+        </rules>
+        <rules>
+            <name>Set_Manually</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ApproverType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>approverType_adhoc</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Type_to_Adhoc</targetReference>
+            </connector>
+            <label>Set Manually</label>
+        </rules>
     </decisions>
+    <dynamicChoiceSets>
+        <description>The type of Approver group can be adhoc (users select when they submit), role hierarchy (set on the parent approval process), a queue, or a list of a combination of queues and users</description>
+        <name>ApproverSetType</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>ApproverSetType__c</picklistField>
+        <picklistObject>AP_StepApproverSet__c</picklistObject>
+    </dynamicChoiceSets>
+    <formulas>
+        <description>see https://metillium.com/2019/05/default-flow-picklist-value-without-duplicates-in-new-flow-builder/</description>
+        <name>defaultStepApproverType</name>
+        <dataType>String</dataType>
+        <expression> IF(ISBLANK(Text({!curStepApproverSet.ApproverSetType__c})),&#39;Select Approver(s)&#39;, Text({!curStepApproverSet.ApproverSetType__c}))</expression>
+    </formulas>
     <interviewLabel>AP Manage Step Approvers {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Manage Step Approvers</label>
     <processMetadataValues>
@@ -69,14 +218,81 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordLookups>
+        <name>Get_Current_Approvers</name>
+        <label>Get Current Approvers</label>
+        <locationX>197</locationX>
+        <locationY>225</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Specify_Approvers</targetReference>
+        </connector>
+        <filters>
+            <field>StepApproverList__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curStepApproverSet.Id</elementReference>
+            </value>
+        </filters>
+        <object>AP_Approver__c</object>
+        <outputReference>CurApprovers</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Type__c</queriedFields>
+        <queriedFields>Name</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>GetStepApproverSet</name>
+        <label>GetStepApproverSet</label>
+        <locationX>51</locationX>
+        <locationY>224</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Current_Approvers</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curStepApproverSetID</elementReference>
+            </value>
+        </filters>
+        <object>AP_StepApproverSet__c</object>
+        <outputReference>curStepApproverSet</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>WhenMultipleApprovers__c</queriedFields>
+        <queriedFields>ApproverSetType__c</queriedFields>
+        <queriedFields>AP_StepDefinition__c</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Approver</name>
+        <label>Update Approver</label>
+        <locationX>795</locationX>
+        <locationY>449</locationY>
+        <connector>
+            <targetReference>Update_ApproverSet</targetReference>
+        </connector>
+        <inputReference>curApprover</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the picklist field that tracks the choice made by the user</description>
+        <name>Update_ApproverSet</name>
+        <label>Update ApproverSet</label>
+        <locationX>921</locationX>
+        <locationY>448</locationY>
+        <inputReference>curStepApproverSet</inputReference>
+    </recordUpdates>
     <screens>
+        <description>get back a list of Approvers and update</description>
         <name>screenSelect_Approvers</name>
         <label>Select Approvers</label>
-        <locationX>578</locationX>
-        <locationY>51</locationY>
+        <locationX>673</locationX>
+        <locationY>52</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Set_Type_to_Build_List</targetReference>
+        </connector>
         <fields>
             <name>Select_Approvers</name>
             <fieldText>&lt;p&gt;Select Approvers&lt;/p&gt;</fieldText>
@@ -88,7 +304,7 @@
     <screens>
         <name>Specify_Approvers</name>
         <label>Specify Approvers</label>
-        <locationX>228</locationX>
+        <locationX>227</locationX>
         <locationY>51</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -107,9 +323,64 @@
             <fieldType>RadioButtons</fieldType>
             <isRequired>false</isRequired>
         </fields>
+        <fields>
+            <name>Select_Approver_s</name>
+            <choiceReferences>currentValueApproverSetType</choiceReferences>
+            <choiceReferences>ApproverSetType</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Select Approver(s)</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Select_Queue</name>
+            <dataType>String</dataType>
+            <fieldText>Select Queue (lookup placeholder)</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
-    <startElementReference>Specify_Approvers</startElementReference>
+    <startElementReference>GetStepApproverSet</startElementReference>
     <status>Draft</status>
+    <variables>
+        <name>approverCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>curApprover</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>AP_Approver__c</objectType>
+    </variables>
+    <variables>
+        <name>CurApprovers</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>AP_Approver__c</objectType>
+    </variables>
+    <variables>
+        <name>curStepApproverSet</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>AP_StepApproverSet__c</objectType>
+    </variables>
+    <variables>
+        <name>curStepApproverSetID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>
