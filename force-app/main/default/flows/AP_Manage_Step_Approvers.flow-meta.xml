@@ -134,6 +134,32 @@
         </value>
     </choices>
     <decisions>
+        <description>If the type is not a list then just retrieve the single approver</description>
+        <name>One_Approver_or_a_Set</name>
+        <label>One Approver or a Set?</label>
+        <locationX>33</locationX>
+        <locationY>384</locationY>
+        <defaultConnector>
+            <targetReference>GetApprover</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Single Approver</defaultConnectorLabel>
+        <rules>
+            <name>Multiple_Approvers</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>curStepApproverSet.ApproverSetType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>list</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetApprovers</targetReference>
+            </connector>
+            <label>Multiple Approvers</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Which_Approver_Type</name>
         <label>Which Approver Type?</label>
         <locationX>395</locationX>
@@ -219,16 +245,37 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
-        <name>Get_Current_Approvers</name>
-        <label>Get Current Approvers</label>
-        <locationX>197</locationX>
-        <locationY>225</locationY>
+        <name>GetApprover</name>
+        <label>GetApprover</label>
+        <locationX>270</locationX>
+        <locationY>535</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Specify_Approvers</targetReference>
         </connector>
         <filters>
-            <field>StepApproverSet__c</field>
+            <field>ApproverSet__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curStepApproverSetID</elementReference>
+            </value>
+        </filters>
+        <object>AP_Approver__c</object>
+        <outputReference>curApprover</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Existing approvers that belong to this ApproverSet</description>
+        <name>GetApprovers</name>
+        <label>GetApprovers</label>
+        <locationX>154</locationX>
+        <locationY>230</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Specify_Approvers</targetReference>
+        </connector>
+        <filters>
+            <field>ApproverSet__c</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>curStepApproverSet.Id</elementReference>
@@ -237,17 +284,17 @@
         <object>AP_Approver__c</object>
         <outputReference>CurApprovers</outputReference>
         <queriedFields>Id</queriedFields>
+        <queriedFields>ApproverSet__c</queriedFields>
         <queriedFields>Type__c</queriedFields>
-        <queriedFields>Name</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>GetStepApproverSet</name>
-        <label>GetStepApproverSet</label>
-        <locationX>51</locationX>
-        <locationY>224</locationY>
+        <label>GetApproverSet</label>
+        <locationX>48</locationX>
+        <locationY>169</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Current_Approvers</targetReference>
+            <targetReference>One_Approver_or_a_Set</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -259,15 +306,12 @@
         <object>AP_StepApproverSet__c</object>
         <outputReference>curStepApproverSet</outputReference>
         <queriedFields>Id</queriedFields>
-        <queriedFields>WhenMultipleApprovers__c</queriedFields>
-        <queriedFields>ApproverSetType__c</queriedFields>
-        <queriedFields>AP_StepDefinition__c</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Update_Approver</name>
         <label>Update Approver</label>
         <locationX>795</locationX>
-        <locationY>449</locationY>
+        <locationY>450</locationY>
         <connector>
             <targetReference>Update_ApproverSet</targetReference>
         </connector>
@@ -277,8 +321,8 @@
         <description>Update the picklist field that tracks the choice made by the user</description>
         <name>Update_ApproverSet</name>
         <label>Update ApproverSet</label>
-        <locationX>921</locationX>
-        <locationY>448</locationY>
+        <locationX>930</locationX>
+        <locationY>449</locationY>
         <inputReference>curStepApproverSet</inputReference>
     </recordUpdates>
     <screens>
@@ -304,8 +348,8 @@
     <screens>
         <name>Specify_Approvers</name>
         <label>Specify Approvers</label>
-        <locationX>227</locationX>
-        <locationY>51</locationY>
+        <locationX>263</locationX>
+        <locationY>70</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
