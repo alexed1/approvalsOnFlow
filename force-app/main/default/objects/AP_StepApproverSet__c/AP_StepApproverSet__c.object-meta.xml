@@ -158,7 +158,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>false</enableSharing>
     <enableStreamingApi>false</enableStreamingApi>
-    <label>AP_StepApproverSet</label>
+    <label>AP_StepApproverSet(Deprecated)</label>
     <nameField>
         <label>StepApproverSet Name</label>
         <type>Text</type>

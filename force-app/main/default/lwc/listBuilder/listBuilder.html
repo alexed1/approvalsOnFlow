@@ -12,11 +12,18 @@
         <div class="slds-m-horizontal_medium">
             <lightning-tabset variant="scoped">
                 <lightning-tab label={editTabName}>
-                    <c-existing-shares record-id={recordId}></c-existing-shares>
-                   
+<!--                    <c-existing-shares-->
+<!--                            record-id={recordId}-->
+<!--                            supported-edit-capabilities={supportedEditCapabilities}-->
+<!--                    ></c-existing-shares>-->
+<!--                   -->
                 </lightning-tab>
                 <lightning-tab label={addTabName}>
-                   <c-add-new-members record-id={recordId}></c-add-new-members>
+                   <c-add-new-members
+                           record-id={recordId}
+                           available-object-types={availableObjectTypes}
+                           supported-add-capabilities={supportedAddCapabilities}
+                   ></c-add-new-members>
                    
                 </lightning-tab>
             </lightning-tabset>

@@ -6,19 +6,24 @@ import getSharings from '@salesforce/apex/SharingActions.getSharings';
 
 import {
   buttonStylingSingle,
-  sharingButtonColumns,
+  // sharingButtonColumns,
   shareUpdate,
   shareDelete
-} from 'c/sharingButtonSupport';
+} from 'c/buttonUtils';
 
 import { logger, logError }  from 'c/lwcLogger';
 
 export default class ExistingShares extends NavigationMixin(LightningElement) {
   @api recordId;
-  
+  @api supportedEditCapabilities = [];
+
+  @track readDisabled = false;
+  @track noneDisabled = false;
+  @track editDisabled = false;
+
   @track tableData = [];
   source = 'ExistingShares';
-
+  columns = [];
   // call this when you know the sharing table is out of sync
   @api refresh() {
     //Console.log('in refresh');
@@ -46,7 +51,7 @@ export default class ExistingShares extends NavigationMixin(LightningElement) {
       },
       { label: 'Reason', fieldName: 'RowCause' },
       { label: 'Access Level', fieldName: 'AccessLevel' }
-    ].concat(sharingButtonColumns);
+    ].concat(this.supportedEditCapabilities);
   }
 
   @wire(getSharings, { recordId: '$recordId' })

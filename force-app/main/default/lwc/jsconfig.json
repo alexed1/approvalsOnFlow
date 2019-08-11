@@ -18,8 +18,8 @@
             "c/manageStepApprovers": [
                 "manageStepApprovers/manageStepApprovers.js"
             ],
-            "c/sharingButtonSupport": [
-                "sharingButtonSupport/sharingButtonSupport.js"
+            "c/buttonUtils": [
+                "buttonUtils/buttonUtils.js"
             ]
         }
     },

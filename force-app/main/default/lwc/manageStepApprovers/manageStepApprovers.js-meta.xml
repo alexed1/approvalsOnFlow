@@ -17,7 +17,8 @@
         <targetConfig targets="lightning__RecordPage">   
             <objects>
                 <object>Account</object>   <!--for testing -->   
-                <object>ApprovalProcessDefinition__c</object>      
+                <object>ApprovalProcessDefinition__c</object>
+                <object>ApprovalProcessStepDefinition__c</object>
             </objects>
            
         </targetConfig>
