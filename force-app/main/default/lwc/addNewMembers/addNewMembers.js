@@ -22,6 +22,7 @@ import {
     shareUpdate,
     shareDelete,
     addStepApprover
+    generateCapabilityColumns
 } from 'c/buttonUtils';
 
 export default class addNewMembers extends LightningElement {
@@ -30,7 +31,9 @@ export default class addNewMembers extends LightningElement {
     @api foo;
 
     @api availableObjectTypes = [];
-    @api supportedAddCapabilities = [];
+
+    //expect a set of strings representing button labels
+    @api supportedAddCapabilities = '';
 
 
     @track readDisabled = false;
@@ -69,13 +72,13 @@ export default class addNewMembers extends LightningElement {
     @track columns;
 
     connectedCallback() {
-        this.columns = [{label: 'Name', fieldName: 'label'}].concat(this.supportedAddCapabilities);
+        this.columns = [{label: 'Name', fieldName: 'label'}].concat(generateCapabilityColumns(supportedAddCapabilities));
     }
 
     @track searchResults = [];
     @track searchDisabled = false;
 
-    existingShares = [];
+    viewEditMembers = [];
 
     // @wire(getSharings, {recordId: '$recordId'})
     // wiredSharings(result) {
@@ -84,7 +87,7 @@ export default class addNewMembers extends LightningElement {
     //         logError(this.log, this.source, 'getSharings error', result.error);
     //     } else if (result.data) {
     //         logger(this.log, this.source, 'getSharings returned', result.data);
-    //         this.existingShares = JSON.parse(result.data);
+    //         this.viewEditMembers = JSON.parse(result.data);
     //         this.updateSharingLevelButtons();
     //     }
     // }
@@ -154,7 +157,7 @@ export default class addNewMembers extends LightningElement {
         this.searchResults.forEach(result => {
             newArray.push({
                 ...result,
-                ...buttonStyling(result.Id, this.existingShares)
+                ...buttonStyling(result.Id, this.viewEditMembers)
             });
         });
 

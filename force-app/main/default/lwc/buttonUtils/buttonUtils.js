@@ -5,6 +5,28 @@ import _addStepApprover from '@salesforce/apex/ManageStepApprovers.addStepApprov
 
 import {logger} from 'c/lwcLogger';
 
+
+const generateCapabilityColumns = (labels) => {
+    //for each capability(i.e for each button label)
+    //generate a column descriptor
+    //columnDescriptor = getColumnDescriptor(curButtonLabel);
+    //return the list of the column descriptors to concat to the Columns variable
+}
+
+//generate the object structure needed by Datatable, for a given label. 
+const getColumnDescriptor = (curButtonLabel) => {
+   /*  {
+        type: 'button',
+        typeAttributes: {
+            label: curButtonLabel,
+            name: 'none',
+            variant: 'neutral',
+            disabled: { fieldName: 'noneDisabled' }
+        },
+        initialWidth: 85 */
+
+}
+
 // const sharingButtonColumns = [
 //   {
 //     type: 'button',
@@ -67,9 +89,9 @@ const buttonStylingSingle = existing => {
     return output;
 };
 
-const buttonStyling = (id, existingShares) => {
+const buttonStyling = (id, viewEditMembers) => {
     // it could be a group or a role on a group
-    const existing = existingShares.find(
+    const existing = viewEditMembers.find(
         share => share.UserOrGroupID === id || share.RoleId === id
     );
     return buttonStylingSingle(existing);

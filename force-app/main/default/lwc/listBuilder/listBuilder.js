@@ -21,7 +21,14 @@ export default class ListBuilder extends LightningElement {
         {value: 'queue', label: Queues},
 
     ];
-    @api supportedAddCapabilities = [
+    @api supportedAddCapabilities;
+    
+    
+    
+    /* =
+    
+    
+    [
         {
             type: 'button',
             typeAttributes: {
@@ -42,7 +49,7 @@ export default class ListBuilder extends LightningElement {
             },
             initialWidth: 150
         }
-    ];
+    ]; */
     // @api supportedAddCapabilities = [
     //   {
     //     type: 'button',
@@ -75,7 +82,9 @@ export default class ListBuilder extends LightningElement {
     //     initialWidth: 125
     //   }
     // ];
-    @api supportedEditCapabilities = [
+    @api supportedEditCapabilities;
+    
+    /* = [
         {
             type: 'button',
             typeAttributes: {
@@ -106,7 +115,7 @@ export default class ListBuilder extends LightningElement {
             },
             initialWidth: 125
         }
-    ];
+    ]; */
 
     @api ruleName;
 

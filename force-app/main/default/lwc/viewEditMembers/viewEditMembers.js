@@ -8,12 +8,13 @@ import {
   buttonStylingSingle,
   // sharingButtonColumns,
   shareUpdate,
-  shareDelete
+  shareDelete,
+  generateCapabilityColumns
 } from 'c/buttonUtils';
 
 import { logger, logError }  from 'c/lwcLogger';
 
-export default class ExistingShares extends NavigationMixin(LightningElement) {
+export default class ViewEditMembers extends NavigationMixin(LightningElement) {
   @api recordId;
   @api supportedEditCapabilities = [];
 
@@ -22,7 +23,7 @@ export default class ExistingShares extends NavigationMixin(LightningElement) {
   @track editDisabled = false;
 
   @track tableData = [];
-  source = 'ExistingShares';
+  source = 'ViewEditMembers';
   columns = [];
   // call this when you know the sharing table is out of sync
   @api refresh() {
@@ -35,23 +36,7 @@ export default class ExistingShares extends NavigationMixin(LightningElement) {
 
   constructor() {
     super();
-    this.columns = [
-      { label: 'User or Group', fieldName: 'UserOrGroupType' },
-      { label: 'Type', fieldName: 'SubType' },
-      {
-        label: 'Name',
-        type: 'button',
-        typeAttributes: {
-          label: {
-            fieldName: 'UserOrGroupName'
-          },
-          name: 'view',
-          variant: 'base'
-        }
-      },
-      { label: 'Reason', fieldName: 'RowCause' },
-      { label: 'Access Level', fieldName: 'AccessLevel' }
-    ].concat(this.supportedEditCapabilities);
+    this.columns = [{label: 'Name', fieldName: 'label'}].concat(generateCapabilityColumns(supportedEditCapabilities));
   }
 
   @wire(getSharings, { recordId: '$recordId' })

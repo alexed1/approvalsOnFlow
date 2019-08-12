@@ -6,9 +6,6 @@
             "c/addNewMembers": [
                 "addNewMembers/addNewMembers.js"
             ],
-            "c/existingShares": [
-                "existingShares/existingShares.js"
-            ],
             "c/listBuilder": [
                 "listBuilder/listBuilder.js"
             ],
@@ -20,6 +17,12 @@
             ],
             "c/buttonUtils": [
                 "buttonUtils/buttonUtils.js"
+            ],
+            "c/initialSubmittersSelect": [
+                "initialSubmittersSelect/initialSubmittersSelect.js"
+            ],
+            "c/viewEditMembers": [
+                "viewEditMembers/viewEditMembers.js"
             ]
         }
     },
