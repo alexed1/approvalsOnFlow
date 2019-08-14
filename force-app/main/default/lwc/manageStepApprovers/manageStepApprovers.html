@@ -1,7 +1,11 @@
 <template>
     This is the Manage Step Approvers component.
-
-    <c-list-builder  edit-tab-name='View/Edit Step Approvers' add-tab-name='Add Step Approver' supported-add-capabilities='Add' supported-edit-capabilities='Delete' record-id={recordId}></c-list-builder>
-
-
+    <c-list-builder
+            edit-tab-name='View/Edit Step Approvers'
+            add-tab-name='Add Step Approver'
+            supported-add-capabilities='Add, Remove'
+            supported-edit-capabilities='Delete'
+            available-object-types='user, queue'
+            manager-name='ManageStepApprovers'
+            record-id={recordId}></c-list-builder>
 </template>

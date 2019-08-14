@@ -1,16 +1,19 @@
 import {LightningElement, api, track, wire} from 'lwc';
 
 import Search from '@salesforce/label/c.Search';
-
-
 import For from '@salesforce/label/c.For';
 import TooManyResultsMessage from '@salesforce/label/c.TooManyResultsMessage';
 import Type3 from '@salesforce/label/c.TooManyResultsMessage';
-
+import Queues from '@salesforce/label/c.Queues';
+import RelatedUsers from '@salesforce/label/c.RelatedUsers';
+import PublicGroups from '@salesforce/label/c.PublicGroups';
+import Roles from '@salesforce/label/c.Roles';
+import Users from '@salesforce/label/c.Users';
 // import getSharings from '@salesforce/apex/SharingActions.getSharings';
 // import doSOSL from '@salesforce/apex/AdminTools.doSOSL';
 import getSubmittersPerType from '@salesforce/apex/InitialSubmittersSelectController.getSubmittersPerType';
 
+import getSharings from '@salesforce/apex/SharingActions.getSharings';
 import {logger, logError} from 'c/lwcLogger';
 
 import {refreshApex} from '@salesforce/apex';
@@ -21,19 +24,28 @@ import {
     // sharingButtonColumns,
     shareUpdate,
     shareDelete,
-    addStepApprover
+    handleButtonAction,
     generateCapabilityColumns
 } from 'c/buttonUtils';
 
+const typeMapping = {
+    group: PublicGroups,
+    role: Roles,
+    user: Users,
+    queue: Queues
+};
 export default class addNewMembers extends LightningElement {
     @api log = false;
     @api recordId;
     @api foo;
 
-    @api availableObjectTypes = [];
-
     //expect a set of strings representing button labels
-    @api supportedAddCapabilities = '';
+    //'user, queue'
+    @api availableObjectTypes;
+    //Apex class name 'ManageStepApprovers'
+    @api managerName;
+    //Button labels 'Add, Remove', will determine functions called in apex class
+    @api supportedAddCapabilities;
 
 
     @track readDisabled = false;
@@ -49,6 +61,16 @@ export default class addNewMembers extends LightningElement {
     @track searchString = '';
     source = 'addNewMembers';
 
+    get objectTypes() {
+        return this.availableObjectTypes.replace(' ', '').split(',').map(curTypeName => {
+            return this.getTypeDescriptor(curTypeName);
+        });
+    }
+
+    getTypeDescriptor(typeName) {
+        return {value: typeName, label: typeMapping[typeName]};
+    }
+
     get tooManyResults() {
         return this.searchResults.length > 199;
     }
@@ -61,18 +83,16 @@ export default class addNewMembers extends LightningElement {
 
     _refreshable;
 
-    // types = [
-    //   { value: 'group', label: PublicGroups },
-    //   { value: 'userrole', label: Roles },
-    //   { value: 'user', label: Users }
-    // ];
-
     @track selectedType = 'user';
 
     @track columns;
 
     connectedCallback() {
-        this.columns = [{label: 'Name', fieldName: 'label'}].concat(generateCapabilityColumns(supportedAddCapabilities));
+    debugger;
+        this.columns = [{
+            label: 'Name',
+            fieldName: 'label'
+        }].concat(generateCapabilityColumns(this.supportedAddCapabilities));
     }
 
     @track searchResults = [];
@@ -165,45 +185,63 @@ export default class addNewMembers extends LightningElement {
     }
 
     async handleRowAction(event) {
+        console.log('event.detail:::'+JSON.stringify(event.detail));
         //logger(this.log, this.source, 'row action called from datatable', event.detail);
+        let actionParams = JSON.stringify({
+            'userOrGroupID': event.detail.row.value,
+            'approvalStepDefinitionId': this.recordId,
+            'type': this.selectedType
+        });
+    debugger;
+                try {
 
-        switch (event.detail.action.name) {
-            case 'read':
-                try {
-                    await shareUpdate(event.detail.row.Id, this.recordId, 'Read');
-                    this.refresh();
+                    await handleButtonAction(
+                        event.detail.action.name,
+                        this.managerName,
+                        actionParams
+                    );
+                    // this.refresh();
                 } catch (e) {
                     this.toastTheError(e, 'shareUpdate-read');
                 }
-                break;
-            case 'read_write':
-                try {
-                    //logger(this.log, this.source, 'attempting Share update', event.detail);
-                    await shareUpdate(event.detail.row.Id, this.recordId, 'Edit');
-                    this.refresh();
-                } catch (e) {
-                    this.toastTheError(e, 'shareUpdate-edit');
-                }
-                break;
-            case 'none':
-                try {
-                    await shareDelete(event.detail.row.Id, this.recordId);
-                    this.refresh();
-                } catch (e) {
-                    this.toastTheError(e, 'shareUpdate-edit');
-                }
-                break;
-            case 'add_step_approver':
-                try {
-                    await addStepApprover(event.detail.row.Id, this.recordId, this.selectedType);
-                    this.refresh();
-                } catch (e) {
-                    this.toastTheError(e, 'shareUpdate-read');
-                }
-                break;
-            default:
-                this.logError(this.log, this.source, 'handleRowAction switch statement no match found');
-        }
+
+        // switch (event.detail.action.name) {
+        //     case 'read':
+        //         try {
+        //             await shareUpdate(event.detail.row.Id, this.recordId, 'Read');
+        //             this.refresh();
+        //         } catch (e) {
+        //             this.toastTheError(e, 'shareUpdate-read');
+        //         }
+        //         break;
+        //     case 'read_write':
+        //         try {
+        //             //logger(this.log, this.source, 'attempting Share update', event.detail);
+        //             await shareUpdate(event.detail.row.Id, this.recordId, 'Edit');
+        //             this.refresh();
+        //         } catch (e) {
+        //             this.toastTheError(e, 'shareUpdate-edit');
+        //         }
+        //         break;
+        //     case 'none':
+        //         try {
+        //             await shareDelete(event.detail.row.Id, this.recordId);
+        //             this.refresh();
+        //         } catch (e) {
+        //             this.toastTheError(e, 'shareUpdate-edit');
+        //         }
+        //         break;
+        //     case 'add_step_approver':
+        //         try {
+        //             await addStepApprover(event.detail.row.Id, this.recordId, this.selectedType);
+        //             this.refresh();
+        //         } catch (e) {
+        //             this.toastTheError(e, 'shareUpdate-read');
+        //         }
+        //         break;
+        //     default:
+        //         this.logError(this.log, this.source, 'handleRowAction switch statement no match found');
+        // }
     }
 
     translateTypes(userType) {

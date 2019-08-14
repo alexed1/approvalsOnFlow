@@ -5,9 +5,8 @@
     <label>AP_StepDefinition</label>
     <referenceTo>ApprovalProcessStepDefinition__c</referenceTo>
     <relationshipName>AP_StepDefinitions</relationshipName>
-    <relationshipOrder>0</relationshipOrder>
     <reparentableMasterDetail>false</reparentableMasterDetail>
     <trackTrending>false</trackTrending>
-    <type>MasterDetail</type>
+    <type>Lookup</type>
     <writeRequiresMasterRead>false</writeRequiresMasterRead>
 </CustomField>

@@ -1,31 +1,40 @@
-import upsertPerm from '@salesforce/apex/SharingActions.upsertPerm';
-import deletePerm from '@salesforce/apex/SharingActions.deletePerm';
-
-import _addStepApprover from '@salesforce/apex/ManageStepApprovers.addStepApprover';
-
+// import upsertPerm from '@salesforce/apex/SharingActions.upsertPerm';
+// import deletePerm from '@salesforce/apex/SharingActions.deletePerm';
+import  _handleButtonAction from '@salesforce/apex/ListBuilderController.handleButtonAction';
+//TODO: import method to determine button availability to be used in: disabled: {fieldName: 'noneDisabled'}
 import {logger} from 'c/lwcLogger';
 
+export {
+    buttonStyling,
+    buttonStylingSingle,
+    // shareDelete,
+    // shareUpdate,
+    handleButtonAction,
+    generateCapabilityColumns
+};
 
 const generateCapabilityColumns = (labels) => {
-    //for each capability(i.e for each button label)
-    //generate a column descriptor
-    //columnDescriptor = getColumnDescriptor(curButtonLabel);
-    //return the list of the column descriptors to concat to the Columns variable
-}
+    debugger;
+    let labelsArray = labels.replace(' ', '').split(',');
+    return labelsArray.map(curLabel => {
+        return getColumnDescriptor(curLabel);
+    });
+};
 
 //generate the object structure needed by Datatable, for a given label. 
 const getColumnDescriptor = (curButtonLabel) => {
-   /*  {
+    return {
         type: 'button',
         typeAttributes: {
             label: curButtonLabel,
-            name: 'none',
+            name: curButtonLabel, //this is used to determine an apex method to call
             variant: 'neutral',
-            disabled: { fieldName: 'noneDisabled' }
+            disabled: false
+            // disabled: {fieldName: 'noneDisabled'}
         },
-        initialWidth: 85 */
-
-}
+        initialWidth: 85
+    }
+};
 
 // const sharingButtonColumns = [
 //   {
@@ -97,34 +106,27 @@ const buttonStyling = (id, viewEditMembers) => {
     return buttonStylingSingle(existing);
 };
 
-const shareDelete = async (UserOrGroupID, recordId) => {
-    await deletePerm({
-        UserOrGroupID,
-        recordId
+// const shareDelete = async (UserOrGroupID, recordId) => {
+//     await deletePerm({
+//         UserOrGroupID,
+//         recordId
+//     });
+// };
+//
+// const shareUpdate = async (UserOrGroupID, recordId, level) => {
+//     await upsertPerm({
+//         UserOrGroupID,
+//         recordId,
+//         level
+//     });
+// };
+
+const handleButtonAction = async (buttonName, managerName, paramsString) => {
+    await _handleButtonAction({
+        buttonName,
+        managerName,
+        paramsString
     });
 };
 
-const shareUpdate = async (UserOrGroupID, recordId, level) => {
-    await upsertPerm({
-        UserOrGroupID,
-        recordId,
-        level
-    });
-};
 
-const addStepApprover = async (UserOrGroupID, approvalStepDefinitionId, type) => {
-    await _addStepApprover({
-        UserOrGroupID,
-        approvalStepDefinitionId,
-        type
-    });
-};
-
-export {
-    // sharingButtonColumns,
-    buttonStyling,
-    buttonStylingSingle,
-    shareDelete,
-    shareUpdate,
-    addStepApprover
-};
