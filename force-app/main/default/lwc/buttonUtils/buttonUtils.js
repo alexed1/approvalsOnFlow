@@ -1,6 +1,6 @@
 // import upsertPerm from '@salesforce/apex/SharingActions.upsertPerm';
 // import deletePerm from '@salesforce/apex/SharingActions.deletePerm';
-import  _handleButtonAction from '@salesforce/apex/ListBuilderController.handleButtonAction';
+import _handleButtonAction from '@salesforce/apex/ListBuilderController.handleButtonAction';
 //TODO: import method to determine button availability to be used in: disabled: {fieldName: 'noneDisabled'}
 import {logger} from 'c/lwcLogger';
 
@@ -13,8 +13,7 @@ export {
     generateCapabilityColumns
 };
 
-const generateCapabilityColumns = (labels) => {
-    debugger;
+const generateCapabilityColumns = (labels, existingShares) => {
     let labelsArray = labels.replace(' ', '').split(',');
     return labelsArray.map(curLabel => {
         return getColumnDescriptor(curLabel);
@@ -29,82 +28,70 @@ const getColumnDescriptor = (curButtonLabel) => {
             label: curButtonLabel,
             name: curButtonLabel, //this is used to determine an apex method to call
             variant: 'neutral',
-            disabled: false
-            // disabled: {fieldName: 'noneDisabled'}
+            disabled: {fieldName: curButtonLabel.replace(' ','')+'buttonDisabled'}
         },
         initialWidth: 85
     }
 };
 
-// const sharingButtonColumns = [
-//   {
-//     type: 'button',
-//     typeAttributes: {
-//       label: 'None',
-//       name: 'none',
-//       variant: 'neutral',
-//       disabled: { fieldName: 'noneDisabled' }
-//     },
-//     initialWidth: 85
-//   },
-//   {
-//     type: 'button',
-//     typeAttributes: {
-//       label: 'Read',
-//       name: 'read',
-//       variant: 'neutral',
-//       disabled: { fieldName: 'readDisabled' }
-//     },
-//     initialWidth: 80
-//   },
-//   {
-//     type: 'button',
-//     typeAttributes: {
-//       label: 'Read/Write',
-//       name: 'read_write',
-//       variant: 'neutral',
-//       disabled: { fieldName: 'editDisabled' }
-//     },
-//     initialWidth: 125
-//   }
-// ];
+const buttonStyling = (supportedButtonSettings, selectedButtonNames ,id, existingShares) => {
 
-const buttonStylingSingle = existing => {
-    // CEO ID: 00G9A0000011wy7UAA
-    if (existing && existing.RowCause === 'Owner') {
-        return {
-            readDisabled: true,
-            editDisabled: true,
-            noneDisabled: true
-        };
-    }
-
-    const output = {
-        readDisabled: false,
-        editDisabled: false,
-        noneDisabled: false
-    };
-
-    if (existing) {
-        if (existing.AccessLevel === 'Read') {
-            output.readDisabled = true;
-        } else if (existing.AccessLevel === 'Edit') {
-            output.editDisabled = true;
-        }
-    } else {
-        output.noneDisabled = true;
-    }
-
-    return output;
-};
-
-const buttonStyling = (id, viewEditMembers) => {
     // it could be a group or a role on a group
-    const existing = viewEditMembers.find(
-        share => share.UserOrGroupID === id || share.RoleId === id
+    let existing = existingShares.find(
+        share => {
+            return share.Name === id;
+        }
     );
-    return buttonStylingSingle(existing);
+
+    // return {buttonDisabled: existing !== undefined}
+    return buttonStylingSingle(supportedButtonSettings, selectedButtonNames, existing);
 };
+
+const buttonStylingSingle = (supportedButtonSettings, selectedButtonNames, existing) => {
+    //TODO: implement ability to utilize custom functions for button endbling/disabling
+    let resultButtonSettings = {};
+        selectedButtonNames.replace(' ','').split(',').forEach(buttonName =>{
+            let bs = supportedButtonSettings.find(curSetting => curSetting.name == buttonName);
+            let isDisabled;
+            if(
+                (existing !== undefined && bs.matchingRule.matchingAction == 'EXISTS') ||
+                (existing === undefined && bs.matchingRule.matchingAction == 'NOTEXISTS')){
+                isDisabled = true;
+            }else {
+                isDisabled = false;
+            };
+            resultButtonSettings[buttonName.replace(' ','')+'buttonDisabled'] =isDisabled;
+        });
+        return resultButtonSettings;
+
+    // // CEO ID: 00G9A0000011wy7UAA
+    // if (existing && existing.RowCause === 'Owner') {
+    //     return {
+    //         readDisabled: true,
+    //         editDisabled: true,
+    //         noneDisabled: true
+    //     };
+    // }
+    //
+    // const output = {
+    //     readDisabled: false,
+    //     editDisabled: false,
+    //     noneDisabled: false
+    // };
+    //
+    // if (existing) {
+    //     if (existing.AccessLevel === 'Read') {
+    //         output.readDisabled = true;
+    //     } else if (existing.AccessLevel === 'Edit') {
+    //         output.editDisabled = true;
+    //     }
+    // } else {
+    //     output.noneDisabled = true;
+    // }
+    //
+    // return output;
+};
+
 
 // const shareDelete = async (UserOrGroupID, recordId) => {
 //     await deletePerm({

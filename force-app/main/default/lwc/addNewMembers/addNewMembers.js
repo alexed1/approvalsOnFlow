@@ -46,11 +46,13 @@ export default class addNewMembers extends LightningElement {
     @api managerName;
     //Button labels 'Add, Remove', will determine functions called in apex class
     @api supportedAddCapabilities;
+    //Existing shares for current record
+    @api existingShares;
+    @api supportedButtons;
 
-
-    @track readDisabled = false;
-    @track noneDisabled = false;
-    @track editDisabled = false;
+    // @track readDisabled = false;
+    // @track noneDisabled = false;
+    // @track editDisabled = false;
 
     @track label = {
         Search,
@@ -76,9 +78,10 @@ export default class addNewMembers extends LightningElement {
     }
 
     // call this when you know the sharing table is out of sync
-    @api refresh() {
-        logger(this.log, this.source, 'refreshing');
-        refreshApex(this._refreshable);
+    refresh() {
+        this.dispatchEvent(new CustomEvent('searchrefresh'));
+        // logger(this.log, this.source, 'refreshing');
+        // refreshApex(this._refreshable);
     }
 
     _refreshable;
@@ -88,7 +91,6 @@ export default class addNewMembers extends LightningElement {
     @track columns;
 
     connectedCallback() {
-    debugger;
         this.columns = [{
             label: 'Name',
             fieldName: 'label'
@@ -171,13 +173,13 @@ export default class addNewMembers extends LightningElement {
         }
     }
 
-    updateSharingLevelButtons() {
+    @api updateSharingLevelButtons() {
         const newArray = [];
 
         this.searchResults.forEach(result => {
             newArray.push({
                 ...result,
-                ...buttonStyling(result.Id, this.viewEditMembers)
+                ...buttonStyling(this.supportedButtons, this.supportedAddCapabilities, result.value, this.existingShares)
             });
         });
 
@@ -192,7 +194,7 @@ export default class addNewMembers extends LightningElement {
             'approvalStepDefinitionId': this.recordId,
             'type': this.selectedType
         });
-    debugger;
+
                 try {
 
                     await handleButtonAction(
@@ -200,7 +202,7 @@ export default class addNewMembers extends LightningElement {
                         this.managerName,
                         actionParams
                     );
-                    // this.refresh();
+                    this.refresh();
                 } catch (e) {
                     this.toastTheError(e, 'shareUpdate-read');
                 }

@@ -16,11 +16,40 @@ global with sharing class ListBuilderController {
         }
         throw new AuraHandledException('Manager "' + managerName + '" is not found');
     }
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     global static String getExistingShares(String managerName, String approvalStepDefinitionId) {
         if (managerName == 'ManageStepApprovers') {
             return ManageStepApprovers.getExistingShares(approvalStepDefinitionId);
         }
         throw new AuraHandledException('Manager "' + managerName + '" is not found');
+    }
+    @AuraEnabled(cacheable=true)
+    global static String getSupportedButtons(String managerName) {
+        if (managerName == 'ManageStepApprovers') {
+            return JSON.serialize(ManageStepApprovers.getSupportedButtons());
+        }
+        throw new AuraHandledException('Manager "' + managerName + '" is not found');
+    }
+    global class ButtonSetting {
+        @AuraEnabled global String name;
+        @AuraEnabled global ButtonMatchingRule matchingRule;
+        public ButtonSetting(String name, ButtonMatchingRule matchingRule){
+            this.name = name;
+            this.matchingRule = matchingRule;
+        }
+
+    }
+    global enum MatchingAction {EXISTS, NOTEXISTS, VALUEEQUALS}
+    global class ButtonMatchingRule {
+        @AuraEnabled global MatchingAction matchingAction;
+        //{fieldName => FieldValue} when button in disabled; used only when matchingAction == VALUEEQUALS
+        @AuraEnabled global Map<String, String> disabledValues;
+        public ButtonMatchingRule(MatchingAction matchingAction, Map<String, String> disabledValues){
+            this.matchingAction = matchingAction;
+            this.disabledValues = disabledValues;
+        }
+        public ButtonMatchingRule(MatchingAction matchingAction){
+            this.matchingAction = matchingAction;
+        }
     }
 }

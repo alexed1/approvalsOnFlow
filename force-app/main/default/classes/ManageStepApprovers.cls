@@ -23,4 +23,12 @@ global with sharing class ManageStepApprovers {
     public static String getExistingShares(String approvalStepDefinitionId) {
         return JSON.serialize([SELECT Id, Name, Type__c FROM AP_Approver__c WHERE Approval_Process_Step_Definition__c =: approvalStepDefinitionId]);
     }
+    public static List<ListBuilderController.ButtonSetting> getSupportedButtons() {
+        List<ListBuilderController.ButtonSetting> supportedButtonSettings = new List<ListBuilderController.ButtonSetting>();
+        supportedButtonSettings.add(new ListBuilderController.ButtonSetting('Add',new ListBuilderController.ButtonMatchingRule(ListBuilderController.MatchingAction.EXISTS)));
+        supportedButtonSettings.add(new ListBuilderController.ButtonSetting('Remove',new ListBuilderController.ButtonMatchingRule(ListBuilderController.MatchingAction.NOTEXISTS)));
+        return supportedButtonSettings;
+    }
+
+
 }
