@@ -7,7 +7,7 @@ global with sharing class ListBuilderController {
     }
 
     @AuraEnabled(cacheable=true)
-    global static String getExistingShares(String managerName, String approvalStepDefinitionId) {
+    global static List<ShareInfo> getExistingShares(String managerName, String approvalStepDefinitionId) {
 
         return getSharingManager(managerName).getExisting(approvalStepDefinitionId);
     }
@@ -35,7 +35,18 @@ global with sharing class ListBuilderController {
             this.name = name;
             this.matchingRule = matchingRule;
         }
-
+    }
+    global class ShareInfo {
+        @AuraEnabled global Id shareId;
+        @AuraEnabled global Id recordId;
+        @AuraEnabled global String name;
+        @AuraEnabled global String label;
+        public ShareInfo(Id shareId,Id recordId,String name,String label) {
+            this.shareId = shareId;
+            this.recordId = recordId;
+            this.name = name;
+            this.label = label;
+        }
     }
 
     global enum MatchingAction {

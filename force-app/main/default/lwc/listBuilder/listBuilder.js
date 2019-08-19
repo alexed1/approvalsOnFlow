@@ -54,7 +54,7 @@ export default class ListBuilder extends LightningElement {
         if (result.error) {
             logError(this.log, this.source, 'wiredSharings', result.error);
         } else if (result.data) {
-            this.existingShares = JSON.parse(result.data);
+            this.existingShares = result.data;
         }
     }
 
@@ -69,27 +69,27 @@ export default class ListBuilder extends LightningElement {
     }
 
     // take the recordId and get the objectname
-    @wire(getRecordUi, {
-        recordIds: '$recordId',
-        layoutTypes: ['Full'],
-        modes: ['View']
-    })
-    wiredRecord({error, data}) {
-        if (error) {
-            logError(this.log, this.source, 'getRecordUI', error);
-        } else {
-            logger(this.log, this.source, 'getRecordUI', data);
-            if (!data) return;
-
-            const apiName = data.records[this.recordId].apiName;
-            const objLabel = data.objectInfos[apiName].label;
-            const nameField = data.objectInfos[apiName].nameFields[0];
-            const namedFieldValue = data.records[this.recordId].fields[nameField];
-
-            this.cardTitle = `${objLabel} : ${namedFieldValue.displayValue ||
-            namedFieldValue.value}`;
-        }
-    }
+    // @wire(getRecordUi, {
+    //     recordIds: '$recordId',
+    //     layoutTypes: ['Full'],
+    //     modes: ['View']
+    // })
+    // wiredRecord({error, data}) {
+    //     if (error) {
+    //         logError(this.log, this.source, 'getRecordUI', error);
+    //     } else {
+    //         logger(this.log, this.source, 'getRecordUI', data);
+    //         if (!data) return;
+    //
+    //         const apiName = data.records[this.recordId].apiName;
+    //         const objLabel = data.objectInfos[apiName].label;
+    //         const nameField = data.objectInfos[apiName].nameFields[0];
+    //         const namedFieldValue = data.records[this.recordId].fields[nameField];
+    //
+    //         this.cardTitle = `${objLabel} : ${namedFieldValue.displayValue ||
+    //         namedFieldValue.value}`;
+    //     }
+    // }
 
 
     // refreshExisting() {

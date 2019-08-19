@@ -1,5 +1,5 @@
 import {LightningElement, api, track, wire} from 'lwc';
-import getSubmittersPerType from '@salesforce/apex/InitialSubmittersSelectController.getSubmittersPerType';
+import searchSubmittersByType from '@salesforce/apex/InitialSubmittersSelectController.searchSubmittersByType';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 
 export default class initialSubmittersSelect extends LightningElement {
@@ -21,7 +21,7 @@ export default class initialSubmittersSelect extends LightningElement {
     @track selectedSubmitters = [];
 
     connectedCallback() {
-        getSubmittersPerType({
+        searchSubmittersByType({
             submitterTypes: this.typeOptions.map(option => option.value)
         }).then(results => {
             this.submittersByType = results;

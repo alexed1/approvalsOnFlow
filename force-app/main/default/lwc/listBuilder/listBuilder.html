@@ -2,21 +2,25 @@
     Incoming recordId is {recordId}
     <lightning-card title={cardTitle}>
         
-        <div slot="actions">
-            <lightning-button-group>
-                <lightning-button onclick={refreshExisting} label="Refresh"></lightning-button>
-                
-            </lightning-button-group>
-        </div>
+<!--        <div slot="actions">-->
+<!--            <lightning-button-group>-->
+<!--                <lightning-button onclick={refreshExisting} label="Refresh"></lightning-button>-->
+<!--                -->
+<!--            </lightning-button-group>-->
+<!--        </div>-->
 
         <div class="slds-m-horizontal_medium">
             <lightning-tabset variant="scoped">
                 <lightning-tab label={editTabName}>
-<!--                    <c-existing-shares-->
-<!--                            record-id={recordId}-->
-<!--                            supported-edit-capabilities={supportedEditCapabilities}-->
-<!--                    ></c-existing-shares>-->
-<!--                   -->
+                    <c-view-edit-members
+                            record-id={recordId}
+                            supported-edit-capabilities= {supportedEditCapabilities}
+                            existing-shares={existingShares}
+                            manager-name={managerName}
+                            supported-buttons= {supportedButtons}
+                            onsearchrefresh={refresh}
+                    ></c-view-edit-members >
+
                 </lightning-tab>
                 <lightning-tab label={addTabName}>
                    <c-add-new-members

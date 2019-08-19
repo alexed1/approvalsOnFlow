@@ -1,5 +1,5 @@
 public interface SharingManager {
     String execute(String buttonName, String paramsString);
-    String getExisting(String approvalStepDefinitionId);
+    List<ListBuilderController.ShareInfo> getExisting(String approvalStepDefinitionId);
     String getSupportedButtons();
 }

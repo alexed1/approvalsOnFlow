@@ -1,19 +1,14 @@
-// import upsertPerm from '@salesforce/apex/SharingActions.upsertPerm';
-// import deletePerm from '@salesforce/apex/SharingActions.deletePerm';
 import _handleButtonAction from '@salesforce/apex/ListBuilderController.handleButtonAction';
-//TODO: import method to determine button availability to be used in: disabled: {fieldName: 'noneDisabled'}
 import {logger} from 'c/lwcLogger';
 
 export {
     buttonStyling,
     buttonStylingSingle,
-    // shareDelete,
-    // shareUpdate,
     handleButtonAction,
     generateCapabilityColumns
 };
 
-const generateCapabilityColumns = (labels, existingShares) => {
+const generateCapabilityColumns = (labels) => {
     let labelsArray = labels.replace(' ', '').split(',');
     return labelsArray.map(curLabel => {
         return getColumnDescriptor(curLabel);
@@ -23,13 +18,14 @@ const generateCapabilityColumns = (labels, existingShares) => {
 const getColumnDescriptor = (curButtonLabel) => {
     return {
         type: 'button',
+        label: curButtonLabel,
         typeAttributes: {
             label: curButtonLabel,
             name: curButtonLabel, //this is used to determine an apex method to call
             variant: 'neutral',
             disabled: {fieldName: curButtonLabel.replace(' ', '') + 'buttonDisabled'}
         },
-        initialWidth: 85
+        initialWidth: 100
     }
 };
 
@@ -37,7 +33,7 @@ const buttonStyling = (supportedButtonSettings, selectedButtonNames, id, existin
 
     let existing = existingShares.find(
         share => {
-            return share.Name === id;
+            return share.recordId === id;
         }
     );
 

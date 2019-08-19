@@ -9,38 +9,30 @@ import RelatedUsers from '@salesforce/label/c.RelatedUsers';
 import PublicGroups from '@salesforce/label/c.PublicGroups';
 import Roles from '@salesforce/label/c.Roles';
 import Users from '@salesforce/label/c.Users';
-// import getSharings from '@salesforce/apex/SharingActions.getSharings';
-// import doSOSL from '@salesforce/apex/AdminTools.doSOSL';
-import getSubmittersPerType from '@salesforce/apex/InitialSubmittersSelectController.getSubmittersPerType';
 
-import getSharings from '@salesforce/apex/SharingActions.getSharings';
+import searchSubmittersByType from '@salesforce/apex/InitialSubmittersSelectController.searchSubmittersByType';
+
 import {logger, logError} from 'c/lwcLogger';
-
-import {refreshApex} from '@salesforce/apex';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 
 import {
     buttonStyling,
-    // sharingButtonColumns,
-    shareUpdate,
-    shareDelete,
     handleButtonAction,
     generateCapabilityColumns
 } from 'c/buttonUtils';
 
 const typeMapping = {
-    group: PublicGroups,
-    role: Roles,
-    user: Users,
-    queue: Queues
+    Group: PublicGroups,
+    Role: Roles,
+    User: Users,
+    Queue: Queues
 };
+
 export default class addNewMembers extends LightningElement {
     @api log = false;
     @api recordId;
-    @api foo;
 
-    //expect a set of strings representing button labels
-    //'user, queue'
+    //'User, Queue'
     @api availableObjectTypes;
     //Apex class name 'ManageStepApprovers'
     @api managerName;
@@ -50,10 +42,6 @@ export default class addNewMembers extends LightningElement {
     @api existingShares;
     @api supportedButtons;
 
-    // @track readDisabled = false;
-    // @track noneDisabled = false;
-    // @track editDisabled = false;
-
     @track label = {
         Search,
         TooManyResultsMessage,
@@ -62,7 +50,9 @@ export default class addNewMembers extends LightningElement {
     };
     @track searchString = '';
     source = 'addNewMembers';
+    @track selectedType = 'User';
 
+    @track columns;
     get objectTypes() {
         return this.availableObjectTypes.replace(' ', '').split(',').map(curTypeName => {
             return this.getTypeDescriptor(curTypeName);
@@ -80,15 +70,7 @@ export default class addNewMembers extends LightningElement {
     // call this when you know the sharing table is out of sync
     refresh() {
         this.dispatchEvent(new CustomEvent('searchrefresh'));
-        // logger(this.log, this.source, 'refreshing');
-        // refreshApex(this._refreshable);
     }
-
-    _refreshable;
-
-    @track selectedType = 'user';
-
-    @track columns;
 
     connectedCallback() {
         this.columns = [{
@@ -102,52 +84,27 @@ export default class addNewMembers extends LightningElement {
 
     viewEditMembers = [];
 
-    // @wire(getSharings, {recordId: '$recordId'})
-    // wiredSharings(result) {
-    //     this._refreshable = result;
-    //     if (result.error) {
-    //         logError(this.log, this.source, 'getSharings error', result.error);
-    //     } else if (result.data) {
-    //         logger(this.log, this.source, 'getSharings returned', result.data);
-    //         this.viewEditMembers = JSON.parse(result.data);
-    //         this.updateSharingLevelButtons();
-    //     }
-    // }
-
     typeChange(event) {
         this.selectedType = event.detail.value;
         logger(this.log, this.source, `type is now ${this.selectedType}`);
         // clear the results
         this.searchResults = [];
-        // TODO: how clear the search box
+        // TODO: clear the search box
     }
 
     async actuallySearch() {
-        //this.log = true;
+
         logger(this.log, this.source, 'actually searching!');
         this.searchResults = [];
         this.searchDisabled = true;
 
         const results =
-            await getSubmittersPerType({
+            await searchSubmittersByType({
                 searchString: this.searchString,
                 submitterTypes: [this.selectedType]
             });
 
         logger(this.log, this.source, 'search results', results);
-        // const finalResults = results[this.selectedType];
-
-        // results.forEach(result => {
-        //     // make some types a bit nicer
-        //     if (this.selectedType === 'user') {
-        //         result.Name = `${result.Name} (${this.translateTypes(
-        //             result.UserType
-        //         )})`;
-        //     } else if (this.selectedType === 'group') {
-        //         result.Name = `${result.Name} (${this.translateTypes(result.Type)})`;
-        //     }
-        //     finalResults.push(result);
-        // });
 
         this.searchResults = results[this.selectedType];
         this.updateSharingLevelButtons();
@@ -187,16 +144,12 @@ export default class addNewMembers extends LightningElement {
     }
 
     async handleRowAction(event) {
-        console.log('event.detail:::'+JSON.stringify(event.detail));
-        //logger(this.log, this.source, 'row action called from datatable', event.detail);
         let actionParams = JSON.stringify({
             'userOrGroupID': event.detail.row.value,
             'approvalStepDefinitionId': this.recordId,
             'type': this.selectedType
         });
-
                 try {
-
                     await handleButtonAction(
                         event.detail.action.name,
                         this.managerName,
@@ -206,59 +159,6 @@ export default class addNewMembers extends LightningElement {
                 } catch (e) {
                     this.toastTheError(e, 'shareUpdate-read');
                 }
-
-        // switch (event.detail.action.name) {
-        //     case 'read':
-        //         try {
-        //             await shareUpdate(event.detail.row.Id, this.recordId, 'Read');
-        //             this.refresh();
-        //         } catch (e) {
-        //             this.toastTheError(e, 'shareUpdate-read');
-        //         }
-        //         break;
-        //     case 'read_write':
-        //         try {
-        //             //logger(this.log, this.source, 'attempting Share update', event.detail);
-        //             await shareUpdate(event.detail.row.Id, this.recordId, 'Edit');
-        //             this.refresh();
-        //         } catch (e) {
-        //             this.toastTheError(e, 'shareUpdate-edit');
-        //         }
-        //         break;
-        //     case 'none':
-        //         try {
-        //             await shareDelete(event.detail.row.Id, this.recordId);
-        //             this.refresh();
-        //         } catch (e) {
-        //             this.toastTheError(e, 'shareUpdate-edit');
-        //         }
-        //         break;
-        //     case 'add_step_approver':
-        //         try {
-        //             await addStepApprover(event.detail.row.Id, this.recordId, this.selectedType);
-        //             this.refresh();
-        //         } catch (e) {
-        //             this.toastTheError(e, 'shareUpdate-read');
-        //         }
-        //         break;
-        //     default:
-        //         this.logError(this.log, this.source, 'handleRowAction switch statement no match found');
-        // }
-    }
-
-    translateTypes(userType) {
-        if (userType === 'PowerCustomerSuccess') {
-            return 'Customer + Sharing';
-        } else if (userType === 'PowerPartner') {
-            return 'Partner';
-        } else if (userType === 'CustomerSuccess') {
-            return 'Customer';
-        } else if (userType === 'CsnOnly') {
-            return 'Chatter';
-        } else if (userType === 'CSPLitePortal') {
-            return 'High Volume Customer';
-        }
-        return userType;
 
     }
 

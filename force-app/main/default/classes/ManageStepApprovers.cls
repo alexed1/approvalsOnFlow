@@ -18,9 +18,6 @@ global with sharing class ManageStepApprovers implements SharingManager {
 
         throw new AuraHandledException('Button "' + buttonName + '" is not supported');
     }
-    public ManageStepApprovers initialize(String managerName){
-        return new ManageStepApprovers();
-    }
 
     private static String add(Id userOrGroupID, Id approvalStepDefinitionId, String type) {
         AP_Approver__c newApprover = new AP_Approver__c(
@@ -44,8 +41,30 @@ global with sharing class ManageStepApprovers implements SharingManager {
         }
     }
 
-    public static String getExisting(String approvalStepDefinitionId) {
-        return JSON.serialize([SELECT Id, Name, Type__c FROM AP_Approver__c WHERE Approval_Process_Step_Definition__c = :approvalStepDefinitionId]);
+    public static List<ListBuilderController.ShareInfo> getExisting(String approvalStepDefinitionId) {
+        return getAllApprovers(approvalStepDefinitionId);
+    }
+
+    private static List<ListBuilderController.ShareInfo> getAllApprovers(String approvalStepDefinitionId) {
+        List<ListBuilderController.ShareInfo> results = new List<ListBuilderController.ShareInfo>();
+        List<AP_Approver__c> approvers = [SELECT Id, Name, Type__c FROM AP_Approver__c WHERE Approval_Process_Step_Definition__c = :approvalStepDefinitionId];
+        Map<String, Set<String>> objectTypeToIdMap = getObjectTypeToIdMap(approvers);
+        Map<String, String> approverIdToName = InitialSubmittersSelectController.getSubmittersByTypeAndId(objectTypeToIdMap);
+        for (AP_Approver__c app : approvers) {
+            results.add(new ListBuilderController.ShareInfo(app.Id, app.Name, approverIdToName.get(app.Name), approverIdToName.get(app.Name) + ' (' + app.Type__c + ')'));
+        }
+        return results;
+    }
+
+    private static Map<String, Set<String>> getObjectTypeToIdMap(List<AP_Approver__c> approvers) {
+        Map<String, Set<String>> resultMap = new Map<String, Set<String>>();
+        for (AP_Approver__c app : approvers) {
+            if (!resultMap.containsKey(app.Type__c)) {
+                resultMap.put(app.Type__c, new Set<String>());
+            }
+            resultMap.get(app.Type__c).add(app.Name);
+        }
+        return resultMap;
     }
 
     public ManageStepApprovers() {
