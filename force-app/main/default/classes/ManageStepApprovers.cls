@@ -8,21 +8,21 @@ global with sharing class ManageStepApprovers implements SharingManager {
         if (buttonName == 'Add') {
             return add(
                     params.get('userOrGroupID'),
-                    params.get('approvalStepDefinitionId'),
+                    params.get('recordId'),
                     params.get('type'));
         } else if (buttonName == 'Remove') {
             return remove(
                     params.get('userOrGroupID'),
-                    params.get('approvalStepDefinitionId'));
+                    params.get('recordId'));
         }
 
         throw new AuraHandledException('Button "' + buttonName + '" is not supported');
     }
 
-    private static String add(Id userOrGroupID, Id approvalStepDefinitionId, String type) {
+    private static String add(Id userOrGroupID, Id recordId, String type) {
         AP_Approver__c newApprover = new AP_Approver__c(
                 Name = userOrGroupID,
-                Approval_Process_Step_Definition__c = approvalStepDefinitionId,
+                Approval_Process_Step_Definition__c = recordId,
                 Type__c = type);
         try {
             insert newApprover;
@@ -32,26 +32,26 @@ global with sharing class ManageStepApprovers implements SharingManager {
         }
     }
 
-    private static String remove(Id userOrGroupID, Id approvalStepDefinitionId) {
+    private static String remove(Id userOrGroupID, Id recordId) {
         try {
-            delete [SELECT Id FROM AP_Approver__c WHERE Name = :userOrGroupID AND Approval_Process_Step_Definition__c = :approvalStepDefinitionId];
+            delete [SELECT Id FROM AP_Approver__c WHERE Name = :userOrGroupID AND Approval_Process_Step_Definition__c = :recordId];
             return 'SUCCESS';
         } catch (Exception ex) {
             throw new AuraHandledException(ex.getMessage());
         }
     }
 
-    public static List<ListBuilderController.ShareInfo> getExisting(String approvalStepDefinitionId) {
-        return getAllApprovers(approvalStepDefinitionId);
+    public static List<ListBuilderController.ShareInfo> getExisting(String recordId) {
+        return getAllApprovers(recordId);
     }
 
-    private static List<ListBuilderController.ShareInfo> getAllApprovers(String approvalStepDefinitionId) {
+    private static List<ListBuilderController.ShareInfo> getAllApprovers(String recordId) {
         List<ListBuilderController.ShareInfo> results = new List<ListBuilderController.ShareInfo>();
-        List<AP_Approver__c> approvers = [SELECT Id, Name, Type__c FROM AP_Approver__c WHERE Approval_Process_Step_Definition__c = :approvalStepDefinitionId];
+        List<AP_Approver__c> approvers = [SELECT Id, Name, Type__c FROM AP_Approver__c WHERE Approval_Process_Step_Definition__c = :recordId];
         Map<String, Set<String>> objectTypeToIdMap = getObjectTypeToIdMap(approvers);
         Map<String, String> approverIdToName = InitialSubmittersSelectController.getSubmittersByTypeAndId(objectTypeToIdMap);
         for (AP_Approver__c app : approvers) {
-            results.add(new ListBuilderController.ShareInfo(app.Id, app.Name, approverIdToName.get(app.Name), approverIdToName.get(app.Name) + ' (' + app.Type__c + ')'));
+            results.add(new ListBuilderController.ShareInfo(app.Id, app.Name, approverIdToName.get(app.Name), approverIdToName.get(app.Name) + ' (' + app.Type__c + ')', app));
         }
         return results;
     }

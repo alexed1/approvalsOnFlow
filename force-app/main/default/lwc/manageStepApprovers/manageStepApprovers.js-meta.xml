@@ -20,7 +20,7 @@
                 <object>ApprovalProcessDefinition__c</object>
                 <object>ApprovalProcessStepDefinition__c</object>
             </objects>
-           
+
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

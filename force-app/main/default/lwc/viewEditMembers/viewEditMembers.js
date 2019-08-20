@@ -45,11 +45,11 @@ export default class ViewEditMembers extends NavigationMixin(LightningElement) {
     }
 
     async handleRowAction(event) {
-        console.log('event.detail:::' + JSON.stringify(event.detail));
+
         //logger(this.log, this.source, 'row action called from datatable', event.detail);
         let actionParams = JSON.stringify({
             'userOrGroupID': event.detail.row.recordId,
-            'approvalStepDefinitionId': this.recordId
+            'recordId': this.recordId
         });
 
         try {

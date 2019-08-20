@@ -12,7 +12,7 @@ global with sharing class InitialSubmittersSelectController {
             'User' => 'WHERE IsActive = true AND Name LIKE (searchString)',
             'Role_subordinates' => 'WHERE Name LIKE (searchString)',
             'Role' => 'WHERE Name LIKE (searchString)',
-            'Group' => 'WHERE Type = \'Public\' AND Name LIKE (searchString)',
+            'Group' => 'WHERE (Type = \'Public\' OR Type = \'Regular\') AND Name LIKE (searchString)',
             'Queue' => 'WHERE Type = \'Queue\' AND Name LIKE (searchString)'
     };
 
@@ -22,6 +22,7 @@ global with sharing class InitialSubmittersSelectController {
         Map<String, List<Submitter>> resultMap = new Map<String, List<Submitter>>();
 
         for (String curType : TYPE_TO_SOBJECT.keySet()) {
+
             if (!submitterTypes.contains(curType)) {
                 continue;
             }

@@ -7,9 +7,9 @@ global with sharing class ListBuilderController {
     }
 
     @AuraEnabled(cacheable=true)
-    global static List<ShareInfo> getExistingShares(String managerName, String approvalStepDefinitionId) {
+    global static List<ShareInfo> getExistingShares(String managerName, String recordId) {
 
-        return getSharingManager(managerName).getExisting(approvalStepDefinitionId);
+        return getSharingManager(managerName).getExisting(recordId);
     }
 
     @AuraEnabled(cacheable=true)
@@ -20,10 +20,10 @@ global with sharing class ListBuilderController {
 
     private static SharingManager getSharingManager(String managerName) {
 
-        try{
-            SharingManager sm =  (SharingManager) Type.forName(managerName).newInstance();
+        try {
+            SharingManager sm = (SharingManager) Type.forName(managerName).newInstance();
             return sm;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new AuraHandledException('Manager "' + managerName + '" is not found');
         }
     }
@@ -41,11 +41,13 @@ global with sharing class ListBuilderController {
         @AuraEnabled global Id recordId;
         @AuraEnabled global String name;
         @AuraEnabled global String label;
-        public ShareInfo(Id shareId,Id recordId,String name,String label) {
+        @AuraEnabled global SObject shareRecord;
+        public ShareInfo(Id shareId, Id recordId, String name, String label, SObject shareRecord) {
             this.shareId = shareId;
             this.recordId = recordId;
             this.name = name;
             this.label = label;
+            this.shareRecord = shareRecord;
         }
     }
 

@@ -54,7 +54,7 @@ export default class addNewMembers extends LightningElement {
 
     @track columns;
     get objectTypes() {
-        return this.availableObjectTypes.replace(' ', '').split(',').map(curTypeName => {
+        return this.availableObjectTypes.replace(/ /g, '').split(',').map(curTypeName => {
             return this.getTypeDescriptor(curTypeName);
         });
     }
@@ -146,7 +146,7 @@ export default class addNewMembers extends LightningElement {
     async handleRowAction(event) {
         let actionParams = JSON.stringify({
             'userOrGroupID': event.detail.row.value,
-            'approvalStepDefinitionId': this.recordId,
+            'recordId': this.recordId,
             'type': this.selectedType
         });
                 try {

@@ -9,7 +9,7 @@ export {
 };
 
 const generateCapabilityColumns = (labels) => {
-    let labelsArray = labels.replace(' ', '').split(',');
+    let labelsArray = labels.replace(/ /g, '').split(',');
     return labelsArray.map(curLabel => {
         return getColumnDescriptor(curLabel);
     });
@@ -23,9 +23,9 @@ const getColumnDescriptor = (curButtonLabel) => {
             label: curButtonLabel,
             name: curButtonLabel, //this is used to determine an apex method to call
             variant: 'neutral',
-            disabled: {fieldName: curButtonLabel.replace(' ', '') + 'buttonDisabled'}
+            disabled: {fieldName: curButtonLabel.replace(/ /g, '') + 'buttonDisabled'}
         },
-        initialWidth: 100
+        initialWidth: 120 //TODO: Calculate based on content
     }
 };
 
@@ -43,7 +43,7 @@ const buttonStyling = (supportedButtonSettings, selectedButtonNames, id, existin
 const buttonStylingSingle = (supportedButtonSettings, selectedButtonNames, existing) => {
 
     let resultButtonSettings = {};
-    selectedButtonNames.replace(' ', '').split(',').forEach(buttonName => {
+    selectedButtonNames.replace(/ /g, '').split(',').forEach(buttonName => {
         let allbs = supportedButtonSettings.filter(curSetting => curSetting.name == buttonName);
         let isDisabled = false;
         if (allbs && allbs.length > 0) {
@@ -53,13 +53,13 @@ const buttonStylingSingle = (supportedButtonSettings, selectedButtonNames, exist
                     (existing === undefined && allbs[i].matchingRule.matchingAction == 'NOTEXISTS')) {
                     isDisabled = true;
                     break;
-                } else if (allbs[i].matchingRule.matchingAction == 'VALUEEQUALS') {
+                } else if (existing !== undefined && allbs[i].matchingRule.matchingAction == 'VALUEEQUALS') {
                     let disabledValues = allbs[i].matchingRule.disabledValues;
                     if (disabledValues) {
                         for (var fieldName in disabledValues) {
                             if (Object.prototype.hasOwnProperty.call(disabledValues, fieldName)) {
                                 disabledValues[fieldName].forEach(fieldValue => {
-                                    if (existing[fieldName] == fieldValue) {
+                                    if (existing.shareRecord[fieldName] == fieldValue) {
                                         isDisabled = true;
                                     }
                                 });
@@ -73,7 +73,7 @@ const buttonStylingSingle = (supportedButtonSettings, selectedButtonNames, exist
             }
         }
 
-        resultButtonSettings[buttonName.replace(' ', '') + 'buttonDisabled'] = isDisabled;
+        resultButtonSettings[buttonName.replace(/ /g, '') + 'buttonDisabled'] = isDisabled;
     });
     return resultButtonSettings;
 };

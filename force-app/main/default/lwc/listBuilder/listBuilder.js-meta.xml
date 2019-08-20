@@ -4,7 +4,23 @@
     <isExposed>true</isExposed>
     <masterLabel>ListBuilder</masterLabel>
     <description>This is a demo component.</description>
-
-   
+    <targets>
+        <!-- <target>lightning__FlowScreen</target>  -->
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Account</object>
+                <object>ApprovalProcessDefinition__c</object>
+            </objects>
+            <property name="editTabName" type="String"></property>
+            <property name="addTabName" type="String"></property>
+            <property name="supportedAddCapabilities" type="String"></property>
+            <property name="supportedEditCapabilities" type="String"></property>
+            <property name="managerName" type="String"></property>
+            <property name="availableObjectTypes" type="String"></property>
+        </targetConfig>
+    </targetConfigs>
 
 </LightningComponentBundle>

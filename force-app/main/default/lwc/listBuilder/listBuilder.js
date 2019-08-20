@@ -48,7 +48,7 @@ export default class ListBuilder extends LightningElement {
         });
     }
 
-    @wire(getExistingShares, {managerName: '$managerName', approvalStepDefinitionId: '$recordId'})
+    @wire(getExistingShares, {managerName: '$managerName', recordId: '$recordId'})
     _getExistingShares(result) {
         this._refreshable = result;
         if (result.error) {
