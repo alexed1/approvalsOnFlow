@@ -1,212 +1,174 @@
-import { LightningElement, api, track, wire } from 'lwc';
+import {LightningElement, api, track, wire} from 'lwc';
 
 import Search from '@salesforce/label/c.Search';
-import Queues from '@salesforce/label/c.Queues';
-import RelatedUsers from '@salesforce/label/c.RelatedUsers';
-import PublicGroups from '@salesforce/label/c.PublicGroups';
-
-import Users from '@salesforce/label/c.Users';
 import For from '@salesforce/label/c.For';
 import TooManyResultsMessage from '@salesforce/label/c.TooManyResultsMessage';
 import Type3 from '@salesforce/label/c.TooManyResultsMessage';
+import Queues from '@salesforce/label/c.Queues';
+import RelatedUsers from '@salesforce/label/c.RelatedUsers';
+import PublicGroups from '@salesforce/label/c.PublicGroups';
+import Roles from '@salesforce/label/c.Roles';
+import Users from '@salesforce/label/c.Users';
 
-import getSharings from '@salesforce/apex/SharingActions.getSharings';
-import doSOSL from '@salesforce/apex/AdminTools.doSOSL';
+import searchSubmittersByType from '@salesforce/apex/InitialSubmittersSelectController.searchSubmittersByType';
 
-import { logger, logError }  from 'c/lwcLogger';
-
-import { refreshApex } from '@salesforce/apex';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import {logger, logError} from 'c/lwcLogger';
+import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 
 import {
-  buttonStyling,
-  sharingButtonColumns,
-  shareUpdate,
-  shareDelete
-} from 'c/sharingButtonSupport';
+    buttonStyling,
+    handleButtonAction,
+    generateCapabilityColumns
+} from 'c/buttonUtils';
+
+const typeMapping = {
+    Group: PublicGroups,
+    Role: Roles,
+    User: Users,
+    Queue: Queues
+};
 
 export default class addNewMembers extends LightningElement {
-  @api log = false;
-  @api recordId;
-  @api foo;
-  
-  @track label = {
-    Search,
-    TooManyResultsMessage,
-    Type3,
-    For
-  };
-  @track searchString = '';
-  source = 'addNewMembers';
+    @api log = false;
+    @api recordId;
 
-  get tooManyResults() {
-    return this.searchResults.length > 199;
-  }
+    //'User, Queue'
+    @api availableObjectTypes;
+    //Apex class name 'ManageStepApprovers'
+    @api managerName;
+    //Button labels 'Add, Remove', will determine functions called in apex class
+    @api supportedAddCapabilities;
+    //Existing shares for current record
+    @api existingShares;
+    @api supportedButtons;
 
-  // call this when you know the sharing table is out of sync
-  @api refresh() {
-    logger(this.log, this.source, 'refreshing');
-    refreshApex(this._refreshable);
-  }
+    @track label = {
+        Search,
+        TooManyResultsMessage,
+        Type3,
+        For
+    };
+    @track searchString = '';
+    source = 'addNewMembers';
+    @track selectedType = 'User';
 
-  _refreshable;
-
-  types = [
-    { value: 'group', label: PublicGroups },
-    { value: 'userrole', label: Roles },
-    { value: 'user', label: Users }
-  ];
-
-  selectedType = 'user';
-
-  columns = [{ label: 'Name', fieldName: 'Name' }].concat(sharingButtonColumns);
-
-  @track searchResults = [];
-  @track searchDisabled = false;
-
-  existingShares = [];
-
-  @wire(getSharings, { recordId: '$recordId' })
-  wiredSharings(result) {
-    this._refreshable = result;
-    if (result.error) {
-      logError(this.log, this.source, 'getSharings error', result.error);
-    } else if (result.data) {
-      logger(this.log, this.source, 'getSharings returned', result.data);
-      this.existingShares = JSON.parse(result.data);
-      this.updateSharingLevelButtons();
-    }
-  }
-
-  typeChange(event) {
-    this.selectedType = event.detail.value;
-    logger(this.log, this.source, `type is now ${this.selectedType}`);
-    // clear the results
-    this.searchResults = [];
-    // TODO: how clear the search box
-  }
-
-  async actuallySearch() {
-    //this.log = true;
-    logger(this.log, this.source, 'actually searching!');
-    this.searchResults = [];
-    this.searchDisabled = true;
-
-    const results = JSON.parse(
-      await doSOSL({
-        searchString: this.searchString,
-        objectType: this.selectedType
-      })
-    );
-    logger(this.log, this.source, 'search results', results);
-    const finalResults = [];
-
-    results.forEach(result => {
-      // make some types a bit nicer
-      if (this.selectedType === 'user') {
-        result.Name = `${result.Name} (${this.translateTypes(
-          result.UserType
-        )})`;
-      } else if (this.selectedType === 'group') {
-        result.Name = `${result.Name} (${this.translateTypes(result.Type)})`;
-      }
-      finalResults.push(result);
-    });
-
-    this.searchResults = finalResults;
-    this.updateSharingLevelButtons();
-    this.searchDisabled = false;
-  }
-
-  searchEventHandler(event) {
-    const searchString = event.detail.value
-      .trim()
-      .replace(/\*/g)
-      .toLowerCase();
-
-    if (searchString.length <= 1) {
-      return;
+    @track columns;
+    get objectTypes() {
+        return this.availableObjectTypes.replace(/ /g, '').split(',').map(curTypeName => {
+            return this.getTypeDescriptor(curTypeName);
+        });
     }
 
-    this.searchString = searchString;
-  }
-
-  listenForEnter(event) {
-    if (event.code === 'Enter') {
-      this.actuallySearch();
+    getTypeDescriptor(typeName) {
+        return {value: typeName, label: typeMapping[typeName]};
     }
-  }
 
-  updateSharingLevelButtons() {
-    const newArray = [];
+    get tooManyResults() {
+        return this.searchResults.length > 199;
+    }
 
-    this.searchResults.forEach(result => {
-      newArray.push({
-        ...result,
-        ...buttonStyling(result.Id, this.existingShares)
-      });
-    });
+    // call this when you know the sharing table is out of sync
+    refresh() {
+        this.dispatchEvent(new CustomEvent('searchrefresh'));
+    }
 
-    this.searchResults = newArray;
-  }
+    connectedCallback() {
+        this.columns = [{
+            label: 'Name',
+            fieldName: 'label'
+        }].concat(generateCapabilityColumns(this.supportedAddCapabilities));
+    }
 
-  async handleRowAction(event) {
-    //logger(this.log, this.source, 'row action called from datatable', event.detail);
+    @track searchResults = [];
+    @track searchDisabled = false;
 
-    switch (event.detail.action.name) {
-      case 'read':
-        try {
-          await shareUpdate(event.detail.row.Id, this.recordId, 'Read');
-          this.refresh();
-        } catch (e) {
-          this.toastTheError(e, 'shareUpdate-read');
+    viewEditMembers = [];
+
+    typeChange(event) {
+        this.selectedType = event.detail.value;
+        logger(this.log, this.source, `type is now ${this.selectedType}`);
+        // clear the results
+        this.searchResults = [];
+        // TODO: clear the search box
+    }
+
+    async actuallySearch() {
+
+        logger(this.log, this.source, 'actually searching!');
+        this.searchResults = [];
+        this.searchDisabled = true;
+
+        const results =
+            await searchSubmittersByType({
+                searchString: this.searchString,
+                submitterTypes: [this.selectedType]
+            });
+
+        logger(this.log, this.source, 'search results', results);
+
+        this.searchResults = results[this.selectedType];
+        this.updateSharingLevelButtons();
+        this.searchDisabled = false;
+    }
+
+    searchEventHandler(event) {
+        const searchString = event.detail.value
+            .trim()
+            .replace(/\*/g)
+            .toLowerCase();
+
+        if (searchString.length <= 1) {
+            return;
         }
-        break;
-      case 'read_write':
-        try {
-          //logger(this.log, this.source, 'attempting Share update', event.detail);
-          await shareUpdate(event.detail.row.Id, this.recordId, 'Edit');
-          this.refresh();
-        } catch (e) {
-          this.toastTheError(e, 'shareUpdate-edit');
-        }
-        break;
-      case 'none':
-        try {
-          await shareDelete(event.detail.row.Id, this.recordId);
-          this.refresh();
-        } catch (e) {
-          this.toastTheError(e, 'shareUpdate-edit');
-        }
-        break;
-      default: 
-        this.logError(this.log, this.source, 'handleRowAction switch statement no match found');
+
+        this.searchString = searchString;
     }
-  }
 
-  translateTypes(userType) {
-    if (userType === 'PowerCustomerSuccess') {
-      return 'Customer + Sharing';
-    } else if (userType === 'PowerPartner') {
-      return 'Partner';
-    } else if (userType === 'CustomerSuccess') {
-      return 'Customer';
-    } else if (userType === 'CsnOnly') {
-      return 'Chatter';
-    } else if (userType === 'CSPLitePortal') {
-      return 'High Volume Customer';
-    } 
-    return userType;
-    
-  }
+    listenForEnter(event) {
+        if (event.code === 'Enter') {
+            this.actuallySearch();
+        }
+    }
 
-  toastTheError(e, errorSource) {
-    logError(this.log, this.source, errorSource, e);
-    this.dispatchEvent(
-      new ShowToastEvent({
-        message: e.body.message,
-        variant: 'error'
-      })
-    );
-  }
+    @api updateSharingLevelButtons() {
+        const newArray = [];
+
+        this.searchResults.forEach(result => {
+            newArray.push({
+                ...result,
+                ...buttonStyling(this.supportedButtons, this.supportedAddCapabilities, result.value, this.existingShares)
+            });
+        });
+
+        this.searchResults = newArray;
+    }
+
+    async handleRowAction(event) {
+        let actionParams = JSON.stringify({
+            'userOrGroupID': event.detail.row.value,
+            'recordId': this.recordId,
+            'type': this.selectedType
+        });
+                try {
+                    await handleButtonAction(
+                        event.detail.action.name,
+                        this.managerName,
+                        actionParams
+                    );
+                    this.refresh();
+                } catch (e) {
+                    this.toastTheError(e, 'shareUpdate-read');
+                }
+
+    }
+
+    toastTheError(e, errorSource) {
+        logError(this.log, this.source, errorSource, e);
+        this.dispatchEvent(
+            new ShowToastEvent({
+                message: e.body.message,
+                variant: 'error'
+            })
+        );
+    }
 }

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>StepApproverSet__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
-    <label>StepApproverSet</label>
+    <label>StepApproverSet(Deprecated)</label>
     <referenceTo>AP_StepApproverSet__c</referenceTo>
     <relationshipLabel>AP_Approvers</relationshipLabel>
     <relationshipName>AP_Approvers</relationshipName>
-    <relationshipOrder>0</relationshipOrder>
-    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <required>false</required>
     <trackTrending>false</trackTrending>
-    <type>MasterDetail</type>
-    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    <type>Lookup</type>
 </CustomField>

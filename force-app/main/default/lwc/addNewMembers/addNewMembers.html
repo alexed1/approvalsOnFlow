@@ -1,7 +1,7 @@
 <template>
   <lightning-layout vertical-align="end">
     <lightning-layout-item padding="horizontal-small" flexibility="grow">
-      <lightning-combobox label={label.Search} name="mdtype" onchange={typeChange} options={types} value={selectedType}></lightning-combobox>
+      <lightning-combobox label={label.Search} name="mdtype" onchange={typeChange} options={objectTypes} value={selectedType}></lightning-combobox>
     </lightning-layout-item>
     <lightning-layout-item padding="horizontal-small" flexibility="grow">
       <lightning-input type="search" label={label.For} name="search" onchange={searchEventHandler} onkeyup={listenForEnter} disabled={searchDisabled} placeholder={Type3}></lightning-input>
@@ -17,5 +17,5 @@
       <h2> {label.TooManyResultsMessage} </h2>
     </div>
   </template>
-  <lightning-datatable data={searchResults} columns={columns} key-field="Id" hide-checkbox-column="true" onrowaction={handleRowAction} resize-column-disabled></lightning-datatable>
+  <lightning-datatable data={searchResults} columns={columns} key-field="value" hide-checkbox-column="true" onrowaction={handleRowAction} resize-column-disabled></lightning-datatable>
 </template>

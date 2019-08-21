@@ -6,9 +6,6 @@
             "c/addNewMembers": [
                 "addNewMembers/addNewMembers.js"
             ],
-            "c/existingShares": [
-                "existingShares/existingShares.js"
-            ],
             "c/listBuilder": [
                 "listBuilder/listBuilder.js"
             ],
@@ -18,8 +15,14 @@
             "c/manageStepApprovers": [
                 "manageStepApprovers/manageStepApprovers.js"
             ],
-            "c/sharingButtonSupport": [
-                "sharingButtonSupport/sharingButtonSupport.js"
+            "c/buttonUtils": [
+                "buttonUtils/buttonUtils.js"
+            ],
+            "c/initialSubmittersSelect": [
+                "initialSubmittersSelect/initialSubmittersSelect.js"
+            ],
+            "c/viewEditMembers": [
+                "viewEditMembers/viewEditMembers.js"
             ]
         }
     },
