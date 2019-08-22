@@ -1,17 +1,25 @@
 import {LightningElement, api, wire, track} from 'lwc';
-import {getRecordUi} from 'lightning/uiRecordApi';
 
 import BackButton from '@salesforce/label/c.Back';
 import ViewCurrentPermissions from '@salesforce/label/c.ViewCurrentPermissions';
 import AddNewPermission from '@salesforce/label/c.AddNewPermission';
-import {ShowToastEvent} from 'lightning/platformShowToastEvent';
+
+import SupportedButtonsEmptyMessage from '@salesforce/label/c.SupportedButtonsEmptyMessage';
+import SupportedAddCapabilitiesEmptyMessage from '@salesforce/label/c.SupportedAddCapabilitiesEmptyMessage';
+import ButtonIsNotSupportedMessage from '@salesforce/label/c.ButtonIsNotSupportedMessage';
+import SupportedEditCapabilitiesEmptyMessage from '@salesforce/label/c.SupportedEditCapabilitiesEmptyMessage';
+import ManagerEmptyMessage from '@salesforce/label/c.ManagerEmptyMessage';
 
 import {refreshApex} from '@salesforce/apex';
-import getExistingShares from '@salesforce/apex/ListBuilderController.getExistingShares';
+import getExistingMembers from '@salesforce/apex/ListBuilderController.getExistingMembers';
 import getSupportedButtons from '@salesforce/apex/ListBuilderController.getSupportedButtons';
 
 import {logger, logError} from 'c/lwcLogger';
-import {buttonStylingSingle} from "c/buttonUtils";
+
+import {
+    getNotSupportedButtons
+} from 'c/buttonUtils';
+
 
 export default class ListBuilder extends LightningElement {
     @api recordId;
@@ -27,7 +35,7 @@ export default class ListBuilder extends LightningElement {
     _refreshable;
     @api log = false;
     source = 'ListBuilder';
-
+    @track loadFinished = false;
     @track cardTitle = '';
     label = {
         BackButton,
@@ -35,21 +43,19 @@ export default class ListBuilder extends LightningElement {
         AddNewPermission
     };
 
-    connectedCallback() {
-        getSupportedButtons({managerName: this.managerName}).then(results => {
-            this.supportedButtons = JSON.parse(results);
-        }).catch(error => {
-            const showToast = new ShowToastEvent({
-                title: 'Error retrieving submitters',
-                message: result.error,
-                variant: 'error',
-            });
-            dispatchEvent(showToast);
-        });
+    @wire(getSupportedButtons, {managerName: '$managerName'})
+    _getSupportedButtons(result) {
+        this._refreshable = result;
+        if (result.error) {
+            logError(this.log, this.source, 'wiredSharings', result.error);
+        } else if (result.data) {
+            this.supportedButtons = JSON.parse(result.data);
+            this.loadFinished = true;
+        }
     }
 
-    @wire(getExistingShares, {managerName: '$managerName', recordId: '$recordId'})
-    _getExistingShares(result) {
+    @wire(getExistingMembers, {managerName: '$managerName', recordId: '$recordId'})
+    _getExistingMembers(result) {
         this._refreshable = result;
         if (result.error) {
             logError(this.log, this.source, 'wiredSharings', result.error);
@@ -59,7 +65,6 @@ export default class ListBuilder extends LightningElement {
     }
 
     @api refresh() {
-        // logger(this.log, this.source, 'refreshing');
         refreshApex(this._refreshable).then(result => {
             let cmpToRefresh = this.template.querySelector('c-add-new-members');
             if (cmpToRefresh) {
@@ -68,38 +73,35 @@ export default class ListBuilder extends LightningElement {
         });
     }
 
-    // take the recordId and get the objectname
-    // @wire(getRecordUi, {
-    //     recordIds: '$recordId',
-    //     layoutTypes: ['Full'],
-    //     modes: ['View']
-    // })
-    // wiredRecord({error, data}) {
-    //     if (error) {
-    //         logError(this.log, this.source, 'getRecordUI', error);
-    //     } else {
-    //         logger(this.log, this.source, 'getRecordUI', data);
-    //         if (!data) return;
-    //
-    //         const apiName = data.records[this.recordId].apiName;
-    //         const objLabel = data.objectInfos[apiName].label;
-    //         const nameField = data.objectInfos[apiName].nameFields[0];
-    //         const namedFieldValue = data.records[this.recordId].fields[nameField];
-    //
-    //         this.cardTitle = `${objLabel} : ${namedFieldValue.displayValue ||
-    //         namedFieldValue.value}`;
-    //     }
-    // }
+    get errorMessage() {
+        let resultErrors = [];
 
+        if (!this.supportedButtons) {
+            resultErrors.push(SupportedButtonsEmptyMessage);
+        }
+        if (!this.supportedAddCapabilities) {
+            resultErrors.push(SupportedAddCapabilitiesEmptyMessage);
+        }
+        if (!this.supportedEditCapabilities) {
+            resultErrors.push(SupportedEditCapabilitiesEmptyMessage);
+        }
+        if (!this.managerName) {
+            resultErrors.push(ManagerEmptyMessage);
+        }
 
-    // refreshExisting() {
-    //     const existing = this.template.querySelector('c-existing-shares');
-    //     if (existing) {
-    //         existing.refresh();
-    //     }
-    // }
+        if (this.supportedButtons && (this.supportedAddCapabilities || this.supportedEditCapabilities)) {
+            let notSupportedButtnos = getNotSupportedButtons(this.supportedButtons, this.supportedAddCapabilities + ', ' + this.supportedEditCapabilities);
 
-    // do some basic verification error handling (not shareable, perms, etc)
+            if (notSupportedButtnos.length > 0) {
+                resultErrors.push(ButtonIsNotSupportedMessage + notSupportedButtnos.join(', '));
+            }
+        }
 
-    // serve up the card title
+        if (resultErrors.length) {
+            return resultErrors.join('; ');
+        } else {
+            return false;
+        }
+
+    }
 }

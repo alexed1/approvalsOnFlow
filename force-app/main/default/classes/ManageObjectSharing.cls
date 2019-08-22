@@ -187,18 +187,6 @@ global with sharing class ManageObjectSharing implements SharingManager {
         return recordIdToRecord;
     }
 
-
-    private static Map<String, Set<String>> getObjectTypeToIdMap(List<AP_Approver__c> approvers) {
-        Map<String, Set<String>> resultMap = new Map<String, Set<String>>();
-        for (AP_Approver__c app : approvers) {
-            if (!resultMap.containsKey(app.Type__c)) {
-                resultMap.put(app.Type__c, new Set<String>());
-            }
-            resultMap.get(app.Type__c).add(app.Name);
-        }
-        return resultMap;
-    }
-
     public ManageObjectSharing() {
         supportedButtonSettings = new List<ListBuilderController.ButtonSetting>();
 
@@ -238,8 +226,8 @@ global with sharing class ManageObjectSharing implements SharingManager {
                 )));
     }
 
-    public static String getSupportedButtons() {
-        return JSON.serialize(supportedButtonSettings);
+    public static List<ListBuilderController.ButtonSetting> getSupportedButtons() {
+        return supportedButtonSettings;
     }
 
 

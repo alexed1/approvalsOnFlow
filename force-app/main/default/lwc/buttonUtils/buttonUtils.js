@@ -5,7 +5,9 @@ export {
     buttonStyling,
     buttonStylingSingle,
     handleButtonAction,
-    generateCapabilityColumns
+    generateCapabilityColumns,
+    getNotSupportedButtons,
+    splitValues
 };
 
 const generateCapabilityColumns = (labels) => {
@@ -48,7 +50,11 @@ const buttonStylingSingle = (supportedButtonSettings, selectedButtonNames, exist
         let isDisabled = false;
         if (allbs && allbs.length > 0) {
             for (let i = 0; i < allbs.length; i++) {
-                if (
+                if(allbs[i].matchingRule.matchingAction == 'SUPPORTED'){
+                    return false;
+                    break;
+                }
+                else if (
                     (existing !== undefined && allbs[i].matchingRule.matchingAction == 'EXISTS') ||
                     (existing === undefined && allbs[i].matchingRule.matchingAction == 'NOTEXISTS')) {
                     isDisabled = true;
@@ -84,6 +90,27 @@ const handleButtonAction = async (buttonName, managerName, paramsString) => {
         managerName,
         paramsString
     });
+};
+
+const getNotSupportedButtons = (supportedButtons, buttonsToVerify) =>{
+        let notSupportedButtnos = [];
+
+    splitValues(buttonsToVerify).forEach(curButtonName => {
+        let newButtons = supportedButtons.filter(el => el.name == curButtonName);
+        if (newButtons.length == 0) {
+            notSupportedButtnos.push(curButtonName);
+        }
+    });
+
+    return notSupportedButtnos;
+};
+
+const splitValues = (originalString) =>{
+    if (originalString) {
+        return originalString.replace(/ /g, '').split(',');
+    } else {
+        return [];
+    }
 };
 
 

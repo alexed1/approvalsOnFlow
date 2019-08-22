@@ -7,7 +7,7 @@ global with sharing class ListBuilderController {
     }
 
     @AuraEnabled(cacheable=true)
-    global static List<ShareInfo> getExistingShares(String managerName, String recordId) {
+    global static List<ShareInfo> getExistingMembers(String managerName, String recordId) {
 
         return getSharingManager(managerName).getExisting(recordId);
     }
@@ -15,7 +15,7 @@ global with sharing class ListBuilderController {
     @AuraEnabled(cacheable=true)
     global static String getSupportedButtons(String managerName) {
 
-        return getSharingManager(managerName).getSupportedButtons();
+        return JSON.serialize(getSharingManager(managerName).getSupportedButtons());
     }
 
     private static SharingManager getSharingManager(String managerName) {
@@ -29,6 +29,7 @@ global with sharing class ListBuilderController {
     }
 
     global class ButtonSetting {
+
         @AuraEnabled global String name;
         @AuraEnabled global ButtonMatchingRule matchingRule;
         public ButtonSetting(String name, ButtonMatchingRule matchingRule) {
@@ -37,6 +38,7 @@ global with sharing class ListBuilderController {
         }
     }
     global class ShareInfo {
+
         @AuraEnabled global Id shareId;
         @AuraEnabled global Id recordId;
         @AuraEnabled global String name;
@@ -52,10 +54,11 @@ global with sharing class ListBuilderController {
     }
 
     global enum MatchingAction {
-        EXISTS, NOTEXISTS, VALUEEQUALS
+        EXISTS, NOTEXISTS, VALUEEQUALS, SUPPORTED
     }
 
     global class ButtonMatchingRule {
+
         @AuraEnabled global MatchingAction matchingAction;
         @AuraEnabled global Map<String, List<String>> disabledValues;
         public ButtonMatchingRule(MatchingAction matchingAction, Map<String, List<String>> disabledValues) {
