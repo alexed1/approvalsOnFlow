@@ -24,7 +24,7 @@ global with sharing class ListBuilderController {
             SharingManager sm = (SharingManager) Type.forName(managerName).newInstance();
             return sm;
         } catch (Exception ex) {
-            throw new AuraHandledException('Manager "' + managerName + '" is not found');
+            throw getAuraException('Manager "' + managerName + '" is not found');
         }
     }
 
@@ -68,5 +68,11 @@ global with sharing class ListBuilderController {
         public ButtonMatchingRule(MatchingAction matchingAction) {
             this.matchingAction = matchingAction;
         }
+    }
+
+    private static AuraHandledException getAuraException(String errorMessage) {
+        AuraHandledException e = new AuraHandledException(errorMessage);
+        e.setMessage(errorMessage);
+        return e;
     }
 }

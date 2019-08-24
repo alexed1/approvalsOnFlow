@@ -85,15 +85,4 @@ global with sharing class ManageStepApprovers implements SharingManager {
     public static List<ListBuilderController.ButtonSetting> getSupportedButtons() {
         return supportedButtonSettings;
     }
-
-
-    private static boolean isButtonSupported(String buttonName) {
-        for (ListBuilderController.ButtonSetting bs : supportedButtonSettings) {
-            if (bs.name == buttonName) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }
