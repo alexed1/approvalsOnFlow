@@ -9,6 +9,46 @@
         <value>Your search found more than 200 results.  Keep typing to make it more specific</value>
     </labels>
     <labels>
+        <fullName>ButtonIsNotSupportedMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ButtonIsNotSupportedMessage</shortDescription>
+        <value>Following buttons are note supported: </value>
+    </labels>
+    <labels>
+        <fullName>SupportedButtonsEmptyMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SupportedButtonsEmptyMessage</shortDescription>
+        <value>"Supported Buttons" can not be empty</value>
+    </labels>
+    <labels>
+        <fullName>SupportedAddCapabilitiesEmptyMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SupportedAddCapabilitiesEmptyMessage</shortDescription>
+        <value>"Add Capabilities" can not be empty</value>
+    </labels>
+    <labels>
+        <fullName>SupportedEditCapabilitiesEmptyMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SupportedEditCapabilitiesEmptyMessage</shortDescription>
+        <value>"Edit Capabilities" can not be empty</value>
+    </labels>
+    <labels>
+        <fullName>ManagerEmptyMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ManagerEmptyMessage</shortDescription>
+        <value>"Manager APEX Class" can not be empty</value>
+    </labels>
+    <labels>
         <fullName>OWDReadWrite</fullName>
         <categories>messages</categories>
         <language>en_US</language>

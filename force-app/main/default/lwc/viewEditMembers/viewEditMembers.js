@@ -16,7 +16,7 @@ export default class ViewEditMembers extends NavigationMixin(LightningElement) {
     @api existingShares;
     @api supportedButtons;
 
-    @track columns = [];
+    // @track columns = [];
 
     // call this when you know the sharing table is out of sync
     @api refresh() {
@@ -37,8 +37,8 @@ export default class ViewEditMembers extends NavigationMixin(LightningElement) {
         return newArray;
     }
 
-    connectedCallback() {
-        this.columns = [{
+    get columns() {
+        return [{
             label: 'Name',
             fieldName: 'label'
         }].concat(generateCapabilityColumns(this.supportedEditCapabilities));

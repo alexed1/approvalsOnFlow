@@ -3,7 +3,9 @@ import {LightningElement, api, track, wire} from 'lwc';
 import Search from '@salesforce/label/c.Search';
 import For from '@salesforce/label/c.For';
 import TooManyResultsMessage from '@salesforce/label/c.TooManyResultsMessage';
-import Type3 from '@salesforce/label/c.TooManyResultsMessage';
+
+
+import Type3 from '@salesforce/label/c.Type3';
 import Queues from '@salesforce/label/c.Queues';
 import RelatedUsers from '@salesforce/label/c.RelatedUsers';
 import PublicGroups from '@salesforce/label/c.PublicGroups';
@@ -18,14 +20,16 @@ import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 import {
     buttonStyling,
     handleButtonAction,
-    generateCapabilityColumns
+    generateCapabilityColumns,
+    splitValues
 } from 'c/buttonUtils';
 
 const typeMapping = {
     Group: PublicGroups,
     Role: Roles,
     User: Users,
-    Queue: Queues
+    Queue: Queues,
+    RelatedUsers: RelatedUsers
 };
 
 export default class addNewMembers extends LightningElement {
@@ -41,7 +45,6 @@ export default class addNewMembers extends LightningElement {
     //Existing shares for current record
     @api existingShares;
     @api supportedButtons;
-
     @track label = {
         Search,
         TooManyResultsMessage,
@@ -49,12 +52,22 @@ export default class addNewMembers extends LightningElement {
         For
     };
     @track searchString = '';
+    @track selectedType;
+    @track searchResults = [];
+    @track searchDisabled = false;
+    viewEditMembers = [];
     source = 'addNewMembers';
-    @track selectedType = 'User';
 
-    @track columns;
+    connectedCallback() {
+        if (this.availableObjectTypes && this.availableObjectTypes.length > 0) {
+            this.selectedType = splitValues(this.availableObjectTypes)[0];
+        }
+    }
+
+
+
     get objectTypes() {
-        return this.availableObjectTypes.replace(/ /g, '').split(',').map(curTypeName => {
+        return splitValues(this.availableObjectTypes).map(curTypeName => {
             return this.getTypeDescriptor(curTypeName);
         });
     }
@@ -72,24 +85,18 @@ export default class addNewMembers extends LightningElement {
         this.dispatchEvent(new CustomEvent('searchrefresh'));
     }
 
-    connectedCallback() {
-        this.columns = [{
+    get columns() {
+        return [{
             label: 'Name',
             fieldName: 'label'
         }].concat(generateCapabilityColumns(this.supportedAddCapabilities));
     }
-
-    @track searchResults = [];
-    @track searchDisabled = false;
-
-    viewEditMembers = [];
 
     typeChange(event) {
         this.selectedType = event.detail.value;
         logger(this.log, this.source, `type is now ${this.selectedType}`);
         // clear the results
         this.searchResults = [];
-        // TODO: clear the search box
     }
 
     async actuallySearch() {
@@ -149,16 +156,16 @@ export default class addNewMembers extends LightningElement {
             'recordId': this.recordId,
             'type': this.selectedType
         });
-                try {
-                    await handleButtonAction(
-                        event.detail.action.name,
-                        this.managerName,
-                        actionParams
-                    );
-                    this.refresh();
-                } catch (e) {
-                    this.toastTheError(e, 'shareUpdate-read');
-                }
+        try {
+            await handleButtonAction(
+                event.detail.action.name,
+                this.managerName,
+                actionParams
+            );
+            this.refresh();
+        } catch (e) {
+            this.toastTheError(e, 'shareUpdate-read');
+        }
 
     }
 
