@@ -298,6 +298,10 @@
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>curApprovalProcessSteps</assignToReference>
+                <name>approvalProcessStepDefinitionCollection</name>
+            </outputParameters>
         </fields>
         <fields>
             <name>What_Kind_Of_Modification_Needed</name>
@@ -356,8 +360,8 @@
     <subflows>
         <name>Manage_Approval_Step</name>
         <label>Manage Approval Step</label>
-        <locationX>1302</locationX>
-        <locationY>182</locationY>
+        <locationX>1325</locationX>
+        <locationY>161</locationY>
         <connector>
             <targetReference>Manage_Approval_Process_Steps</targetReference>
         </connector>
@@ -366,6 +370,12 @@
             <name>curApprovalProcessDefinition</name>
             <value>
                 <elementReference>curApprovalProcessDefinition</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>curApprovalProcessStepDefinitions</name>
+            <value>
+                <elementReference>curApprovalProcessSteps</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>

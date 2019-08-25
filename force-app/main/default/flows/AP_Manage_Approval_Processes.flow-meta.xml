@@ -14,7 +14,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>AP_Configure_Approval_Process</targetReference>
+            <targetReference>AP_Edit_Approval_Process</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -231,7 +231,7 @@
         <locationY>585</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>AP_Configure_Approval_Process</targetReference>
+            <targetReference>AP_Edit_Approval_Process</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -453,8 +453,8 @@
     <startElementReference>CreateCase_Plan</startElementReference>
     <status>Draft</status>
     <subflows>
-        <name>AP_Configure_Approval_Process</name>
-        <label>AP Configure Approval Process</label>
+        <name>AP_Edit_Approval_Process</name>
+        <label>AP Edit Approval Process</label>
         <locationX>830</locationX>
         <locationY>726</locationY>
         <flowName>AP_Edit_Approval_Processes</flowName>
