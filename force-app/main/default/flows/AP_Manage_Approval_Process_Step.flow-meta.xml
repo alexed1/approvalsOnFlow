@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <assignments>
-        <description>This exists solely to cover the possibility that the user might hit the previous button when they get to the next screen. The initial value of the flow picker is set to the database value, so if they change it at the screen before this and then hit previous, it will reload the database value and not the value they have just changed it to.</description>
-        <name>Update_PlanStepRecord</name>
-        <label>Update PlanStepRecord</label>
-        <locationX>1222</locationX>
-        <locationY>165</locationY>
+        <name>Update_Approval_Step_Definition</name>
+        <label>Update Approval Step Definition</label>
+        <locationX>1166</locationX>
+        <locationY>58</locationY>
         <assignmentItems>
-            <assignToReference>PlanStepRecord.Flow__c</assignToReference>
+            <assignToReference>curApprovalProcessStepDefinition.ApprovalFlow_API_Name__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>selectedFlowName</elementReference>
+                <elementReference>ApprovalFlow.selectedFlowApiName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessStepDefinition.RejectionFlow_API_Name__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>RejectionFlow.selectedFlowApiName</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Update_Selected_Plan_Step</targetReference>
+            <targetReference>Update_Approval_Step</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -86,7 +92,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Selected_Plan_Step</targetReference>
+                <targetReference>Edit_Approval_Step</targetReference>
             </connector>
             <label>Edit Step</label>
         </rules>
@@ -153,40 +159,8 @@
         <connector>
             <targetReference>Delete_Message</targetReference>
         </connector>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>SelectedApprovalProcessStepId</elementReference>
-            </value>
-        </filters>
-        <object>Plan_Step__c</object>
+        <inputReference>curApprovalProcessStepDefinition</inputReference>
     </recordDeletes>
-    <recordLookups>
-        <name>Get_Selected_Plan_Step</name>
-        <label>Get Selected Plan Step</label>
-        <locationX>970</locationX>
-        <locationY>60</locationY>
-        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Update_Plan_Step</targetReference>
-        </connector>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>SelectedApprovalProcessStepId</elementReference>
-            </value>
-        </filters>
-        <object>Plan_Step__c</object>
-        <outputReference>PlanStepRecord</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Name</queriedFields>
-        <queriedFields>Is_Required__c</queriedFields>
-        <queriedFields>Flow__c</queriedFields>
-        <queriedFields>Associate_Case_Status__c</queriedFields>
-        <queriedFields>Start_When__c</queriedFields>
-    </recordLookups>
     <recordLookups>
         <name>Get_Similar_Name_Record</name>
         <label>Get Similar Name Record</label>
@@ -215,33 +189,14 @@
         <queriedFields>Id</queriedFields>
     </recordLookups>
     <recordUpdates>
-        <name>Update_Selected_Plan_Step</name>
-        <label>Update Selected Plan Step</label>
-        <locationX>1336</locationX>
-        <locationY>61</locationY>
+        <name>Update_Approval_Step</name>
+        <label>Update Approval Step</label>
+        <locationX>1320</locationX>
+        <locationY>58</locationY>
         <connector>
             <targetReference>Updated_Successfully</targetReference>
         </connector>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>SelectedApprovalProcessStepId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Flow__c</field>
-            <value>
-                <elementReference>selectedFlowName</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Is_Required__c</field>
-            <value>
-                <elementReference>Is_RequiredEdit</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Plan_Step__c</object>
+        <inputReference>curApprovalProcessStepDefinition</inputReference>
     </recordUpdates>
     <screens>
         <name>Create_Step</name>
@@ -286,8 +241,84 @@
         <allowPause>true</allowPause>
         <fields>
             <name>DeleteMessage</name>
-            <fieldText>Plan Step Deleted Successfully!</fieldText>
+            <fieldText>&lt;p&gt;Approval Process Step Deleted Successfully!&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Edit_Approval_Step</name>
+        <label>Edit Approval Step</label>
+        <locationX>983</locationX>
+        <locationY>58</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Update_Approval_Step_Definition</targetReference>
+        </connector>
+        <fields>
+            <name>EditScreenDisplayText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Edit Step&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>CaseStepName</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;Step Name &lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;{!curApprovalProcessStepDefinition.Name}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Is_RequiredEdit</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <elementReference>PlanStepRecord.Is_Required__c</elementReference>
+            </defaultValue>
+            <fieldText>Required. This step&#39;s associated flow must be completed before the case can transition to the next case status.</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>ApprovalFlow</name>
+            <extensionName>c:flowListFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Run which flow when this step is APPROVED:</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectedFlowApiName</name>
+                <value>
+                    <elementReference>curApprovalProcessStepDefinition.ApprovalFlow_API_Name__c</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>RejectionFlow</name>
+            <extensionName>c:flowListFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Run this flow when this Approval Step is REJECTED:</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showActiveFlowsOnly</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectedFlowApiName</name>
+                <value>
+                    <elementReference>curApprovalProcessStepDefinition.RejectionFlow_API_Name__c</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -312,87 +343,16 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Update_Plan_Step</name>
-        <label>Update Plan Step</label>
-        <locationX>1146</locationX>
-        <locationY>60</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Update_PlanStepRecord</targetReference>
-        </connector>
-        <fields>
-            <name>UpdateScreenDisplayText</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Update Step&lt;/b&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>CaseStepName</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;Step Name:&lt;/b&gt; {!PlanStepRecord.Name}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>dispAssociatedStatus</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;Status: &lt;/b&gt;{!PlanStepRecord.Associate_Case_Status__c}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>Parent</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;Predecessor Step: &lt;/b&gt;{!PlanStepRecord.Start_When__c}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>ToolTipMessage</name>
-            <fieldText>&lt;p&gt;The above values cannot be changed in order to protect existing deployments. &lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>Is_RequiredEdit</name>
-            <dataType>Boolean</dataType>
-            <defaultValue>
-                <elementReference>PlanStepRecord.Is_Required__c</elementReference>
-            </defaultValue>
-            <fieldText>Required. This step&#39;s associated flow must be completed before the case can transition to the next case status.</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>flowList2</name>
-            <extensionName>c:flowListFSC</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Run which flow when this step starts:</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>selectedFlowApiName</name>
-                <value>
-                    <elementReference>PlanStepRecord.Flow__c</elementReference>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-            <outputParameters>
-                <assignToReference>selectedFlowName</assignToReference>
-                <name>selectedFlowApiName</name>
-            </outputParameters>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
         <name>Updated_Successfully</name>
         <label>Updated Successfully</label>
-        <locationX>1335</locationX>
+        <locationX>1320</locationX>
         <locationY>298</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>UpdateMessageScreen</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;Case Step Updated Successfully!&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b&gt;Approval Process Step Updated Successfully!&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -439,6 +399,14 @@
         <isInput>true</isInput>
         <isOutput>false</isOutput>
         <objectType>ApprovalProcessDefinition__c</objectType>
+    </variables>
+    <variables>
+        <name>curApprovalProcessStepDefinition</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>
         <name>curApprovalProcessStepDefinitions</name>

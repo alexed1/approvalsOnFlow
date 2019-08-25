@@ -162,7 +162,7 @@
     </nameField>
     <pluralLabel>ApprovalProcessStepDefinitions</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ControlledByParent</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
     <startsWith>Vowel</startsWith>
     <visibility>Public</visibility>
 </CustomObject>

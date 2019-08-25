@@ -30,6 +30,29 @@
             <name>picklistValues</name>
         </outputParameters>
     </actionCalls>
+    <actionCalls>
+        <description>Datatable returns a collection of rows. This extracts the first one.
+TODO: implement the enforceSingleMember flag and detect returned errors</description>
+        <name>Get_Selected_Step</name>
+        <label>Get Selected Step</label>
+        <locationX>1460</locationX>
+        <locationY>276</locationY>
+        <actionName>GetFirstFromCollection</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Manage_Approval_Step</targetReference>
+        </connector>
+        <inputParameters>
+            <name>inputCollection</name>
+            <value>
+                <elementReference>curApprovalProcessSteps</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>curApprovalProcessStepDefinition</assignToReference>
+            <name>outputMember</name>
+        </outputParameters>
+    </actionCalls>
     <choices>
         <name>AddStep</name>
         <choiceText>Add</choiceText>
@@ -108,10 +131,10 @@
     <decisions>
         <name>Done_Handling_Steps</name>
         <label>Done Handling Steps?</label>
-        <locationX>1321</locationX>
-        <locationY>392</locationY>
+        <locationX>1322</locationX>
+        <locationY>400</locationY>
         <defaultConnector>
-            <targetReference>Manage_Approval_Step</targetReference>
+            <targetReference>Get_Selected_Step</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Handle More Steps</defaultConnectorLabel>
         <rules>
