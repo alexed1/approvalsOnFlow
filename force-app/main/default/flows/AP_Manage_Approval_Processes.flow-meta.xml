@@ -18,14 +18,6 @@
         </connector>
     </assignments>
     <choices>
-        <name>AddStep</name>
-        <choiceText>Add Plan Step</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>Create</stringValue>
-        </value>
-    </choices>
-    <choices>
         <name>create_Choice</name>
         <choiceText>Create New Approval Process</choiceText>
         <dataType>String</dataType>
@@ -63,14 +55,6 @@
         <dataType>String</dataType>
         <value>
             <elementReference>EditApprovalProcess</elementReference>
-        </value>
-    </choices>
-    <choices>
-        <name>ModifyStep</name>
-        <choiceText>Edit or Delete Plan Step</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>Edit</stringValue>
         </value>
     </choices>
     <decisions>
@@ -186,11 +170,6 @@
         </rules>
     </decisions>
     <description>Main flow for defining and editing approval processes</description>
-    <formulas>
-        <name>ConvertRecordTypeDataToCSV</name>
-        <dataType>String</dataType>
-        <expression>{!curRecordType.Id}&amp;&quot;;&quot;&amp;{!curRecordType.DeveloperName}&amp;&quot;,&quot;</expression>
-    </formulas>
     <interviewLabel>AP Manage Approval Processes {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Manage Approval Processes</label>
     <processMetadataValues>
@@ -265,8 +244,8 @@
         <queriedFields>Id</queriedFields>
     </recordLookups>
     <screens>
-        <name>CreateCase_Plan</name>
-        <label>Select Choice</label>
+        <name>Create_or_Edit</name>
+        <label>Create or Edit</label>
         <locationX>263</locationX>
         <locationY>50</locationY>
         <allowBack>true</allowBack>
@@ -276,7 +255,7 @@
             <targetReference>CreateOrEdit</targetReference>
         </connector>
         <fields>
-            <name>dispManageCasePlan</name>
+            <name>dispManageApprovalProcesses</name>
             <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Manage Approval Processes&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
@@ -301,11 +280,11 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>CreateCase_Plan</targetReference>
+            <targetReference>Create_or_Edit</targetReference>
         </connector>
         <fields>
             <name>ErrorMessage</name>
-            <fieldText>&lt;p&gt;No Case Plans are defined.  Please create one.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;No Approval Processes are defined.  Please create one.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -368,7 +347,7 @@
             <targetReference>screenCreateApprovalProcess</targetReference>
         </connector>
         <fields>
-            <name>SimilarCasePlanMessage</name>
+            <name>dispSimilarApprovalProcessMessage</name>
             <fieldText>&lt;p&gt;An approval process already exists with this name.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
@@ -390,34 +369,6 @@
             <name>dispSelectApprovalProcess</name>
             <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Select Approval Process to Edit&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>CasePlanDataTable</name>
-            <extensionName>c:caseMgmt_CaseStepDataTable</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>columnsStr</name>
-                <value>
-                    <elementReference>ApprovalProcessColumns</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>isCasePlan</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>objectArrayCasePlan</name>
-                <value>
-                    <elementReference>curCasePlans</elementReference>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-            <outputParameters>
-                <assignToReference>SelectedId</assignToReference>
-                <name>recordId</name>
-            </outputParameters>
         </fields>
         <fields>
             <name>datatableSelectApprovalProcess</name>
@@ -450,7 +401,7 @@
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
-    <startElementReference>CreateCase_Plan</startElementReference>
+    <startElementReference>Create_or_Edit</startElementReference>
     <status>Draft</status>
     <subflows>
         <name>AP_Edit_Approval_Process</name>
@@ -459,13 +410,6 @@
         <locationY>726</locationY>
         <flowName>AP_Edit_Approval_Processes</flowName>
     </subflows>
-    <variables>
-        <name>allSubmitterRoleStrings</name>
-        <dataType>String</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
     <variables>
         <name>ApprovalProcessColumns</name>
         <dataType>String</dataType>
@@ -477,13 +421,6 @@
         </value>
     </variables>
     <variables>
-        <name>CaseStatesOrderCSV</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
         <name>createChoice</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -492,13 +429,6 @@
         <value>
             <stringValue>&#39;Create&#39;</stringValue>
         </value>
-    </variables>
-    <variables>
-        <name>createPlanStep</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>curApprovalProcessDefinition</name>
@@ -517,61 +447,6 @@
         <objectType>ApprovalProcessDefinition__c</objectType>
     </variables>
     <variables>
-        <name>curCasePlan</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Case_Plan__c</objectType>
-    </variables>
-    <variables>
-        <name>curCasePlan2</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Case_Plan__c</objectType>
-    </variables>
-    <variables>
-        <name>curCasePlans</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Case_Plan__c</objectType>
-    </variables>
-    <variables>
-        <name>curPlanSteps</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Plan_Step__c</objectType>
-    </variables>
-    <variables>
-        <name>curRecordType</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>RecordType</objectType>
-    </variables>
-    <variables>
-        <name>curRecordTypes</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>RecordType</objectType>
-    </variables>
-    <variables>
-        <name>DeletePlanStep</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
         <name>EditApprovalProcess</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -580,37 +455,6 @@
         <value>
             <stringValue>Edit</stringValue>
         </value>
-    </variables>
-    <variables>
-        <name>editPlanStep</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>indexCasePlan</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Case_Plan__c</objectType>
-    </variables>
-    <variables>
-        <name>matchingCasePlan</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>Case_Plan__c</objectType>
-    </variables>
-    <variables>
-        <name>matchingCasePlans</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>Case_Plan__c</objectType>
     </variables>
     <variables>
         <name>Message</name>
@@ -627,38 +471,6 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>PlanStepFields</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <value>
-            <stringValue>Name,Name,text;Parent/Predecessor,Start_When__c,text;Flow,Flow__c,text;Case Status,Associate_Case_Status__c,text;Required,Is_Required__c,boolean;</stringValue>
-        </value>
-    </variables>
-    <variables>
-        <name>RecordTypeCSVVar</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <description>The action that ManagePlan flow wants ManageStep flow to carry out</description>
-        <name>requestedStepAction</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>selectedCaseStatusOrder</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
         <name>SelectedId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -671,34 +483,5 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>SelectedPlanStepId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>selectedRecordType</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>RecordType</objectType>
-    </variables>
-    <variables>
-        <name>SelectedRecordTypeName</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>selectedSubmitterRoles</name>
-        <dataType>String</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
     </variables>
 </Flow>
