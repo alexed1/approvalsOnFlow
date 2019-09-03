@@ -1,28 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <assignments>
-        <name>Update_Approval_Step_Definition</name>
-        <label>Update Approval Step Definition</label>
-        <locationX>1166</locationX>
-        <locationY>58</locationY>
-        <assignmentItems>
-            <assignToReference>curApprovalProcessStepDefinition.ApprovalFlow_API_Name__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>ApprovalFlow.selectedFlowApiName</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>curApprovalProcessStepDefinition.RejectionFlow_API_Name__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>RejectionFlow.selectedFlowApiName</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Update_Approval_Step</targetReference>
-        </connector>
-    </assignments>
+  
     <decisions>
         <name>Similar_Name_Exist</name>
         <label>Similar Name Exist</label>
@@ -256,7 +234,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Update_Approval_Step_Definition</targetReference>
+            <targetReference>Updated_Successfully</targetReference>
         </connector>
         <fields>
             <name>EditScreenDisplayText</name>

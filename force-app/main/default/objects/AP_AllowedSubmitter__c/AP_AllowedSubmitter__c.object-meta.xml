@@ -152,12 +152,12 @@
     <enableSearch>true</enableSearch>
     <enableSharing>false</enableSharing>
     <enableStreamingApi>false</enableStreamingApi>
-    <label>AP_AllowedSubmitterSet</label>
+    <label>AP_AllowedSubmitter</label>
     <nameField>
         <label>AP_AllowedSubmitters Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>AP_AllowedSubmitterSets</pluralLabel>
+    <pluralLabel>AP_AllowedSubmitters</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <startsWith>Vowel</startsWith>

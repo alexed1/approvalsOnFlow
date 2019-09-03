@@ -175,11 +175,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <label>No Submitter Selected</label>
         </rules>
     </decisions>
-    <formulas>
-        <name>ConvertRecordTypeDataToCSV</name>
-        <dataType>String</dataType>
-        <expression>{!curRecordType.Id}&amp;&quot;;&quot;&amp;{!curRecordType.DeveloperName}&amp;&quot;,&quot;</expression>
-    </formulas>
     <interviewLabel>AP Edit Approval Processes {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Edit Approval Processes</label>
     <processMetadataValues>
@@ -198,19 +193,33 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <screens>
         <name>Configure_Approval_Form</name>
         <label>Configure Approval Form</label>
-        <locationX>895</locationX>
+        <locationX>948</locationX>
         <locationY>397</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Manage_Approval_Process_Steps</targetReference>
+            <targetReference>Configure_Initial_Submitters</targetReference>
         </connector>
         <fields>
             <name>dispSpecifyEntryCriteria_0</name>
             <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Configure Approval Form&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Configure_Initial_Submitters</name>
+        <label>Configure Initial Submitters</label>
+        <locationX>1095</locationX>
+        <locationY>265</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Manage_Approval_Process_Steps</targetReference>
+        </connector>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -236,7 +245,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>planStepsOrder</name>
+            <name>SubmitterList</name>
             <extensionName>c:dualListBoxFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
@@ -285,8 +294,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <screens>
         <name>Manage_Approval_Process_Steps</name>
         <label>Manage Approval Process Steps</label>
-        <locationX>1069</locationX>
-        <locationY>398</locationY>
+        <locationX>1208</locationX>
+        <locationY>264</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -341,6 +350,21 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <description>This screen combines Step 3 and Step 4 from the original Approval Process Edit wizard.</description>
+        <name>Notification_Templates</name>
+        <label>Routing Automation &amp; Notification Templates</label>
+        <locationX>827</locationX>
+        <locationY>272</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Configure_Approval_Form</targetReference>
+        </connector>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>screenSpecifyEntryCriteria</name>
         <label>Specify Entry Criteria</label>
         <locationX>728</locationX>
@@ -349,7 +373,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Configure_Approval_Form</targetReference>
+            <targetReference>Notification_Templates</targetReference>
         </connector>
         <fields>
             <name>dispSpecifyEntryCriteria</name>
@@ -436,13 +460,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </value>
     </variables>
     <variables>
-        <name>CaseStatesOrderCSV</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
         <name>createChoice</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -451,13 +468,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <value>
             <stringValue>&#39;Create&#39;</stringValue>
         </value>
-    </variables>
-    <variables>
-        <name>createPlanStep</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>curApprovalProcessDefinition</name>
@@ -492,61 +502,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>
-        <name>curCasePlan</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Case_Plan__c</objectType>
-    </variables>
-    <variables>
-        <name>curCasePlan2</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Case_Plan__c</objectType>
-    </variables>
-    <variables>
-        <name>curCasePlans</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Case_Plan__c</objectType>
-    </variables>
-    <variables>
-        <name>curPlanSteps</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Plan_Step__c</objectType>
-    </variables>
-    <variables>
-        <name>curRecordType</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>RecordType</objectType>
-    </variables>
-    <variables>
-        <name>curRecordTypes</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>RecordType</objectType>
-    </variables>
-    <variables>
-        <name>DeletePlanStep</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
         <name>EditApprovalProcess</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -555,37 +510,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <value>
             <stringValue>Edit</stringValue>
         </value>
-    </variables>
-    <variables>
-        <name>editPlanStep</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>indexCasePlan</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Case_Plan__c</objectType>
-    </variables>
-    <variables>
-        <name>matchingCasePlan</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>Case_Plan__c</objectType>
-    </variables>
-    <variables>
-        <name>matchingCasePlans</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>Case_Plan__c</objectType>
     </variables>
     <variables>
         <name>Message</name>
@@ -602,25 +526,11 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>RecordTypeCSVVar</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
         <description>The action that ManagePlan flow wants ManageStep flow to carry out</description>
         <name>requestedStepAction</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>selectedCaseStatusOrder</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
         <isOutput>true</isOutput>
     </variables>
     <variables>
@@ -632,28 +542,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     </variables>
     <variables>
         <name>SelectedItems</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>SelectedPlanStepId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>selectedRecordType</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>RecordType</objectType>
-    </variables>
-    <variables>
-        <name>SelectedRecordTypeName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

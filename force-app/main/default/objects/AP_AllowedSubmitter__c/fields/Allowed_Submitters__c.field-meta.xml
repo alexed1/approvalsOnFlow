@@ -4,7 +4,6 @@
     <externalId>false</externalId>
     <label>Allowed Submitters</label>
     <referenceTo>ApprovalProcessDefinition__c</referenceTo>
-    <relationshipLabel>Allowed Submitters</relationshipLabel>
     <relationshipName>AP_AllowedSubmitterSets</relationshipName>
     <relationshipOrder>0</relationshipOrder>
     <reparentableMasterDetail>false</reparentableMasterDetail>
