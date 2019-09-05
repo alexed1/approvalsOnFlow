@@ -40,7 +40,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <actionName>GetFirstFromCollection</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Manage_Approval_Step</targetReference>
+            <targetReference>Manage_Specific_Step</targetReference>
         </connector>
         <inputParameters>
             <name>inputCollection</name>
@@ -109,6 +109,14 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <stringValue>Edit</stringValue>
         </value>
     </choices>
+    <choices>
+        <name>ReorderSteps</name>
+        <choiceText>Reorder</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>reorder</stringValue>
+        </value>
+    </choices>
     <decisions>
         <name>Check_Output</name>
         <label>Check Output</label>
@@ -136,7 +144,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <defaultConnector>
             <targetReference>Get_Selected_Step</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Handle More Steps</defaultConnectorLabel>
+        <defaultConnectorLabel>Add, Delete, Edit Step</defaultConnectorLabel>
         <rules>
             <name>outcomeDone_Handling_Steps</name>
             <conditionLogic>and</conditionLogic>
@@ -148,6 +156,21 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
                 </rightValue>
             </conditions>
             <label>Done Handling Steps</label>
+        </rules>
+        <rules>
+            <name>Reorder_Steps</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>What_Kind_Of_Modification_Needed</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ReorderSteps</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Manage_Step_Reordering</targetReference>
+            </connector>
+            <label>Reorder Steps</label>
         </rules>
     </decisions>
     <decisions>
@@ -193,8 +216,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <screens>
         <name>Configure_Approval_Form</name>
         <label>Configure Approval Form</label>
-        <locationX>948</locationX>
-        <locationY>397</locationY>
+        <locationX>946</locationX>
+        <locationY>265</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -340,6 +363,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <choiceReferences>Edit</choiceReferences>
             <choiceReferences>Delete</choiceReferences>
             <choiceReferences>AddStep</choiceReferences>
+            <choiceReferences>ReorderSteps</choiceReferences>
             <choiceReferences>Done</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Take Action</fieldText>
@@ -354,7 +378,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <name>Notification_Templates</name>
         <label>Routing Automation &amp; Notification Templates</label>
         <locationX>827</locationX>
-        <locationY>272</locationY>
+        <locationY>264</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -405,8 +429,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <startElementReference>Get_Picklist_Values</startElementReference>
     <status>Draft</status>
     <subflows>
-        <name>Manage_Approval_Step</name>
-        <label>Manage Approval Step</label>
+        <name>Manage_Specific_Step</name>
+        <label>Manage Specific Step</label>
         <locationX>1325</locationX>
         <locationY>161</locationY>
         <connector>
@@ -432,6 +456,30 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             </value>
         </inputAssignments>
     </subflows>
+    <subflows>
+        <name>Manage_Step_Reordering</name>
+        <label>Manage Step Reordering</label>
+        <locationX>1208</locationX>
+        <locationY>608</locationY>
+        <connector>
+            <targetReference>Manage_Approval_Process_Steps</targetReference>
+        </connector>
+        <flowName>Manage_Step_Reordering</flowName>
+        <inputAssignments>
+            <name>selectedApprovalProcessStepDefinitions</name>
+            <value>
+                <elementReference>curApprovalProcessSteps</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <variables>
+        <description>extracted from the Step records so we can feed just the names to the dual list box</description>
+        <name>allStepNames</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>allSubmitterRoleStrings</name>
         <dataType>String</dataType>
@@ -546,6 +594,13 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>selectedStepNames</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>selectedSubmitterRoles</name>

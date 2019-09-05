@@ -3,26 +3,8 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c/addNewMembers": [
-                "addNewMembers/addNewMembers.js"
-            ],
-            "c/buttonUtils": [
-                "buttonUtils/buttonUtils.js"
-            ],
-            "c/initialSubmittersSelect": [
-                "initialSubmittersSelect/initialSubmittersSelect.js"
-            ],
-            "c/listBuilder": [
-                "listBuilder/listBuilder.js"
-            ],
             "c/lwcLogger": [
                 "lwcLogger/lwcLogger.js"
-            ],
-            "c/manageStepApprovers": [
-                "manageStepApprovers/manageStepApprovers.js"
-            ],
-            "c/viewEditMembers": [
-                "viewEditMembers/viewEditMembers.js"
             ]
         }
     },
