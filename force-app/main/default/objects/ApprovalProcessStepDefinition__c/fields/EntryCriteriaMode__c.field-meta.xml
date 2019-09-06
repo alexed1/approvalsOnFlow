@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EntryCriteriaMode__c</fullName>
+    <externalId>false</externalId>
+    <label>EntryCriteriaMode</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>AlwaysEnter</fullName>
+                <default>false</default>
+                <label>AlwaysEnter</label>
+            </value>
+            <value>
+                <fullName>Enter If True, Else Bypass</fullName>
+                <default>false</default>
+                <label>Enter If True, Else Bypass</label>
+            </value>
+            <value>
+                <fullName>Enter If True, Else Reject</fullName>
+                <default>false</default>
+                <label>Enter If True, Else Reject</label>
+            </value>
+            <value>
+                <fullName>Enter If True, Else Approve</fullName>
+                <default>false</default>
+                <label>Enter If True, Else Approve</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
