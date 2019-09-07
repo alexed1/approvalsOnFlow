@@ -1,16 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <choices>
+        <name>AlwaysEnter</name>
+        <choiceText>All records should enter this step.</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>always</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>approveRecord</name>
+        <choiceText>Approve Record</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>approve</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Back1Step</name>
+        <choiceText>Perform ONLY the rejection actions for this step and send the approval request back to the most recent approver.</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Back1Step</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>CriteriaBased</name>
+        <choiceText>Evaluate some expression criteria</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>CriteriaExpression</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>CriteriaOrFormula</name>
+        <choiceText>Use criteria or a formula</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>criteria</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>EnterStep</name>
+        <choiceText>Enter the step</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>enterStep</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>EvaluateFormula</name>
+        <choiceText>Evaluate a formula</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>formula</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>FinalRejection</name>
+        <choiceText>Perform all rejection actions for this step AND all final rejection actions. (Final Rejection)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>finalRejection</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>SkipToNextStep</name>
+        <choiceText>Go to next step (skip this one)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>skip</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <description>Rejection behavior is not configurable for the first step. This is probably because &quot;Back 1 Step&quot; doesn&#39;t make any sense. This feels hacky. Better solution would probably be to provide a checkbox that allows Final Rejection to be instantiated, and not show the Back 1 step choice</description>
+        <name>Check_Step_Order</name>
+        <label>Check Step Order</label>
+        <locationX>1459</locationX>
+        <locationY>80</locationY>
+        <defaultConnector>
+            <targetReference>Rejection_Behavior</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not First Step</defaultConnectorLabel>
+        <rules>
+            <name>This_is_First_Step</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>curApprovalProcessStepDefinition.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>foo</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Approval_Step</targetReference>
+            </connector>
+            <label>This is First Step</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Similar_Name_Exist</name>
         <label>Similar Name Exist</label>
-        <locationX>370</locationX>
-        <locationY>408</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <locationX>369</locationX>
+        <locationY>424</locationY>
+        <defaultConnector>
+            <targetReference>Create_Approval_Process_Step_Record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Doesn&#39;t Exist</defaultConnectorLabel>
         <rules>
             <name>Exist</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>PlanStepRecord</leftValueReference>
+                <leftValueReference>matchingApprovalProcessStepDefinition</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -19,22 +120,7 @@
             <connector>
                 <targetReference>Message_Screen</targetReference>
             </connector>
-            <label>Exist</label>
-        </rules>
-        <rules>
-            <name>Not_Exist</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>PlanStepRecord</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Create_Approval_Process_Step_Record</targetReference>
-            </connector>
-            <label>Not Exist</label>
+            <label>Exists</label>
         </rules>
     </decisions>
     <decisions>
@@ -69,7 +155,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Configure_Action_Flows</targetReference>
+                <targetReference>Select_Step_Actions</targetReference>
             </connector>
             <label>Edit Step</label>
         </rules>
@@ -83,17 +169,9 @@
                     <stringValue>delete</stringValue>
                 </rightValue>
             </conditions>
-            <connector>
-                <targetReference>Delete_Selected_Plan_Step_Record</targetReference>
-            </connector>
             <label>Delete Step</label>
         </rules>
     </decisions>
-    <formulas>
-        <name>aggregateStepNamesFormula</name>
-        <dataType>String</dataType>
-        <expression>{!PlanStepRecord.Name}&amp;&quot;;&quot;&amp;{!PlanStepRecord.Name}&amp;&quot;,&quot;</expression>
-    </formulas>
     <interviewLabel>AP Manage Approval Process Step {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Manage Approval Process Step</label>
     <processMetadataValues>
@@ -113,7 +191,7 @@
         <name>Create_Approval_Process_Step_Record</name>
         <label>Create Approval Process Step Record</label>
         <locationX>586</locationX>
-        <locationY>442</locationY>
+        <locationY>416</locationY>
         <inputAssignments>
             <field>ApprovalProcessDefinition__c</field>
             <value>
@@ -123,72 +201,146 @@
         <inputAssignments>
             <field>Name</field>
             <value>
-                <elementReference>Step_Name</elementReference>
+                <elementReference>Proposed_Step_Name</elementReference>
             </value>
         </inputAssignments>
         <object>ApprovalProcessStepDefinition__c</object>
     </recordCreates>
-    <recordDeletes>
-        <name>Delete_Selected_Plan_Step_Record</name>
-        <label>Delete Selected Plan Step Record</label>
-        <locationX>792</locationX>
-        <locationY>335</locationY>
-        <connector>
-            <targetReference>Delete_Message</targetReference>
-        </connector>
-        <inputReference>curApprovalProcessStepDefinition</inputReference>
-    </recordDeletes>
     <recordLookups>
         <name>Get_Similar_Name_Record</name>
         <label>Get Similar Name Record</label>
         <locationX>420</locationX>
         <locationY>216</locationY>
-        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Similar_Name_Exist</targetReference>
         </connector>
         <filters>
-            <field>Case_Plan__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>CasePlanRecord.Id</elementReference>
-            </value>
-        </filters>
-        <filters>
             <field>Name</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Step_Name</elementReference>
+                <elementReference>Proposed_Step_Name</elementReference>
             </value>
         </filters>
-        <object>Plan_Step__c</object>
-        <outputReference>PlanStepRecord</outputReference>
+        <object>ApprovalProcessStepDefinition__c</object>
+        <outputReference>matchingApprovalProcessStepDefinition</outputReference>
         <queriedFields>Id</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Update_Approval_Step</name>
         <label>Update Approval Step</label>
-        <locationX>1320</locationX>
-        <locationY>58</locationY>
+        <locationX>1752</locationX>
+        <locationY>84</locationY>
         <connector>
             <targetReference>Updated_Successfully</targetReference>
         </connector>
         <inputReference>curApprovalProcessStepDefinition</inputReference>
     </recordUpdates>
     <screens>
-        <name>Configure_Action_Flows</name>
-        <label>Configure Action Flows</label>
+        <name>Create_Step</name>
+        <label>Create Step</label>
+        <locationX>197</locationX>
+        <locationY>172</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Get_Similar_Name_Record</targetReference>
+        </connector>
+        <fields>
+            <name>AddStepHeading</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Add Approval Process  Step&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Proposed_Step_Name</name>
+            <dataType>String</dataType>
+            <fieldText>Approval Step Name</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Is_Required</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Make this step required. Its associated flow must be completed before the case can transition to the next case status.</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Delete_Message</name>
+        <label>Delete Message</label>
+        <locationX>791</locationX>
+        <locationY>299</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>DeleteMessage</name>
+            <fieldText>&lt;p&gt;Approval Process Step Deleted Successfully!&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Message_Screen</name>
+        <label>Message Screen</label>
+        <locationX>193</locationX>
+        <locationY>430</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Create_Step</targetReference>
+        </connector>
+        <fields>
+            <name>DisplayTextScreenMessage</name>
+            <fieldText>&lt;p&gt;A step with this name already exists. &lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Rejection_Behavior</name>
+        <label>Configure Rejection Behavior</label>
+        <locationX>1466</locationX>
+        <locationY>278</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Update_Approval_Step</targetReference>
+        </connector>
+        <fields>
+            <name>What_should_happen_if_the_approver_rejects_this_request</name>
+            <choiceReferences>FinalRejection</choiceReferences>
+            <choiceReferences>Back1Step</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>What should happen if the approver rejects this request?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Select_Step_Actions</name>
+        <label>Select Step Actions</label>
         <locationX>983</locationX>
         <locationY>58</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Updated_Successfully</targetReference>
+            <targetReference>Specify_Step_Criteria</targetReference>
         </connector>
         <fields>
             <name>EditScreenDisplayText</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Edit Step&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Select Step Actions&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -242,78 +394,71 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Create_Step</name>
-        <label>Create Step</label>
-        <locationX>197</locationX>
-        <locationY>172</locationY>
+        <name>Specify_Step_Criteria</name>
+        <label>Specify Step Criteria</label>
+        <locationX>1152</locationX>
+        <locationY>58</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Get_Similar_Name_Record</targetReference>
+            <targetReference>Manage_Approvers_for_Step</targetReference>
         </connector>
         <fields>
-            <name>AddStepHeading</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Add Approval Process  Step&lt;/b&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>Step_Name</name>
+            <name>radioSpecify_Step_Criteria</name>
+            <choiceReferences>AlwaysEnter</choiceReferences>
+            <choiceReferences>CriteriaOrFormula</choiceReferences>
             <dataType>String</dataType>
-            <fieldText>Approval Step Name</fieldText>
-            <fieldType>InputField</fieldType>
+            <fieldText>Specify Step Criteria</fieldText>
+            <fieldType>RadioButtons</fieldType>
             <isRequired>true</isRequired>
         </fields>
         <fields>
-            <name>Is_Required</name>
-            <dataType>Boolean</dataType>
-            <fieldText>Make this step required. Its associated flow must be completed before the case can transition to the next case status.</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
+            <name>criteria_or_formula</name>
+            <choiceReferences>CriteriaBased</choiceReferences>
+            <choiceReferences>EvaluateFormula</choiceReferences>
+            <dataType>String</dataType>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>radioSpecify_Step_Criteria</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <elementReference>CriteriaOrFormula</elementReference>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>Delete_Message</name>
-        <label>Delete Message</label>
-        <locationX>980</locationX>
-        <locationY>336</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
         <fields>
-            <name>DeleteMessage</name>
-            <fieldText>&lt;p&gt;Approval Process Step Deleted Successfully!&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
+            <name>If_Criteria_are_Met_or_Formula_is_True</name>
+            <choiceReferences>EnterStep</choiceReferences>
+            <choiceReferences>approveRecord</choiceReferences>
+            <choiceReferences>SkipToNextStep</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>If Criteria are Met, or Formula is True</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>radioSpecify_Step_Criteria</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <elementReference>CriteriaOrFormula</elementReference>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>Message_Screen</name>
-        <label>Message Screen</label>
-        <locationX>196</locationX>
-        <locationY>357</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Create_Step</targetReference>
-        </connector>
-        <fields>
-            <name>DisplayTextScreenMessage</name>
-            <fieldText>&lt;p&gt;A step with this name already exists. &lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Updated_Successfully</name>
         <label>Updated Successfully</label>
-        <locationX>1320</locationX>
-        <locationY>298</locationY>
+        <locationX>1753</locationX>
+        <locationY>303</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -326,14 +471,23 @@
         <showHeader>false</showHeader>
     </screens>
     <startElementReference>Which_Operation</startElementReference>
-    <status>Draft</status>
-    <variables>
-        <name>CaseId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
+    <status>Active</status>
+    <subflows>
+        <name>Manage_Approvers_for_Step</name>
+        <label>Manage Approvers for Step</label>
+        <locationX>1315</locationX>
+        <locationY>58</locationY>
+        <connector>
+            <targetReference>Check_Step_Order</targetReference>
+        </connector>
+        <flowName>AP_Manage_Step_Approvers</flowName>
+        <inputAssignments>
+            <name>curApprovalStep</name>
+            <value>
+                <elementReference>curApprovalProcessStepDefinition</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>CasePlanRecord</name>
         <dataType>SObject</dataType>
@@ -341,23 +495,6 @@
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Case_Plan__c</objectType>
-    </variables>
-    <variables>
-        <name>caseStepAvailableParentsCSV</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>CreateDone</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>true</isOutput>
-        <value>
-            <booleanValue>false</booleanValue>
-        </value>
     </variables>
     <variables>
         <name>curApprovalProcessDefinition</name>
@@ -384,31 +521,13 @@
         <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>
-        <name>CurrentStatusCase</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>DeleteDone</name>
-        <dataType>Boolean</dataType>
+        <description>Used to check for duplicate names</description>
+        <name>matchingApprovalProcessStepDefinition</name>
+        <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
-        <isOutput>true</isOutput>
-        <value>
-            <booleanValue>false</booleanValue>
-        </value>
-    </variables>
-    <variables>
-        <name>EditDone</name>
-        <dataType>Boolean</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>true</isOutput>
-        <value>
-            <booleanValue>false</booleanValue>
-        </value>
+        <isOutput>false</isOutput>
+        <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>
         <name>newCaseStepRecord</name>
@@ -417,20 +536,6 @@
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Case_Step__c</objectType>
-    </variables>
-    <variables>
-        <name>orderedCaseStatusCSV</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>Output</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>PlanStepRecord</name>
@@ -457,43 +562,7 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <description>can be &quot;AdHoc&quot; or &quot;Standard&quot;. A Standard request is made through the plan management flows, generally by an admin. It creates a &#39;permanent&#39; Plan Step that will be used for all subsequent Case Plans. AdHoc steps are added by a user to their current Case Plan.</description>
-        <name>requestType</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
         <name>SelectedApprovalProcessStepId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>selectedCaseStatus</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>selectedFlowName</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>selectedParent</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>StepName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

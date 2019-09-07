@@ -389,25 +389,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>screenSpecifyEntryCriteria</name>
-        <label>Specify Entry Criteria</label>
-        <locationX>183</locationX>
-        <locationY>236</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Get_Picklist_Values</targetReference>
-        </connector>
-        <fields>
-            <name>dispSpecifyEntryCriteria</name>
-            <fieldText>&lt;p&gt;Specify Entry Criteria&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
         <name>Selected_Error_Message</name>
         <label>Selected Error Message</label>
         <locationX>368</locationX>
@@ -426,7 +407,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
-    <startElementReference>screenSpecifyEntryCriteria</startElementReference>
+    <startElementReference>Specify_Entry_Criteria</startElementReference>
     <status>Draft</status>
     <subflows>
         <name>Manage_Specific_Step</name>
@@ -471,6 +452,16 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
                 <elementReference>curApprovalProcessSteps</elementReference>
             </value>
         </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Specify_Entry_Criteria</name>
+        <label>Specify Entry Criteria</label>
+        <locationX>186</locationX>
+        <locationY>235</locationY>
+        <connector>
+            <targetReference>Get_Picklist_Values</targetReference>
+        </connector>
+        <flowName>AP_Specify_Entry_Criteria</flowName>
     </subflows>
     <variables>
         <description>extracted from the Step records so we can feed just the names to the dual list box</description>
