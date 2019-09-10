@@ -197,6 +197,27 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordLookups>
+        <description>Load the current ApprovalProcessDefinition</description>
+        <name>Get_ApprovalProcessDefinition</name>
+        <label>Get ApprovalProcessDefinition</label>
+        <locationX>193</locationX>
+        <locationY>49</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Specify_Entry_Criteria</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>ApprovalProcessDefinition__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+    </recordLookups>
     <screens>
         <name>Configure_Approval_Form</name>
         <label>Configure Approval Form</label>
@@ -391,8 +412,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
-    <startElementReference>Specify_Entry_Criteria</startElementReference>
-    <status>Draft</status>
+    <startElementReference>Get_ApprovalProcessDefinition</startElementReference>
+    <status>Active</status>
     <subflows>
         <name>Manage_Specific_Step</name>
         <label>Manage Specific Step</label>
@@ -448,6 +469,9 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <flowName>AP_Specify_Entry_Criteria</flowName>
         <inputAssignments>
             <name>curApprovalProcessDefinition</name>
+            <value>
+                <elementReference>Get_ApprovalProcessDefinition</elementReference>
+            </value>
         </inputAssignments>
     </subflows>
     <variables>
@@ -504,6 +528,14 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>This should be the ID of an ApprovalProcessDefinition__c</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
