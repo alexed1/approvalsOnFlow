@@ -62,14 +62,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </value>
     </choices>
     <choices>
-        <name>create_Choice</name>
-        <choiceText>Create New Approval Process</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <elementReference>createChoice</elementReference>
-        </value>
-    </choices>
-    <choices>
         <name>Delete</name>
         <choiceText>Delete</choiceText>
         <dataType>String</dataType>
@@ -91,14 +83,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <dataType>String</dataType>
         <value>
             <stringValue>Update</stringValue>
-        </value>
-    </choices>
-    <choices>
-        <name>edit_choice</name>
-        <choiceText>Edit Existing Approval Process</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <elementReference>EditApprovalProcess</elementReference>
         </value>
     </choices>
     <choices>
@@ -462,6 +446,9 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <targetReference>Get_Picklist_Values</targetReference>
         </connector>
         <flowName>AP_Specify_Entry_Criteria</flowName>
+        <inputAssignments>
+            <name>curApprovalProcessDefinition</name>
+        </inputAssignments>
     </subflows>
     <variables>
         <description>extracted from the Step records so we can feed just the names to the dual list box</description>
@@ -479,16 +466,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>ApprovalProcessColumns</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <value>
-            <stringValue>Name,Name,text;</stringValue>
-        </value>
-    </variables>
-    <variables>
         <name>ApprovalProcessStepColumnHeaders</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -499,28 +476,10 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </value>
     </variables>
     <variables>
-        <name>createChoice</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <value>
-            <stringValue>&#39;Create&#39;</stringValue>
-        </value>
-    </variables>
-    <variables>
         <name>curApprovalProcessDefinition</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
-        <isOutput>false</isOutput>
-        <objectType>ApprovalProcessDefinition__c</objectType>
-    </variables>
-    <variables>
-        <name>curApprovalProcessDefinitions</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ApprovalProcessDefinition__c</objectType>
     </variables>
@@ -541,23 +500,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>
-        <name>EditApprovalProcess</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <value>
-            <stringValue>Edit</stringValue>
-        </value>
-    </variables>
-    <variables>
-        <name>Message</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
         <name>Output</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -570,20 +512,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>SelectedId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-    </variables>
-    <variables>
-        <name>SelectedItems</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
         <isOutput>true</isOutput>
     </variables>
     <variables>
