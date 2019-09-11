@@ -382,7 +382,7 @@
         <showHeader>true</showHeader>
     </screens>
     <startElementReference>Specify_Step_Criteria</startElementReference>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>curApprovalProcessDefinition</name>
         <dataType>SObject</dataType>
@@ -395,14 +395,6 @@
         <name>curApprovalProcessStepDefinition</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-        <objectType>ApprovalProcessStepDefinition__c</objectType>
-    </variables>
-    <variables>
-        <name>curApprovalProcessStepDefinitions</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
         <objectType>ApprovalProcessStepDefinition__c</objectType>
