@@ -182,6 +182,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <label>No Submitter Selected</label>
         </rules>
     </decisions>
+    <description>removed automatic reference</description>
     <interviewLabel>AP Edit Approval Processes {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Edit Approval Processes</label>
     <processMetadataValues>
@@ -215,6 +216,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             </value>
         </filters>
         <object>ApprovalProcessDefinition__c</object>
+        <outputReference>retrievedApprovalProcessDefinition</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>Name</queriedFields>
     </recordLookups>
@@ -470,7 +472,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <inputAssignments>
             <name>curApprovalProcessDefinition</name>
             <value>
-                <elementReference>Get_ApprovalProcessDefinition</elementReference>
+                <elementReference>retrievedApprovalProcessDefinition</elementReference>
             </value>
         </inputAssignments>
     </subflows>
@@ -545,6 +547,14 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>retrievedApprovalProcessDefinition</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ApprovalProcessDefinition__c</objectType>
     </variables>
     <variables>
         <name>selectedStepNames</name>
