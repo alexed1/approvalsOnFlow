@@ -3,14 +3,11 @@
     <assignments>
         <name>Assign_Display_Type_Expression_Builder</name>
         <label>Assign Display Type &quot;Expression Builder&quot;</label>
-        <locationX>1268</locationX>
-        <locationY>225</locationY>
+        <locationX>1199</locationX>
+        <locationY>326</locationY>
         <assignmentItems>
-            <assignToReference>$Flow.CurrentStage</assignToReference>
+            <assignToReference>placeholderVar</assignToReference>
             <operator>Assign</operator>
-            <value>
-                <stringValue>placeholder</stringValue>
-            </value>
         </assignmentItems>
         <connector>
             <targetReference>Assign_Formula_String</targetReference>
@@ -22,7 +19,7 @@
         <locationX>1261</locationX>
         <locationY>61</locationY>
         <assignmentItems>
-            <assignToReference>$Flow.CurrentStage</assignToReference>
+            <assignToReference>placeholderVar</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>placeholder</stringValue>
@@ -39,7 +36,7 @@
         <locationX>1494</locationX>
         <locationY>57</locationY>
         <assignmentItems>
-            <assignToReference>$Flow.CurrentStage</assignToReference>
+            <assignToReference>placeholderVar</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>placeholder</stringValue>
@@ -50,60 +47,60 @@
         </connector>
     </assignments>
     <assignments>
+        <name>assignment2</name>
+        <label>Mode 2</label>
+        <locationX>824</locationX>
+        <locationY>144</locationY>
+        <assignmentItems>
+            <assignToReference>placeholderVar</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>placeholder</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Set_EntryCriteriaDisplayType</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assignment3</name>
+        <label>Mode 3</label>
+        <locationX>883</locationX>
+        <locationY>298</locationY>
+        <assignmentItems>
+            <assignToReference>placeholderVar</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>placeholder</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Set_EntryCriteriaDisplayType</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assignment4</name>
+        <label>Mode 4</label>
+        <locationX>947</locationX>
+        <locationY>419</locationY>
+        <assignmentItems>
+            <assignToReference>placeholderVar</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>placeholder</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Set_EntryCriteriaDisplayType</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>assignment_1</name>
         <label>Mode 1</label>
         <locationX>824</locationX>
         <locationY>38</locationY>
         <assignmentItems>
-            <assignToReference>$Flow.CurrentStage</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>placeholder</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_EntryCriteriaDisplayType</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>assignment_1_0</name>
-        <label>Mode 2</label>
-        <locationX>824</locationX>
-        <locationY>144</locationY>
-        <assignmentItems>
-            <assignToReference>$Flow.CurrentStage</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>placeholder</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_EntryCriteriaDisplayType</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>assignment_1_0_0</name>
-        <label>Mode 3</label>
-        <locationX>893</locationX>
-        <locationY>311</locationY>
-        <assignmentItems>
-            <assignToReference>$Flow.CurrentStage</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>placeholder</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_EntryCriteriaDisplayType</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>assignment_1_0_0_0</name>
-        <label>Mode 4</label>
-        <locationX>948</locationX>
-        <locationY>419</locationY>
-        <assignmentItems>
-            <assignToReference>$Flow.CurrentStage</assignToReference>
+            <assignToReference>placeholderVar</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>placeholder</stringValue>
@@ -183,14 +180,14 @@
         <locationX>458</locationX>
         <locationY>51</locationY>
         <defaultConnector>
-            <targetReference>assignment_1_0_0_0</targetReference>
+            <targetReference>assignment4</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>EnterIfCriteriaTrueElseApprove</defaultConnectorLabel>
         <rules>
             <name>outcomeAlwaysEnter</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Flow.CurrentStage</leftValueReference>
+                <leftValueReference>placeholderVar</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>placeholder</stringValue>
@@ -205,14 +202,14 @@
             <name>enterIfCriteriaTrueElseSkip</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Flow.CurrentStage</leftValueReference>
+                <leftValueReference>placeholderVar</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>placeholder</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>assignment_1_0</targetReference>
+                <targetReference>assignment2</targetReference>
             </connector>
             <label>enterIfCriteriaTrueElseSkip</label>
         </rules>
@@ -220,14 +217,14 @@
             <name>enterIfCriteriaTrueElseReject</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Flow.CurrentStage</leftValueReference>
+                <leftValueReference>placeholderVar</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>placeholder</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>assignment_1_0_0</targetReference>
+                <targetReference>assignment3</targetReference>
             </connector>
             <label>enterIfCriteriaTrueElseReject</label>
         </rules>
@@ -245,7 +242,7 @@
             <name>Formula_Builder</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Flow.CurrentStage</leftValueReference>
+                <leftValueReference>placeholderVar</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>placeholder</stringValue>
@@ -385,7 +382,7 @@
         <showHeader>true</showHeader>
     </screens>
     <startElementReference>Specify_Step_Criteria</startElementReference>
-    <status>InvalidDraft</status>
+    <status>Active</status>
     <variables>
         <name>curApprovalProcessDefinition</name>
         <dataType>SObject</dataType>
@@ -444,6 +441,13 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>placeholderVar</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
 </Flow>
