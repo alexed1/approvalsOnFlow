@@ -1,0 +1,44 @@
+<template>
+    <template if:true={showMarkup}>
+        <template if:true={errorMessage}>
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
+                <h2> {errorMessage} </h2>
+            </div>
+        </template>
+        <template if:false={errorMessage}>
+            <lightning-card title={cardTitle}>
+
+                <div class="slds-m-horizontal_medium">
+                    <lightning-tabset variant="scoped" active-tab-value={defaultTab}>
+                        <template if:true={showExistingTab}>
+                            <lightning-tab label={editTabName} value={editTabName}>
+                                <c-view-edit-members
+                                        my-record-id={myRecordId}
+                                        supported-edit-capabilities={supportedEditCapabilities}
+                                        existing-members={existingMembers}
+                                        manager-name={managerName}
+                                        supported-buttons={supportedButtons}
+                                        onsearchrefresh={refresh}
+                                ></c-view-edit-members>
+                            </lightning-tab>
+                        </template>
+                        <lightning-tab label={addTabName} value={addTabName}>
+                            <c-add-new-members
+                                    member-params={memberParams}
+                                    my-record-id={myRecordId}
+                                    available-object-types={availableObjectTypes}
+                                    supported-add-capabilities={supportedAddCapabilities}
+                                    manager-name={managerName}
+                                    existing-members={existingMembers}
+                                    supported-buttons={supportedButtons}
+                                    onsearchrefresh={refresh}
+                            ></c-add-new-members>
+                        </lightning-tab>
+
+                    </lightning-tabset>
+                </div>
+
+            </lightning-card>
+        </template>
+    </template>
+</template>
