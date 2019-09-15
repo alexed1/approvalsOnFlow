@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Approval_Process_Instance__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Approval Process Instance</label>
+    <referenceTo>AP_ApprovalProcessInstance__c</referenceTo>
+    <relationshipLabel>AP_ApprovalInstanceHistoryItems</relationshipLabel>
+    <relationshipName>AP_ApprovalInstanceHistoryItems</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

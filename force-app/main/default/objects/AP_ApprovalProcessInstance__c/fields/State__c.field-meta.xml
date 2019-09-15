@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>State__c</fullName>
+    <description>Overall State of the Approval Instance</description>
+    <externalId>false</externalId>
+    <label>State</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Unstarted</fullName>
+                <default>false</default>
+                <label>Unstarted</label>
+            </value>
+            <value>
+                <fullName>Initiated</fullName>
+                <default>false</default>
+                <label>Initiated</label>
+            </value>
+            <value>
+                <fullName>In Step</fullName>
+                <default>false</default>
+                <label>In Step</label>
+            </value>
+            <value>
+                <fullName>Resolved-Approved</fullName>
+                <default>false</default>
+                <label>Resolved-Approved</label>
+            </value>
+            <value>
+                <fullName>Resolved-Rejected</fullName>
+                <default>false</default>
+                <label>Resolved-Rejected</label>
+            </value>
+            <value>
+                <fullName>Resolved-Recalled</fullName>
+                <default>false</default>
+                <label>Resolved-Recalled</label>
+            </value>
+            <value>
+                <fullName>Closed</fullName>
+                <default>false</default>
+                <label>Closed</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
