@@ -5,7 +5,6 @@
     <externalId>false</externalId>
     <label>Approval Process Step Instance</label>
     <referenceTo>ApprovalProcessStepInstance__c</referenceTo>
-    <relationshipLabel>Approval Process Step Tasks</relationshipLabel>
     <relationshipName>Approval_Process_Step_Tasks</relationshipName>
     <required>false</required>
     <trackTrending>false</trackTrending>

@@ -4,7 +4,7 @@
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
     <label>Approval Process Instance</label>
-    <referenceTo>AP_ApprovalProcessInstance__c</referenceTo>
+    <referenceTo>ApprovalProcessInstance__c</referenceTo>
     <relationshipLabel>AP_ApprovalInstanceHistoryItems</relationshipLabel>
     <relationshipName>AP_ApprovalInstanceHistoryItems</relationshipName>
     <required>false</required>

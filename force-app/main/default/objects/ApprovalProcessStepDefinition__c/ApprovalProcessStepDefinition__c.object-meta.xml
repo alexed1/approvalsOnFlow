@@ -155,12 +155,12 @@
     <enableSearch>true</enableSearch>
     <enableSharing>false</enableSharing>
     <enableStreamingApi>false</enableStreamingApi>
-    <label>ApprovalProcessStepDefinition</label>
+    <label>AP_ApprovalProcessStepDefinition</label>
     <nameField>
         <label>ApprovalProcessStepDefinition Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>ApprovalProcessStepDefinitions</pluralLabel>
+    <pluralLabel>AP_ApprovalProcessStepDefinitions</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <startsWith>Vowel</startsWith>

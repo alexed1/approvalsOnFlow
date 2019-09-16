@@ -152,13 +152,13 @@
     <enableSearch>true</enableSearch>
     <enableSharing>false</enableSharing>
     <enableStreamingApi>false</enableStreamingApi>
-    <label>ApprovalProcessStepInstance</label>
+    <label>AP_ApprovalProcessStepInstance</label>
     <nameField>
         <displayFormat>{0000000}</displayFormat>
         <label>ApprovalProcessStepInstance Number</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>ApprovalProcessStepInstances</pluralLabel>
+    <pluralLabel>AP_ApprovalProcessStepInstances</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <startsWith>Vowel</startsWith>

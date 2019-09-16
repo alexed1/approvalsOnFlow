@@ -4,7 +4,6 @@
     <externalId>false</externalId>
     <label>ApprovalProcessDefinition</label>
     <referenceTo>ApprovalProcessDefinition__c</referenceTo>
-    <relationshipLabel>Approval Process Step Definitions</relationshipLabel>
     <relationshipName>ApprovalProcessStepDefinitions</relationshipName>
     <relationshipOrder>0</relationshipOrder>
     <reparentableMasterDetail>false</reparentableMasterDetail>

@@ -4,8 +4,7 @@
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
     <label>Parent Approval Process Instance</label>
-    <referenceTo>AP_ApprovalProcessInstance__c</referenceTo>
-    <relationshipLabel>Approval Process Step Tasks</relationshipLabel>
+    <referenceTo>ApprovalProcessInstance__c</referenceTo>
     <relationshipName>Approval_Process_Step_Tasks</relationshipName>
     <required>false</required>
     <trackTrending>false</trackTrending>

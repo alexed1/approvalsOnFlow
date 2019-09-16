@@ -138,6 +138,11 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
@@ -150,12 +155,12 @@
     <enableSearch>true</enableSearch>
     <enableSharing>false</enableSharing>
     <enableStreamingApi>false</enableStreamingApi>
-    <label>ApprovalProcessDefinition</label>
+    <label>AP_ApprovalProcessDefinition</label>
     <nameField>
         <label>ApprovalProcessDefinition Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>ApprovalProcessDefinitions</pluralLabel>
+    <pluralLabel>AP_ApprovalProcessDefinitions</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <startsWith>Vowel</startsWith>

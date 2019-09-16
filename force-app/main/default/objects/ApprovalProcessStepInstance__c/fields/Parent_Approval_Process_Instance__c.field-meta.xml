@@ -3,8 +3,7 @@
     <fullName>Parent_Approval_Process_Instance__c</fullName>
     <externalId>false</externalId>
     <label>Parent Approval Process Instance</label>
-    <referenceTo>AP_ApprovalProcessInstance__c</referenceTo>
-    <relationshipLabel>ApprovalProcessStepInstances</relationshipLabel>
+    <referenceTo>ApprovalProcessInstance__c</referenceTo>
     <relationshipName>ApprovalProcessStepInstances</relationshipName>
     <relationshipOrder>0</relationshipOrder>
     <reparentableMasterDetail>false</reparentableMasterDetail>

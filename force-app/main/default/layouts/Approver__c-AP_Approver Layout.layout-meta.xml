@@ -8,7 +8,7 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>AP_StepDefinition__c</field>
+                <field>Approval_Process_Step_Definition__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
@@ -47,7 +47,7 @@
         <style>CustomLinks</style>
     </layoutSections>
     <miniLayout>
-        <fields>AP_StepDefinition__c</fields>
+        <fields>Approval_Process_Step_Definition__c</fields>
     </miniLayout>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

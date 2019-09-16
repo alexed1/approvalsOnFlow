@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- State --></label>
+    <name>State__c</name>
+    <picklistValues>
+        <masterLabel>Closed</masterLabel>
+        <translation><!-- Closed --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>In Step</masterLabel>
+        <translation><!-- In Step --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Initiated</masterLabel>
+        <translation><!-- Initiated --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Resolved-Approved</masterLabel>
+        <translation><!-- Resolved-Approved --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Resolved-Recalled</masterLabel>
+        <translation><!-- Resolved-Recalled --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Resolved-Rejected</masterLabel>
+        <translation><!-- Resolved-Rejected --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Unstarted</masterLabel>
+        <translation><!-- Unstarted --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

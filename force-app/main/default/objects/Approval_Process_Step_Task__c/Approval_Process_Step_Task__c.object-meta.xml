@@ -152,13 +152,13 @@
     <enableSearch>true</enableSearch>
     <enableSharing>false</enableSharing>
     <enableStreamingApi>false</enableStreamingApi>
-    <label>Approval Process Step Task</label>
+    <label>AP_Approval Process Step Task</label>
     <nameField>
         <displayFormat>{000000}</displayFormat>
         <label>Approval Process Step Task Number</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Approval Process Step Tasks</pluralLabel>
+    <pluralLabel>AP_Approval Process Step Tasks</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <startsWith>Vowel</startsWith>

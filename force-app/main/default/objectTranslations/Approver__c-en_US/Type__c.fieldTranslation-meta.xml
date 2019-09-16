@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- Type --></label>
+    <name>Type__c</name>
+    <picklistValues>
+        <masterLabel>Adhoc</masterLabel>
+        <translation><!-- Adhoc --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Queue</masterLabel>
+        <translation><!-- Queue --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>RelatedUserField</masterLabel>
+        <translation><!-- RelatedUserField --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>User</masterLabel>
+        <translation><!-- User --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>UserHierarchyField</masterLabel>
+        <translation><!-- UserHierarchyField --></translation>
+    </picklistValues>
+</CustomFieldTranslation>
