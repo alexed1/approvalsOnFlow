@@ -9,27 +9,27 @@
             <lightning-card title={cardTitle}>
 
                 <div class="slds-m-horizontal_medium">
-                    <lightning-tabset variant="scoped" active-tab-value={defaultTab}>
+                    <lightning-tabset variant="scoped" active-tab-value= {defaultTab}>
                         <template if:true={showExistingTab}>
-                            <lightning-tab label={editTabName} value={editTabName}>
-                                <c-view-edit-members
-                                        my-record-id={myRecordId}
-                                        supported-edit-capabilities={supportedEditCapabilities}
-                                        existing-members={existingMembers}
-                                        manager-name={managerName}
-                                        supported-buttons={supportedButtons}
-                                        onsearchrefresh={refresh}
-                                ></c-view-edit-members>
-                            </lightning-tab>
+                        <lightning-tab label={editTabName} value={editTabName}>
+                            <c-view-edit-members
+                                    record-id={recordId}
+                                    supported-edit-capabilities={supportedEditCapabilities}
+                                    existing-members= {existingMembers}
+                                    manager-name={managerName}
+                                    supported-buttons={supportedButtons}
+                                    onsearchrefresh={refresh}
+                            ></c-view-edit-members>
+                        </lightning-tab>
                         </template>
                         <lightning-tab label={addTabName} value={addTabName}>
                             <c-add-new-members
                                     member-params={memberParams}
-                                    my-record-id={myRecordId}
+                                    record-id={recordId}
                                     available-object-types={availableObjectTypes}
                                     supported-add-capabilities={supportedAddCapabilities}
                                     manager-name={managerName}
-                                    existing-members={existingMembers}
+                                    existing-members= {existingMembers}
                                     supported-buttons={supportedButtons}
                                     onsearchrefresh={refresh}
                             ></c-add-new-members>

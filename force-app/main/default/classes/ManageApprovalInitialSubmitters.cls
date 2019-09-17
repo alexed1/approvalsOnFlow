@@ -20,15 +20,11 @@ global with sharing class ManageApprovalInitialSubmitters implements RoleManager
     }
 
     private static String add(Id userOrGroupID, Id recordId, String type) {
-        System.debug('userOrGroupID:::'+userOrGroupID);
-        System.debug('recordId:::'+recordId);
-        System.debug('type:::'+type);
         AP_AllowedSubmitter__c newSubmitter = new AP_AllowedSubmitter__c(
                 Name = userOrGroupID,
                 Allowed_Submitters__c = recordId,
                 Type__c = type);
         try {
-            System.debug('newSubmitter:::'+newSubmitter);
             insert newSubmitter;
             return JSON.serialize(newSubmitter);
         } catch (Exception ex) {
@@ -37,8 +33,6 @@ global with sharing class ManageApprovalInitialSubmitters implements RoleManager
     }
 
     private static String remove(Id userOrGroupID, Id recordId) {
-        System.debug('userOrGroupID:::'+userOrGroupID);
-        System.debug('recordId:::'+recordId);
         try {
             delete [SELECT Id FROM AP_AllowedSubmitter__c WHERE Name = :userOrGroupID AND Allowed_Submitters__c = :recordId];
             return 'SUCCESS';

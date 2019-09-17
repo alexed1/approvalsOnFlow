@@ -1,7 +1,7 @@
 import {LightningElement, track, api} from 'lwc';
 
 export default class listBox extends LightningElement {
-
+    @track label = 'Select Options';
     @api values = [];
     @api selectedRecords = [];
 

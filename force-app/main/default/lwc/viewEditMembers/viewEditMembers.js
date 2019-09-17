@@ -9,7 +9,7 @@ import {
 import {logger, logError} from 'c/lwcLogger';
 
 export default class ViewEditMembers extends LightningElement {
-    @api myRecordId;
+    @api recordId;
     @api supportedEditCapabilities;
     @api managerName;
     @api existingMembers;
@@ -48,7 +48,7 @@ export default class ViewEditMembers extends LightningElement {
         //logger(this.log, this.source, 'row action called from datatable', event.detail);
         let actionParams = JSON.stringify({
             'userOrGroupID': event.detail.row.recordId,
-            'recordId': this.myRecordId
+            'recordId': this.recordId
         });
 
         try {

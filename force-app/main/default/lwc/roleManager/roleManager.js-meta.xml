@@ -18,6 +18,7 @@
             <property name="availableObjectTypes" type="String"></property>
         </targetConfig>
         <targetConfig targets="lightning__FlowScreen">
+            <property name="recordId" type="String" required="true" default="{!recordId}"></property>
             <property name="myRecordId" type="String" required="true" default="{!recordId}"></property>
             <property name="editTabName" type="String"></property>
             <property name="addTabName" type="String"></property>

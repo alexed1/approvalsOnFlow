@@ -18,6 +18,7 @@ import {
 
 
 export default class RoleManager extends LightningElement {
+    @api recordId;
     @api myRecordId;
     @api editTabName;
     @api addTabName;
@@ -53,7 +54,7 @@ export default class RoleManager extends LightningElement {
         }
     }
 
-    @wire(getExistingMembers, {managerName: '$managerName', recordId: '$myRecordId'})
+    @wire(getExistingMembers, {managerName: '$managerName', recordId: '$recordId'})
     _getExistingMembers(result) {
         this._refreshable = result;
         if (result.error) {

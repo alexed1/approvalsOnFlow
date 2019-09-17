@@ -1,11 +1,11 @@
 global with sharing class ManageApprovalSteps {
 
     @AuraEnabled(cacheable=true)
-    public static List<SearchUtils.Member> getApprovalProcessSteps(Id approvalProcessId) {
+    public static List<Member> getApprovalProcessSteps(Id approvalProcessId) {
         List<ApprovalProcessStepDefinition__c> steps = [SELECT Id, Name FROM ApprovalProcessStepDefinition__c WHERE ApprovalProcessDefinition__c = :approvalProcessId ORDER BY Order__c ASC];
-        List<SearchUtils.Member> members = new List<SearchUtils.Member>();
+        List<Member> members = new List<Member>();
         for (ApprovalProcessStepDefinition__c step : steps) {
-            members.add(new SearchUtils.Member(step.Name, step.Id));
+            members.add(new Member(step.Name, step.Id));
         }
 
         return members;
@@ -14,5 +14,14 @@ global with sharing class ManageApprovalSteps {
     @AuraEnabled
     public static void saveApprovalSteps(List<ApprovalProcessStepDefinition__c> appSteps) {
         update appSteps;
+    }
+
+    global class Member {
+        @AuraEnabled global String label;
+        @AuraEnabled global String value;
+        public Member(String label, String value) {
+            this.label = label;
+            this.value = value;
+        }
     }
 }

@@ -4,4 +4,8 @@
     <description>listBox</description>
     <isExposed>true</isExposed>
     <masterLabel>listBox</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+        <target>lightning__RecordPage</target>
+    </targets>
 </LightningComponentBundle>

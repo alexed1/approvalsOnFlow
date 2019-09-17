@@ -32,7 +32,7 @@ const typeMapping = {
 
 export default class addNewMembers extends LightningElement {
     @api log = false;
-    @api myRecordId;
+    @api recordId;
 
     //'User, Queue'
     @api availableObjectTypes;
@@ -150,7 +150,7 @@ export default class addNewMembers extends LightningElement {
     async handleRowAction(event) {
         let actionParams = JSON.stringify({
             'userOrGroupID': event.detail.row.value,
-            'recordId': this.myRecordId,
+            'recordId': this.recordId,
             'type': this.selectedType,
             'memberParams': this.memberParams
         });
