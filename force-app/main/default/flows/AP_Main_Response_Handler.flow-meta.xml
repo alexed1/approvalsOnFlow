@@ -60,6 +60,7 @@
             </value>
         </filters>
         <object>Approval_Process_Step_Task__c</object>
+        <outputReference>curApprovalProcessStepTask</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>Approval_Process_Step_Instance__c</queriedFields>
         <queriedFields>Assigned_User__c</queriedFields>
@@ -68,8 +69,22 @@
         <queriedFields>Parent_Approval_Process_Instance__c</queriedFields>
         <queriedFields>Status__c</queriedFields>
     </recordLookups>
-    <startElementReference>Get_Step_Task</startElementReference>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Get_Step_Task</targetReference>
+        </connector>
+    </start>
     <status>Draft</status>
+    <variables>
+        <name>curApprovalProcessStepTask</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Approval_Process_Step_Task__c</objectType>
+    </variables>
     <variables>
         <name>CurrentStepTaskId</name>
         <dataType>String</dataType>

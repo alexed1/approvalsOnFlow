@@ -7,7 +7,7 @@
         <locationX>839</locationX>
         <locationY>53</locationY>
         <assignmentItems>
-            <assignToReference>Get_Approval_Process_Step_Task.Status__c</assignToReference>
+            <assignToReference>curApprovalProcessStepTask.Status__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>placeholderFromButtonBar</elementReference>
@@ -69,13 +69,13 @@
         <inputAssignments>
             <field>ApprovalProcessStepTaskId__c</field>
             <value>
-                <elementReference>Get_Approval_Process_Step_Task.Id</elementReference>
+                <elementReference>curApprovalProcessStepTask.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Assigned_User__c</field>
             <value>
-                <elementReference>Get_Approval_Process_Step_Task.Assigned_User__c</elementReference>
+                <elementReference>curApprovalProcessStepTask.Assigned_User__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -87,7 +87,7 @@
         <inputAssignments>
             <field>Original_User__c</field>
             <value>
-                <elementReference>Get_Approval_Process_Step_Task.Original_Assignee__c</elementReference>
+                <elementReference>curApprovalProcessStepTask.Original_Assignee__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -111,10 +111,11 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_Approval_Process_Step_Task.Parent_Approval_Process_Instance__c</elementReference>
+                <elementReference>curApprovalProcessStepTask.Id</elementReference>
             </value>
         </filters>
         <object>ApprovalProcessInstance__c</object>
+        <outputReference>curApprovalProcessInstance</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>ApprovalProcessDefinition__c</queriedFields>
         <queriedFields>Current_Approval_Step__c</queriedFields>
@@ -132,10 +133,11 @@
             <field>Approval_Process_Instance__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_Approval_Process_Instance.Id</elementReference>
+                <elementReference>curApprovalProcessInstance.Id</elementReference>
             </value>
         </filters>
         <object>ApprovalInstanceHistory__c</object>
+        <outputReference>curApprovalProcessHistoryItem</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>Comments__c</queriedFields>
         <queriedFields>Status__c</queriedFields>
@@ -162,6 +164,7 @@
             </value>
         </filters>
         <object>Approval_Process_Step_Task__c</object>
+        <outputReference>curApprovalProcessStepTask</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>Approval_Process_Step_Instance__c</queriedFields>
         <queriedFields>Assigned_User__c</queriedFields>
@@ -176,7 +179,7 @@
         <connector>
             <targetReference>Create_History_Item</targetReference>
         </connector>
-        <inputReference>Get_Approval_Process_Step_Task</inputReference>
+        <inputReference>curApprovalProcessStepTask</inputReference>
     </recordUpdates>
     <screens>
         <name>Approve_or_Reject_Record</name>
@@ -195,7 +198,7 @@
     <screens>
         <name>screenFinishMessage</name>
         <label>screenFinishMessage</label>
-        <locationX>994</locationX>
+        <locationX>1030</locationX>
         <locationY>250</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -208,14 +211,44 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
-    <startElementReference>Get_Approval_Process_Step_Task</startElementReference>
-    <status>Active</status>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Get_Approval_Process_Step_Task</targetReference>
+        </connector>
+    </start>
+    <status>Draft</status>
     <variables>
         <name>ApprovalCandidateRecordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>curApprovalProcessHistoryItem</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ApprovalInstanceHistory__c</objectType>
+    </variables>
+    <variables>
+        <name>curApprovalProcessInstance</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ApprovalProcessInstance__c</objectType>
+    </variables>
+    <variables>
+        <name>curApprovalProcessStepTask</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Approval_Process_Step_Task__c</objectType>
     </variables>
     <variables>
         <description>This is the specific task that was assigned to a specific approver for a specific instance of step for a specific instance of an approval process</description>
