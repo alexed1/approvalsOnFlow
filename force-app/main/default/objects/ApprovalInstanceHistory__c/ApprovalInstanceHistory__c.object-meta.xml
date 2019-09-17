@@ -155,7 +155,7 @@
     <label>AP_ApprovalInstanceHistoryItem</label>
     <nameField>
         <displayFormat>{000000}</displayFormat>
-        <label>AP_ApprovalHistory Name</label>
+        <label>ApprovalInstanceHistory Name</label>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>AP_ApprovalInstanceHistoryItems</pluralLabel>

@@ -7,47 +7,47 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AP_ApprovalHistory__c.ApprovalProcessStepInstance__c</field>
+        <field>ApprovalInstanceHistory__c.ApprovalProcessStepInstance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AP_ApprovalHistory__c.ApprovalProcessStepTaskId__c</field>
+        <field>ApprovalInstanceHistory__c.ApprovalProcessStepTaskId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AP_ApprovalHistory__c.Approval_Process_Instance__c</field>
+        <field>ApprovalInstanceHistory__c.Approval_Process_Instance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AP_ApprovalHistory__c.Assigned_User__c</field>
+        <field>ApprovalInstanceHistory__c.Assigned_User__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AP_ApprovalHistory__c.Comments__c</field>
+        <field>ApprovalInstanceHistory__c.Comments__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AP_ApprovalHistory__c.Original_User__c</field>
+        <field>ApprovalInstanceHistory__c.Original_User__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AP_ApprovalProcessInstance__c.Current_Approval_Step__c</field>
+        <field>ApprovalProcessInstance__c.Current_Approval_Step__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AP_ApprovalProcessInstance__c.State__c</field>
+        <field>ApprovalProcessInstance__c.State__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AP_Approver__c.Type__c</field>
+        <field>Approver__c.Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -237,7 +237,7 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>AP_ApprovalHistory__c</object>
+        <object>ApprovalInstanceHistory__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -246,7 +246,7 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>AP_ApprovalProcessInstance__c</object>
+        <object>ApprovalProcessInstance__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -255,7 +255,7 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>AP_Approver__c</object>
+        <object>Approver__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

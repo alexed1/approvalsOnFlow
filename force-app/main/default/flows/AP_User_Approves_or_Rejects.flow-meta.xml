@@ -42,7 +42,7 @@
             <label>Yes</label>
         </rules>
     </decisions>
-    <interviewLabel>AP {!$Flow.CurrentDateTime}</interviewLabel>
+    <interviewLabel>AP User Approves or Rejects {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP User Approves or Rejects</label>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -96,7 +96,7 @@
                 <elementReference>placeholderFromButtonBar</elementReference>
             </value>
         </inputAssignments>
-        <object>AP_ApprovalHistory__c</object>
+        <object>ApprovalInstanceHistory__c</object>
     </recordCreates>
     <recordLookups>
         <name>Get_Approval_Process_Instance</name>
@@ -114,7 +114,7 @@
                 <elementReference>Get_Approval_Process_Step_Task.Parent_Approval_Process_Instance__c</elementReference>
             </value>
         </filters>
-        <object>AP_ApprovalProcessInstance__c</object>
+        <object>ApprovalProcessInstance__c</object>
         <queriedFields>Id</queriedFields>
         <queriedFields>ApprovalProcessDefinition__c</queriedFields>
         <queriedFields>Current_Approval_Step__c</queriedFields>
@@ -135,7 +135,7 @@
                 <elementReference>Get_Approval_Process_Instance.Id</elementReference>
             </value>
         </filters>
-        <object>AP_ApprovalHistory__c</object>
+        <object>ApprovalInstanceHistory__c</object>
         <queriedFields>Id</queriedFields>
         <queriedFields>Comments__c</queriedFields>
         <queriedFields>Status__c</queriedFields>
@@ -209,7 +209,7 @@
         <showHeader>true</showHeader>
     </screens>
     <startElementReference>Get_Approval_Process_Step_Task</startElementReference>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>ApprovalCandidateRecordId</name>
         <dataType>String</dataType>

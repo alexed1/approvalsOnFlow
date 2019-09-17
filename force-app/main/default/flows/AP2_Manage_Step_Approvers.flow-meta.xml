@@ -213,8 +213,8 @@
             <label>Set Manually</label>
         </rules>
     </decisions>
-    <interviewLabel>AP Manage Step Approvers {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>AP Manage Step Approvers</label>
+    <interviewLabel>AP2 Manage Step Approvers {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>AP2 Manage Step Approvers</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -244,7 +244,7 @@
                 <elementReference>curStepId</elementReference>
             </value>
         </filters>
-        <object>AP_Approver__c</object>
+        <object>Approver__c</object>
         <outputReference>curApprover</outputReference>
         <queriedFields>Id</queriedFields>
     </recordLookups>
@@ -265,7 +265,7 @@
                 <elementReference>curApprovalStep.Id</elementReference>
             </value>
         </filters>
-        <object>AP_Approver__c</object>
+        <object>Approver__c</object>
         <outputReference>CurApprovers</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>Type__c</queriedFields>
@@ -353,7 +353,7 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
-        <objectType>AP_Approver__c</objectType>
+        <objectType>Approver__c</objectType>
     </variables>
     <variables>
         <name>CurApprovers</name>
@@ -361,7 +361,7 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <objectType>AP_Approver__c</objectType>
+        <objectType>Approver__c</objectType>
     </variables>
     <variables>
         <name>curStepId</name>
