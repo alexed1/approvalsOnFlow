@@ -1,0 +1,33 @@
+<template>
+    <template if:true={data}>
+        <div class="slds-card slds-p-around--small">
+            <template for:each={data} for:item="curHistory">
+                <div key={curHistory.Id} class="slds-table--bordered slds-p-around--xxx-small">
+                    <lightning-layout class="step-header" multiple-rows="true">
+                        <lightning-layout-item  size="11" onclick={toggleStep}
+                                               data-id={curHistory.Id}>
+                            <lightning-icon icon-name={curHistory.iconName}
+                            ></lightning-icon>
+                            {curHistory.Comments__c}
+                        </lightning-layout-item>
+                        <lightning-layout-item size="1">
+                            <div class={curHistory.statusClass}>{curHistory.Status__c}</div>
+                        </lightning-layout-item>
+
+                        <template if:true={curHistory.selected}>
+                            <lightning-layout-item size="12">
+                                <lightning-datatable
+                                        onrowaction={handleRowAction}
+                                        key-field="Id"
+                                        data={curHistory.AP_ApprovalInstanceHistoryItems__r.records}
+                                        columns={columns}
+                                        hide-checkbox-column>
+                                </lightning-datatable>
+                            </lightning-layout-item>
+                        </template>
+                    </lightning-layout>
+                </div>
+            </template>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,11 @@
+<template>
+    <div class="slds-clearfix">
+        <div class={elementClass}>
+            <template for:each={buttons} for:item="button">
+                <lightning-button class="slds-p-around--x-small" key={button.label} label={button.label} variant={button.variant}
+                                  data-navigation={button.navigationDirective}
+                                  onclick={handleButtonClick}></lightning-button>
+            </template>
+        </div>
+    </div>
+</template>
