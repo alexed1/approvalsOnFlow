@@ -9,12 +9,52 @@
         <value>Your search found more than 200 results.  Keep typing to make it more specific</value>
     </labels>
     <labels>
+        <fullName>InvalidRecordIdMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>InvalidRecordIdMessage</shortDescription>
+        <value>The RoleManager component requires a valid recordId to apply changes</value>
+    </labels>
+    <labels>
+        <fullName>RoleDoesNotHaveGroup</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RoleDoesNotHaveGroup</shortDescription>
+        <value>Selected role does not have corresponding group.</value>
+    </labels>
+    <labels>
+        <fullName>CantReduceSharingLevelMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RoleDoesNotHaveGroup</shortDescription>
+        <value>You can’t reduce the Owner’s, Sharing Rule or an Implicit share access.</value>
+    </labels>
+    <labels>
+        <fullName>CannotBeSharedMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RoleDoesNotHaveGroup</shortDescription>
+        <value>The RoleManager component was unable to make that change to that User or Group. It may be restricted in some way.</value>
+    </labels>
+    <labels>
+        <fullName>NoSearchResultsMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>NoSearchResultsMessage</shortDescription>
+        <value>No results found.</value>
+    </labels>
+    <labels>
         <fullName>ButtonIsNotSupportedMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ButtonIsNotSupportedMessage</shortDescription>
-        <value>Following buttons are note supported: </value>
+        <value>Following buttons are not supported: </value>
     </labels>
     <labels>
         <fullName>SupportedButtonsEmptyMessage</fullName>
@@ -54,7 +94,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>OWDReadWrite</shortDescription>
-        <value>Sharing Settings must be private or public read/write to enable manual sharing</value>
+        <value>Sharing Settings must be private or public read only to enable manual sharing</value>
     </labels>
 
     <labels>

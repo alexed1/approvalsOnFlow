@@ -206,7 +206,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <locationY>49</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Specify_Entry_Criteria</targetReference>
+            <targetReference>Configure_Qualified_Submitters</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -257,7 +257,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <name>Configure_Qualified_Submitters</name>
         <label>Configure Qualified Submitters</label>
         <locationX>360</locationX>
-        <locationY>394</locationY>
+        <locationY>395</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -275,32 +275,53 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>SubmitterList</name>
-            <extensionName>c:dualListBoxFSC</extensionName>
+            <name>role_manager_initial_submitters</name>
+            <extensionName>c:roleManager</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
-                <name>label</name>
+                <name>availableObjectTypes</name>
                 <value>
-                    <stringValue>Select Allowed Submitters</stringValue>
+                    <stringValue>User</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>FullItemSetStringList</name>
+                <name>managerName</name>
                 <value>
-                    <elementReference>allSubmitterRoleStrings</elementReference>
+                    <stringValue>ManageApprovalInitialSubmitters</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>SelectedItemsStringList</name>
+                <name>supportedAddCapabilities</name>
                 <value>
-                    <elementReference>selectedSubmitterRoles</elementReference>
+                    <stringValue>Add</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>supportedEditCapabilities</name>
+                <value>
+                    <stringValue>Remove</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>retrievedApprovalProcessDefinition.Id</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>addTabName</name>
+                <value>
+                    <stringValue>Add Submitters</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>editTabName</name>
+                <value>
+                    <stringValue>Edit Submitters</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
-            <outputParameters>
-                <assignToReference>selectedSubmitterRoles</assignToReference>
-                <name>SelectedItemsStringList</name>
-            </outputParameters>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -414,8 +435,14 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
-    <startElementReference>Get_ApprovalProcessDefinition</startElementReference>
-    <status>Active</status>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Get_ApprovalProcessDefinition</targetReference>
+        </connector>
+    </start>
+    <status>Obsolete</status>
     <subflows>
         <name>Manage_Specific_Step</name>
         <label>Manage Specific Step</label>
@@ -463,8 +490,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <subflows>
         <name>Specify_Entry_Criteria</name>
         <label>Specify Entry Criteria</label>
-        <locationX>186</locationX>
-        <locationY>235</locationY>
+        <locationX>184</locationX>
+        <locationY>289</locationY>
         <connector>
             <targetReference>Get_Picklist_Values</targetReference>
         </connector>
@@ -538,7 +565,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <description>The action that ManagePlan flow wants ManageStep flow to carry out</description>
