@@ -35,6 +35,10 @@
                 <behavior>Edit</behavior>
                 <field>EntryCriteriaMode__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>ContextObjectTypeName__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
