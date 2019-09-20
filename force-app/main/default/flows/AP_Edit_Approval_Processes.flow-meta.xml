@@ -36,7 +36,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <name>Get_Selected_Step</name>
         <label>Get Selected Step</label>
         <locationX>1460</locationX>
-        <locationY>276</locationY>
+        <locationY>277</locationY>
         <actionName>GetFirstFromCollection</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -45,7 +45,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <inputParameters>
             <name>inputCollection</name>
             <value>
-                <elementReference>curApprovalProcessSteps</elementReference>
+                <elementReference>curApprovalProcessStepDefs</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -58,7 +58,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <choiceText>Add</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Create</stringValue>
+            <stringValue>Add</stringValue>
         </value>
     </choices>
     <choices>
@@ -160,8 +160,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <decisions>
         <name>Submitter_Selected</name>
         <label>Submitter Selected?</label>
-        <locationX>513</locationX>
-        <locationY>395</locationY>
+        <locationX>551</locationX>
+        <locationY>477</locationY>
         <defaultConnector>
             <targetReference>Notification_Templates</targetReference>
         </defaultConnector>
@@ -199,6 +199,29 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
+        <name>Get_ApprovalProcess_Step_Definitions</name>
+        <label>Get ApprovalProcess Step Definitions</label>
+        <locationX>1134</locationX>
+        <locationY>145</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Manage_Approval_Process_Steps</targetReference>
+        </connector>
+        <filters>
+            <field>ApprovalProcessDefinition__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curApprovalProcessDefinition.Id</elementReference>
+            </value>
+        </filters>
+        <object>ApprovalProcessStepDefinition__c</object>
+        <outputReference>curApprovalProcessStepDefs</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>ApprovalFlow_API_Name__c</queriedFields>
+        <queriedFields>RejectionFlow_API_Name__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <description>Load the current ApprovalProcessDefinition</description>
         <name>Get_ApprovalProcessDefinition</name>
         <label>Get ApprovalProcessDefinition</label>
@@ -212,7 +235,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>recordId</elementReference>
+                <elementReference>contextRecordId</elementReference>
             </value>
         </filters>
         <object>ApprovalProcessDefinition__c</object>
@@ -223,8 +246,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <screens>
         <name>Configure_Approval_Form</name>
         <label>Configure Approval Form</label>
-        <locationX>946</locationX>
-        <locationY>265</locationY>
+        <locationX>957</locationX>
+        <locationY>262</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -242,13 +265,13 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <screens>
         <name>Configure_Initial_Submitters</name>
         <label>Configure Initial Submitters</label>
-        <locationX>1095</locationX>
-        <locationY>265</locationY>
+        <locationX>1056</locationX>
+        <locationY>262</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Manage_Approval_Process_Steps</targetReference>
+            <targetReference>Get_ApprovalProcess_Step_Definitions</targetReference>
         </connector>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -262,7 +285,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Submitter_Selected</targetReference>
+            <targetReference>Notification_Templates</targetReference>
         </connector>
         <fields>
             <name>ConfigureQualifiedSubmitters</name>
@@ -305,7 +328,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <inputParameters>
                 <name>recordId</name>
                 <value>
-                    <elementReference>retrievedApprovalProcessDefinition.Id</elementReference>
+                    <elementReference>curApprovalProcessDefinition.Id</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -365,7 +388,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <inputParameters>
                 <name>approvalProcessStepDefinitionCollection</name>
                 <value>
-                    <elementReference>curApprovalProcessSteps</elementReference>
+                    <elementReference>curApprovalProcessStepDefs</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -382,7 +405,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             </inputParameters>
             <isRequired>true</isRequired>
             <outputParameters>
-                <assignToReference>curApprovalProcessSteps</assignToReference>
+                <assignToReference>curApprovalProcessStepDefs</assignToReference>
                 <name>approvalProcessStepDefinitionCollection</name>
             </outputParameters>
         </fields>
@@ -413,6 +436,11 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <connector>
             <targetReference>Configure_Approval_Form</targetReference>
         </connector>
+        <fields>
+            <name>dispRouting</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;Routing&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -439,17 +467,17 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <locationX>50</locationX>
         <locationY>50</locationY>
         <connector>
-            <targetReference>Get_ApprovalProcessDefinition</targetReference>
+            <targetReference>Configure_Qualified_Submitters</targetReference>
         </connector>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
     <subflows>
         <name>Manage_Specific_Step</name>
         <label>Manage Specific Step</label>
         <locationX>1325</locationX>
-        <locationY>161</locationY>
+        <locationY>162</locationY>
         <connector>
-            <targetReference>Manage_Approval_Process_Steps</targetReference>
+            <targetReference>Get_ApprovalProcess_Step_Definitions</targetReference>
         </connector>
         <flowName>AP_Manage_Approval_Process_Step</flowName>
         <inputAssignments>
@@ -461,7 +489,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <inputAssignments>
             <name>curApprovalProcessStepDefinitions</name>
             <value>
-                <elementReference>curApprovalProcessSteps</elementReference>
+                <elementReference>curApprovalProcessStepDefs</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -483,7 +511,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <inputAssignments>
             <name>selectedApprovalProcessStepDefinitions</name>
             <value>
-                <elementReference>curApprovalProcessSteps</elementReference>
+                <elementReference>curApprovalProcessStepDefs</elementReference>
             </value>
         </inputAssignments>
     </subflows>
@@ -529,6 +557,14 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </value>
     </variables>
     <variables>
+        <description>This should be the ID of the record for which approval is being sought</description>
+        <name>contextRecordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
         <name>curApprovalProcessDefinition</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
@@ -545,7 +581,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>
-        <name>curApprovalProcessSteps</name>
+        <name>curApprovalProcessStepDefs</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
@@ -558,14 +594,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <description>This should be the ID of an ApprovalProcessDefinition__c</description>
-        <name>recordId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
     </variables>
     <variables>
         <description>The action that ManagePlan flow wants ManageStep flow to carry out</description>
