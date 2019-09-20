@@ -3,8 +3,17 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
+            "c/approvalProcessHistory": [
+                "approvalProcessHistory/approvalProcessHistory.js"
+            ],
+            "c/buttonSet": [
+                "buttonSet/buttonSet.js"
+            ],
             "c/lwcLogger": [
                 "lwcLogger/lwcLogger.js"
+            ],
+            "c/recordDetail": [
+                "recordDetail/recordDetail.js"
             ]
         }
     },
