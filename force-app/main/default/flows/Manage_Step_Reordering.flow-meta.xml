@@ -119,16 +119,37 @@
             <targetReference>Iterate_over_Names</targetReference>
         </connector>
         <fields>
-            <name>dlbOrderSteps</name>
-            <extensionName>c:dualListBoxFSC</extensionName>
+            <name>manage_reordering</name>
+            <extensionName>c:manageApprovalProcessStep</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>approvalProcessId</name>
+                <value>
+                    <elementReference>apDefinitionId</elementReference>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
-    <startElementReference>Order_Steps</startElementReference>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Order_Steps</targetReference>
+        </connector>
+    </start>
     <status>Draft</status>
+    <variables>
+        <description>Id of Approval Process Definition</description>
+        <name>apDefinitionId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
     <variables>
         <name>currentName</name>
         <dataType>String</dataType>

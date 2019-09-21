@@ -213,8 +213,8 @@
             <label>Set Manually</label>
         </rules>
     </decisions>
-    <interviewLabel>AP2 Manage Step Approvers {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>AP2 Manage Step Approvers</label>
+    <interviewLabel>AP Manage Step Approvers {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>AP Manage Step Approvers</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -294,6 +294,55 @@
             <fieldText>&lt;p&gt;Select Approvers&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <fields>
+            <name>role_manager_step_approvers</name>
+            <extensionName>c:roleManager</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>addTabName</name>
+                <value>
+                    <stringValue>Add Approvers</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>editTabName</name>
+                <value>
+                    <stringValue>Edit Approvers</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>curStepId</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>availableObjectTypes</name>
+                <value>
+                    <stringValue>User, Group</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>managerName</name>
+                <value>
+                    <stringValue>ManageApprovalStepApprovers</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>supportedAddCapabilities</name>
+                <value>
+                    <stringValue>Add, Remove</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>supportedEditCapabilities</name>
+                <value>
+                    <stringValue>Remove</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -329,7 +378,13 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
-    <startElementReference>One_Approver_or_a_Set</startElementReference>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>One_Approver_or_a_Set</targetReference>
+        </connector>
+    </start>
     <status>Draft</status>
     <variables>
         <name>approverCount</name>
@@ -344,7 +399,7 @@
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
         <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>
@@ -368,6 +423,6 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
     </variables>
 </Flow>
