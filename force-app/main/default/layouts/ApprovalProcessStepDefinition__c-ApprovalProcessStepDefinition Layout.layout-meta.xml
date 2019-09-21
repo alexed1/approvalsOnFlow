@@ -36,7 +36,7 @@
                 <field>ApproverType__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Order__c</field>
             </layoutItems>
             <layoutItems>
@@ -50,6 +50,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>EntryCriteriaMode__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>RejectBehavior__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

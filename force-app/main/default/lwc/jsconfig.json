@@ -14,6 +14,27 @@
             ],
             "c/recordDetail": [
                 "recordDetail/recordDetail.js"
+            ],
+            "c/addNewMembers": [
+                "addNewMembers/addNewMembers.js"
+            ],
+            "c/buttonUtils": [
+                "buttonUtils/buttonUtils.js"
+            ],
+            "c/listBox": [
+                "listBox/listBox.js"
+            ],
+            "c/manageApprovalProcessStep": [
+                "manageApprovalProcessStep/manageApprovalProcessStep.js"
+            ],
+            "c/roleManager": [
+                "roleManager/roleManager.js"
+            ],
+            "c/toastMessage": [
+                "toastMessage/toastMessage.js"
+            ],
+            "c/viewEditMembers": [
+                "viewEditMembers/viewEditMembers.js"
             ]
         }
     },

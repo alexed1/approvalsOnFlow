@@ -231,7 +231,7 @@
     <recordLookups>
         <name>GetApprover</name>
         <label>GetApprover</label>
-        <locationX>270</locationX>
+        <locationX>271</locationX>
         <locationY>535</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -241,7 +241,7 @@
             <field>Approval_Process_Step_Definition__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>curStepId</elementReference>
+                <elementReference>curApprovalStep.Id</elementReference>
             </value>
         </filters>
         <object>Approver__c</object>
@@ -313,7 +313,7 @@
             <inputParameters>
                 <name>recordId</name>
                 <value>
-                    <elementReference>curStepId</elementReference>
+                    <elementReference>curApprovalStep.Id</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -387,14 +387,6 @@
     </start>
     <status>Draft</status>
     <variables>
-        <name>approverCount</name>
-        <dataType>Number</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <scale>0</scale>
-    </variables>
-    <variables>
         <name>curApprovalStep</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
@@ -406,7 +398,7 @@
         <name>curApprover</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Approver__c</objectType>
     </variables>
@@ -417,12 +409,5 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Approver__c</objectType>
-    </variables>
-    <variables>
-        <name>curStepId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
     </variables>
 </Flow>

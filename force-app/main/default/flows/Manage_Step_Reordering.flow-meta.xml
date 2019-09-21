@@ -119,6 +119,11 @@
             <targetReference>Iterate_over_Names</targetReference>
         </connector>
         <fields>
+            <name>dispReorderSubhead</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;Reorder the Approval Process Steps&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
             <name>manage_reordering</name>
             <extensionName>c:manageApprovalProcessStep</extensionName>
             <fieldType>ComponentInstance</fieldType>
@@ -196,7 +201,7 @@
         <name>selectedApprovalProcessStepDefinitions</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>

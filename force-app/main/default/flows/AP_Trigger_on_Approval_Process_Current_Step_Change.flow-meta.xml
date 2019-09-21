@@ -14,7 +14,7 @@
             </value>
         </processMetadataValues>
         <name>myRule_1_A1</name>
-        <label>Process Approval Step</label>
+        <label>Launch Process Approval Step Flow</label>
         <locationX>100</locationX>
         <locationY>200</locationY>
         <actionName>AP_Process_Approval_Step</actionName>
@@ -174,7 +174,7 @@
     </processMetadataValues>
     <processType>Workflow</processType>
     <startElementReference>isChangedDecision2_myRule_1_Id</startElementReference>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>

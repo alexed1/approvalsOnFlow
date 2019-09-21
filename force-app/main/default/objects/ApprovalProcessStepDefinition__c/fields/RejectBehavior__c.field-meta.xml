@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RejectBehavior__c</fullName>
+    <externalId>false</externalId>
+    <label>RejectBehavior</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>FinalRejection</fullName>
+                <default>false</default>
+                <label>Perform all rejection actions for this step AND all final rejection actions. (Final Rejection)</label>
+            </value>
+            <value>
+                <fullName>BackOneStep</fullName>
+                <default>false</default>
+                <label>Perform ONLY the rejection actions for this step and send the approval request back to the most recent approver.</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

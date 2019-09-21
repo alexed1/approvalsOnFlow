@@ -78,11 +78,11 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </value>
     </choices>
     <choices>
-        <name>Edit</name>
+        <name>EditStep</name>
         <choiceText>Edit</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Update</stringValue>
+            <stringValue>Edit</stringValue>
         </value>
     </choices>
     <choices>
@@ -220,6 +220,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <queriedFields>Name</queriedFields>
         <queriedFields>ApprovalFlow_API_Name__c</queriedFields>
         <queriedFields>RejectionFlow_API_Name__c</queriedFields>
+        <queriedFields>SingleApproverOrMultiple__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <description>Load the current ApprovalProcessDefinition</description>
@@ -411,7 +412,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </fields>
         <fields>
             <name>What_Kind_Of_Modification_Needed</name>
-            <choiceReferences>Edit</choiceReferences>
+            <choiceReferences>EditStep</choiceReferences>
             <choiceReferences>Delete</choiceReferences>
             <choiceReferences>AddStep</choiceReferences>
             <choiceReferences>ReorderSteps</choiceReferences>
@@ -470,7 +471,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <targetReference>Configure_Qualified_Submitters</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <subflows>
         <name>Manage_Specific_Step</name>
         <label>Manage Specific Step</label>
@@ -487,9 +488,9 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             </value>
         </inputAssignments>
         <inputAssignments>
-            <name>curApprovalProcessStepDefinitions</name>
+            <name>curApprovalProcessStepDefinition</name>
             <value>
-                <elementReference>curApprovalProcessStepDefs</elementReference>
+                <elementReference>curApprovalProcessStepDefinition</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -505,13 +506,13 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <locationX>1208</locationX>
         <locationY>608</locationY>
         <connector>
-            <targetReference>Manage_Approval_Process_Steps</targetReference>
+            <targetReference>Get_ApprovalProcess_Step_Definitions</targetReference>
         </connector>
         <flowName>Manage_Step_Reordering</flowName>
         <inputAssignments>
-            <name>selectedApprovalProcessStepDefinitions</name>
+            <name>apDefinitionId</name>
             <value>
-                <elementReference>curApprovalProcessStepDefs</elementReference>
+                <elementReference>curApprovalProcessDefinition.Id</elementReference>
             </value>
         </inputAssignments>
     </subflows>

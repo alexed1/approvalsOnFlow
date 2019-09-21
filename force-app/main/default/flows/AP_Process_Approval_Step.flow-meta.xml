@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>placeholder_for_Evaluate_Formula</name>
+        <label>placeholder for Evaluate Formula</label>
+        <locationX>685</locationX>
+        <locationY>54</locationY>
+        <assignmentItems>
+            <assignToReference>placeholder</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>placeholder</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>placeholder_for_Lock_Record</name>
+        <label>placeholder for Lock Record</label>
+        <locationX>531</locationX>
+        <locationY>55</locationY>
+        <assignmentItems>
+            <assignToReference>placeholder</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>placeholder</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>placeholder_for_Evaluate_Formula</targetReference>
+        </connector>
+    </assignments>
     <interviewLabel>AP Process Approval Step {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Process Approval Step</label>
     <processMetadataValues>
@@ -16,11 +45,37 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
+        <name>Get_AP_Step_Instance</name>
+        <label>Get AP Step Instance</label>
+        <locationX>385</locationX>
+        <locationY>54</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>placeholder_for_Lock_Record</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curApprovalProcessInstance.Current_Approval_Step__c</elementReference>
+            </value>
+        </filters>
+        <object>ApprovalProcessStepInstance__c</object>
+        <outputReference>curAPStepInstance</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Status__c</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>Approval_Process_Step_Definition__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Approval_Process_Instance</name>
         <label>Get Approval Process Instance</label>
-        <locationX>234</locationX>
-        <locationY>55</locationY>
+        <locationX>233</locationX>
+        <locationY>54</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_AP_Step_Instance</targetReference>
+        </connector>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -51,10 +106,25 @@
         <objectType>ApprovalProcessInstance__c</objectType>
     </variables>
     <variables>
+        <name>curAPStepInstance</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ApprovalProcessStepInstance__c</objectType>
+    </variables>
+    <variables>
         <name>curProcessInstanceId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>placeholder</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
 </Flow>

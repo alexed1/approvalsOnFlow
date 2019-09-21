@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <choices>
         <name>AlwaysEnter</name>
         <choiceText>All records should enter this step.</choiceText>
@@ -77,7 +77,7 @@
         <name>Check_Step_Order</name>
         <label>Check Step Order</label>
         <locationX>1459</locationX>
-        <locationY>80</locationY>
+        <locationY>58</locationY>
         <defaultConnector>
             <targetReference>Rejection_Behavior</targetReference>
         </defaultConnector>
@@ -172,6 +172,14 @@
             <label>Delete Step</label>
         </rules>
     </decisions>
+    <dynamicChoiceSets>
+        <name>rejectBehaviorPCS</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>RejectBehavior__c</picklistField>
+        <picklistObject>ApprovalProcessStepDefinition__c</picklistObject>
+    </dynamicChoiceSets>
     <interviewLabel>AP Manage Approval Process Step {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Manage Approval Process Step</label>
     <processMetadataValues>
@@ -234,7 +242,32 @@
         <connector>
             <targetReference>Updated_Successfully</targetReference>
         </connector>
-        <inputReference>curApprovalProcessStepDefinition</inputReference>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curApprovalProcessStepDefinition.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>ApprovalFlow_API_Name__c</field>
+            <value>
+                <elementReference>approvalFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RejectBehavior__c</field>
+            <value>
+                <elementReference>rejectBehaviorPCS</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RejectionFlow_API_Name__c</field>
+            <value>
+                <elementReference>rejectionFlowName</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ApprovalProcessStepDefinition__c</object>
     </recordUpdates>
     <screens>
         <name>Create_Step</name>
@@ -265,22 +298,6 @@
             <fieldText>Make this step required. Its associated flow must be completed before the case can transition to the next case status.</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>Delete_Message</name>
-        <label>Delete Message</label>
-        <locationX>791</locationX>
-        <locationY>299</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>DeleteMessage</name>
-            <fieldText>&lt;p&gt;Approval Process Step Deleted Successfully!&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -317,8 +334,7 @@
         </connector>
         <fields>
             <name>What_should_happen_if_the_approver_rejects_this_request</name>
-            <choiceReferences>FinalRejection</choiceReferences>
-            <choiceReferences>Back1Step</choiceReferences>
+            <choiceReferences>rejectBehaviorPCS</choiceReferences>
             <dataType>String</dataType>
             <fieldText>What should happen if the approver rejects this request?</fieldText>
             <fieldType>RadioButtons</fieldType>
@@ -331,7 +347,7 @@
         <name>Select_Step_Actions</name>
         <label>Select Step Actions</label>
         <locationX>983</locationX>
-        <locationY>58</locationY>
+        <locationY>57</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -365,6 +381,10 @@
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>approvalFlowName</assignToReference>
+                <name>selectedFlowApiName</name>
+            </outputParameters>
         </fields>
         <fields>
             <name>RejectionFlow</name>
@@ -389,6 +409,10 @@
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>rejectionFlowName</assignToReference>
+                <name>selectedFlowApiName</name>
+            </outputParameters>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -397,7 +421,7 @@
         <name>Specify_Step_Criteria</name>
         <label>Specify Step Criteria</label>
         <locationX>1152</locationX>
-        <locationY>58</locationY>
+        <locationY>57</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -409,6 +433,7 @@
             <choiceReferences>AlwaysEnter</choiceReferences>
             <choiceReferences>CriteriaOrFormula</choiceReferences>
             <dataType>String</dataType>
+            <defaultSelectedChoiceReference>AlwaysEnter</defaultSelectedChoiceReference>
             <fieldText>Specify Step Criteria</fieldText>
             <fieldType>RadioButtons</fieldType>
             <isRequired>true</isRequired>
@@ -481,8 +506,8 @@
     <subflows>
         <name>Manage_Approvers_for_Step</name>
         <label>Manage Approvers for Step</label>
-        <locationX>1315</locationX>
-        <locationY>58</locationY>
+        <locationX>1316</locationX>
+        <locationY>56</locationY>
         <connector>
             <targetReference>Check_Step_Order</targetReference>
         </connector>
@@ -494,6 +519,13 @@
             </value>
         </inputAssignments>
     </subflows>
+    <variables>
+        <name>approvalFlowName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>curAction</name>
         <dataType>String</dataType>
@@ -514,15 +546,7 @@
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
-        <isOutput>false</isOutput>
-        <objectType>ApprovalProcessStepDefinition__c</objectType>
-    </variables>
-    <variables>
-        <name>curApprovalProcessStepDefinitions</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
         <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>
@@ -533,6 +557,13 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ApprovalProcessStepDefinition__c</objectType>
+    </variables>
+    <variables>
+        <name>rejectionFlowName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>requestedStepAction</name>
