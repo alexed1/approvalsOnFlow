@@ -12,8 +12,13 @@ global with sharing class ManageApprovalSteps {
     }
 
     @AuraEnabled
-    public static void saveApprovalSteps(List<ApprovalProcessStepDefinition__c> appSteps) {
-        update appSteps;
+    public static List<ApprovalProcessStepDefinition__c> saveApprovalSteps(List<ApprovalProcessStepDefinition__c> appSteps) {
+        try {
+            update appSteps;
+            return appSteps;
+        } catch (Exception ex) {
+            throw new AuraHandledException(ex.getMessage());
+        }
     }
 
     global class Member {

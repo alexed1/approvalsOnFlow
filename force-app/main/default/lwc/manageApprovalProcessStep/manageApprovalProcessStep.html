@@ -1,9 +1,26 @@
 <template>
-    <c-list-box ondatarefresh={handleDataRefresh} values={steps} selected-records={selectedRecords}></c-list-box>
-    <lightning-button
-            variant="Neutral"
-            label=Save
-            name="save"
-            onclick={handleSave}>
-    </lightning-button>
+    <div>
+        <div class="container">
+            <div class="main-component">
+                <lightning-layout multiple-rows="true">
+                    <lightning-layout-item size="12">
+                        <c-ordered-list-box ondatarefresh={handleDataRefresh} values={steps}
+                                            selected-records={selectedRecords}></c-ordered-list-box>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small" size="4">
+                        <lightning-button
+                                class="slds-float--right"
+                                variant="Neutral"
+                                label=Save
+                                name="save"
+                                onclick={handleSave}>
+                        </lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+            <div class="toast-message">
+                <c-toast-message></c-toast-message>
+            </div>
+        </div>
+    </div>
 </template>
