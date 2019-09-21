@@ -1,4 +1,0 @@
-<aura:component description="Used with retUrl at the end of Flows" implements="lightning:availableForFlowScreens" access="global">
-    <aura:handler value="{!this}" action="{!c.invoke}" name="init"/>
-    <b>Case Step Completed!</b>
-</aura:component>

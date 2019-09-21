@@ -1,6 +1,0 @@
-<design:component>
-    <design:attribute name="CSVString" label="CSV String"/>
-    <design:attribute name="selectedString" label="Selected Picklist Value"/>
-    <design:attribute name="labelPicklist" label="Picklist Label"/>
-	<design:attribute name="listType" label="Type of List (simple or complex)"/>
-</design:component>
