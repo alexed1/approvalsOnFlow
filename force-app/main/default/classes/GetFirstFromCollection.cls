@@ -9,7 +9,10 @@ public with sharing class GetFirstFromCollection {
        
         //TODO if enforceSingle is set, throw an error if count of input collection is not 1
         
-        ApprovalProcessStepDefinition__c  outputMember = inputCollection[0];
+        ApprovalProcessStepDefinition__c  outputMember = new ApprovalProcessStepDefinition__c();
+        
+        if (inputCollection.size() > 0)
+            outputMember = inputCollection[0];
         
         //Create a Results object to hold the return values
         Results response = new Results();

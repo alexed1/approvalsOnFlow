@@ -126,7 +126,7 @@
     <decisions>
         <name>Which_Operation</name>
         <label>Which Operation?</label>
-        <locationX>784</locationX>
+        <locationX>625</locationX>
         <locationY>59</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -136,7 +136,7 @@
                 <leftValueReference>requestedStepAction</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>add</stringValue>
+                    <stringValue>Add</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -151,7 +151,7 @@
                 <leftValueReference>requestedStepAction</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>edit</stringValue>
+                    <stringValue>Edit</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -166,7 +166,7 @@
                 <leftValueReference>requestedStepAction</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>delete</stringValue>
+                    <stringValue>Delete</stringValue>
                 </rightValue>
             </conditions>
             <label>Delete Step</label>
@@ -470,8 +470,14 @@
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
-    <startElementReference>Which_Operation</startElementReference>
-    <status>Obsolete</status>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Which_Operation</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
     <subflows>
         <name>Manage_Approvers_for_Step</name>
         <label>Manage Approvers for Step</label>
@@ -489,12 +495,11 @@
         </inputAssignments>
     </subflows>
     <variables>
-        <name>CasePlanRecord</name>
-        <dataType>SObject</dataType>
+        <name>curAction</name>
+        <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Case_Plan__c</objectType>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>curApprovalProcessDefinition</name>
@@ -530,31 +535,6 @@
         <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>
-        <name>newCaseStepRecord</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Case_Step__c</objectType>
-    </variables>
-    <variables>
-        <name>PlanStepRecord</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Plan_Step__c</objectType>
-    </variables>
-    <variables>
-        <name>PlanStepsRecords</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>Plan_Step__c</objectType>
-    </variables>
-    <variables>
-        <description>The action requested by the calling Manage Case Plan flow</description>
         <name>requestedStepAction</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
