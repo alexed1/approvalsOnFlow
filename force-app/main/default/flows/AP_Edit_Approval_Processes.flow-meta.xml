@@ -1,36 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Get_Picklist_Values</name>
-        <label>Get Picklist Values</label>
-        <locationX>184</locationX>
-        <locationY>393</locationY>
-        <actionName>GetPicklistValues</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Configure_Qualified_Submitters</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Error_Picklist_Retrieval</targetReference>
-        </faultConnector>
-        <inputParameters>
-            <name>fieldName</name>
-            <value>
-                <stringValue>Type__c</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>objectName</name>
-            <value>
-                <stringValue>AP_AllowedSubmitterSet__c</stringValue>
-            </value>
-        </inputParameters>
-        <outputParameters>
-            <assignToReference>allSubmitterRoleStrings</assignToReference>
-            <name>picklistValues</name>
-        </outputParameters>
-    </actionCalls>
-    <actionCalls>
         <description>Datatable returns a collection of rows. This extracts the first one.
 TODO: implement the enforceSingleMember flag and detect returned errors</description>
         <name>Get_Selected_Step</name>
@@ -220,29 +190,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <queriedFields>Name</queriedFields>
         <queriedFields>ApprovalFlow_API_Name__c</queriedFields>
         <queriedFields>RejectionFlow_API_Name__c</queriedFields>
-        <queriedFields>SingleApproverOrMultiple__c</queriedFields>
-    </recordLookups>
-    <recordLookups>
-        <description>Load the current ApprovalProcessDefinition</description>
-        <name>Get_ApprovalProcessDefinition</name>
-        <label>Get ApprovalProcessDefinition</label>
-        <locationX>193</locationX>
-        <locationY>49</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Configure_Qualified_Submitters</targetReference>
-        </connector>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>contextRecordId</elementReference>
-            </value>
-        </filters>
-        <object>ApprovalProcessDefinition__c</object>
-        <outputReference>retrievedApprovalProcessDefinition</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Name</queriedFields>
     </recordLookups>
     <screens>
         <name>Configure_Approval_Form</name>
@@ -351,22 +298,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Error_Picklist_Retrieval</name>
-        <label>Error: Picklist Retrieval</label>
-        <locationX>179</locationX>
-        <locationY>591</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>dispErrorGetPicklist</name>
-            <fieldText>&lt;p&gt;Failure trying to retrieve picklist values One common reason for this is that the Object and Field names provided to the Get Picklist Values Flow Action have not been spelled properly. Make sure all custom objects and fields include the &quot;__c&quot; suffix.&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
         <name>Manage_Approval_Process_Steps</name>
         <label>Manage Approval Process Steps</label>
         <locationX>1208</locationX>
@@ -471,7 +402,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <targetReference>Configure_Qualified_Submitters</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>Manage_Specific_Step</name>
         <label>Manage Specific Step</label>
@@ -519,10 +450,10 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <subflows>
         <name>Specify_Entry_Criteria</name>
         <label>Specify Entry Criteria</label>
-        <locationX>184</locationX>
-        <locationY>289</locationY>
+        <locationX>187</locationX>
+        <locationY>395</locationY>
         <connector>
-            <targetReference>Get_Picklist_Values</targetReference>
+            <targetReference>Configure_Qualified_Submitters</targetReference>
         </connector>
         <flowName>AP_Specify_Entry_Criteria</flowName>
         <inputAssignments>

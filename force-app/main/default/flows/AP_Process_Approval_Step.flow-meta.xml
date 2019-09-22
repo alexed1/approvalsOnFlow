@@ -1,5 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>This is the url that will go in the body of the notification email being sent out.</description>
+        <name>Generate_Response_Link</name>
+        <label>Generate Response Link</label>
+        <locationX>787</locationX>
+        <locationY>819</locationY>
+        <actionName>GenerateFlowLink</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Send_Email_Notification</targetReference>
+        </connector>
+        <inputParameters>
+            <name>flowName</name>
+            <value>
+                <stringValue>AP_User_Approves_or_Rejects</stringValue>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>responseFlowLink</assignToReference>
+            <name>flowLink</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Email_Notification</name>
+        <label>Send Email Notification</label>
+        <locationX>228</locationX>
+        <locationY>820</locationY>
+        <actionName>SendHTMLEmail</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Iterate_Over_Approvers</targetReference>
+        </connector>
+        <inputParameters>
+            <name>SendTOthisOneEmailAddress</name>
+            <value>
+                <elementReference>curEmailAddress</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subject</name>
+            <value>
+                <stringValue>test subject</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>plainTextBody</name>
+            <value>
+                <stringValue>Approval Request</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>HTMLbody</name>
+            <value>
+                <elementReference>templateEmailBody</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <assignments>
+        <name>Extract_Email_Address</name>
+        <label>Extract Email Address</label>
+        <locationX>639</locationX>
+        <locationY>583</locationY>
+        <assignmentItems>
+            <assignToReference>curEmailAddress</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>curUser.Email</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Generate_Response_Link</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <name>placeholder_for_Evaluate_Formula</name>
         <label>placeholder for Evaluate Formula</label>
@@ -51,8 +124,42 @@
             <label>Yes</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>What_Type_of_Approver</name>
+        <label>What Type of Approver?</label>
+        <locationX>426</locationX>
+        <locationY>363</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>User</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>curApprover.Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>User</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_User</targetReference>
+            </connector>
+            <label>User</label>
+        </rules>
+    </decisions>
     <interviewLabel>AP Process Approval Step {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Process Approval Step</label>
+    <loops>
+        <name>Iterate_Over_Approvers</name>
+        <label>Iterate Over Approvers</label>
+        <locationX>227</locationX>
+        <locationY>361</locationY>
+        <assignNextValueToReference>curApprover</assignNextValueToReference>
+        <collectionReference>curStepApprovers</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>What_Type_of_Approver</targetReference>
+        </nextValueConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -93,7 +200,7 @@
         <name>Get_Approval_Process_Instance</name>
         <label>Get Approval Process Instance</label>
         <locationX>233</locationX>
-        <locationY>54</locationY>
+        <locationY>55</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_AP_Step_Instance</targetReference>
@@ -115,9 +222,12 @@
         <description>These are all of the entities allowed to approve this step.</description>
         <name>Get_Step_Approvers</name>
         <label>Get Step Approvers</label>
-        <locationX>243</locationX>
-        <locationY>353</locationY>
+        <locationX>227</locationX>
+        <locationY>229</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Iterate_Over_Approvers</targetReference>
+        </connector>
         <filters>
             <field>Approval_Process_Step_Definition__c</field>
             <operator>EqualTo</operator>
@@ -131,6 +241,27 @@
         <queriedFields>Name</queriedFields>
         <queriedFields>Type__c</queriedFields>
     </recordLookups>
+    <recordLookups>
+        <name>Get_User</name>
+        <label>Get User</label>
+        <locationX>430</locationX>
+        <locationY>583</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Extract_Email_Address</targetReference>
+        </connector>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curApprover.Name</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputReference>curUser</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Email</queriedFields>
+    </recordLookups>
     <start>
         <locationX>50</locationX>
         <locationY>50</locationY>
@@ -139,6 +270,10 @@
         </connector>
     </start>
     <status>Draft</status>
+    <textTemplates>
+        <name>templateEmailBody</name>
+        <text>&lt;p&gt;Click here to approve or reject: {!responseFlowLink}&lt;/p&gt;</text>
+    </textTemplates>
     <variables>
         <name>curApprovalProcessInstance</name>
         <dataType>SObject</dataType>
@@ -148,12 +283,27 @@
         <objectType>ApprovalProcessInstance__c</objectType>
     </variables>
     <variables>
+        <name>curApprover</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Approver__c</objectType>
+    </variables>
+    <variables>
         <name>curAPStepInstance</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ApprovalProcessStepInstance__c</objectType>
+    </variables>
+    <variables>
+        <name>curEmailAddress</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>curProcessInstanceId</name>
@@ -171,6 +321,14 @@
         <objectType>Approver__c</objectType>
     </variables>
     <variables>
+        <name>curUser</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
+    </variables>
+    <variables>
         <name>EntryCriteriaMet</name>
         <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
@@ -179,6 +337,13 @@
     </variables>
     <variables>
         <name>placeholder</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>responseFlowLink</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>

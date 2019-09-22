@@ -77,7 +77,7 @@
         <name>Check_Step_Order</name>
         <label>Check Step Order</label>
         <locationX>1459</locationX>
-        <locationY>58</locationY>
+        <locationY>153</locationY>
         <defaultConnector>
             <targetReference>Rejection_Behavior</targetReference>
         </defaultConnector>
@@ -102,7 +102,7 @@
         <name>Similar_Name_Exist</name>
         <label>Similar Name Exist</label>
         <locationX>369</locationX>
-        <locationY>424</locationY>
+        <locationY>519</locationY>
         <defaultConnector>
             <targetReference>Create_Approval_Process_Step_Record</targetReference>
         </defaultConnector>
@@ -127,7 +127,7 @@
         <name>Which_Operation</name>
         <label>Which Operation?</label>
         <locationX>625</locationX>
-        <locationY>59</locationY>
+        <locationY>154</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>AddStepPath</name>
@@ -199,7 +199,7 @@
         <name>Create_Approval_Process_Step_Record</name>
         <label>Create Approval Process Step Record</label>
         <locationX>586</locationX>
-        <locationY>416</locationY>
+        <locationY>511</locationY>
         <inputAssignments>
             <field>ApprovalProcessDefinition__c</field>
             <value>
@@ -218,7 +218,7 @@
         <name>Get_Similar_Name_Record</name>
         <label>Get Similar Name Record</label>
         <locationX>420</locationX>
-        <locationY>216</locationY>
+        <locationY>311</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Similar_Name_Exist</targetReference>
@@ -238,7 +238,7 @@
         <name>Update_Approval_Step</name>
         <label>Update Approval Step</label>
         <locationX>1752</locationX>
-        <locationY>84</locationY>
+        <locationY>179</locationY>
         <connector>
             <targetReference>Updated_Successfully</targetReference>
         </connector>
@@ -273,7 +273,7 @@
         <name>Create_Step</name>
         <label>Create Step</label>
         <locationX>197</locationX>
-        <locationY>172</locationY>
+        <locationY>267</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -306,7 +306,7 @@
         <name>Message_Screen</name>
         <label>Message Screen</label>
         <locationX>193</locationX>
-        <locationY>430</locationY>
+        <locationY>525</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -325,7 +325,7 @@
         <name>Rejection_Behavior</name>
         <label>Configure Rejection Behavior</label>
         <locationX>1466</locationX>
-        <locationY>278</locationY>
+        <locationY>373</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -347,12 +347,12 @@
         <name>Select_Step_Actions</name>
         <label>Select Step Actions</label>
         <locationX>983</locationX>
-        <locationY>57</locationY>
+        <locationY>152</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Specify_Step_Criteria</targetReference>
+            <targetReference>Manage_Approvers_for_Step</targetReference>
         </connector>
         <fields>
             <name>EditScreenDisplayText</name>
@@ -418,72 +418,10 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Specify_Step_Criteria</name>
-        <label>Specify Step Criteria</label>
-        <locationX>1152</locationX>
-        <locationY>57</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Manage_Approvers_for_Step</targetReference>
-        </connector>
-        <fields>
-            <name>radioSpecify_Step_Criteria</name>
-            <choiceReferences>AlwaysEnter</choiceReferences>
-            <choiceReferences>CriteriaOrFormula</choiceReferences>
-            <dataType>String</dataType>
-            <defaultSelectedChoiceReference>AlwaysEnter</defaultSelectedChoiceReference>
-            <fieldText>Specify Step Criteria</fieldText>
-            <fieldType>RadioButtons</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>criteria_or_formula</name>
-            <choiceReferences>CriteriaBased</choiceReferences>
-            <choiceReferences>EvaluateFormula</choiceReferences>
-            <dataType>String</dataType>
-            <fieldType>RadioButtons</fieldType>
-            <isRequired>false</isRequired>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>radioSpecify_Step_Criteria</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <elementReference>CriteriaOrFormula</elementReference>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
-        </fields>
-        <fields>
-            <name>If_Criteria_are_Met_or_Formula_is_True</name>
-            <choiceReferences>EnterStep</choiceReferences>
-            <choiceReferences>approveRecord</choiceReferences>
-            <choiceReferences>SkipToNextStep</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>If Criteria are Met, or Formula is True</fieldText>
-            <fieldType>RadioButtons</fieldType>
-            <isRequired>false</isRequired>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>radioSpecify_Step_Criteria</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <elementReference>CriteriaOrFormula</elementReference>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
         <name>Updated_Successfully</name>
         <label>Updated Successfully</label>
         <locationX>1753</locationX>
-        <locationY>303</locationY>
+        <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -497,7 +435,7 @@
     </screens>
     <start>
         <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationY>145</locationY>
         <connector>
             <targetReference>Which_Operation</targetReference>
         </connector>
@@ -507,13 +445,29 @@
         <name>Manage_Approvers_for_Step</name>
         <label>Manage Approvers for Step</label>
         <locationX>1316</locationX>
-        <locationY>56</locationY>
+        <locationY>151</locationY>
         <connector>
             <targetReference>Check_Step_Order</targetReference>
         </connector>
         <flowName>AP_Manage_Step_Approvers</flowName>
         <inputAssignments>
             <name>curApprovalStep</name>
+            <value>
+                <elementReference>curApprovalProcessStepDefinition</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Specify_Entry_Criteria_for_Step</name>
+        <label>Specify Entry Criteria for Step</label>
+        <locationX>1145</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Manage_Approvers_for_Step</targetReference>
+        </connector>
+        <flowName>AP_Specify_Entry_Criteria</flowName>
+        <inputAssignments>
+            <name>curApprovalProcessStepDefinition</name>
             <value>
                 <elementReference>curApprovalProcessStepDefinition</elementReference>
             </value>

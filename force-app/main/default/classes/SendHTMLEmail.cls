@@ -1,6 +1,6 @@
 public with sharing class SendHTMLEmail {
 
-    @invocableMethod(label='Send HTML Email')
+    @invocableMethod
     public static List<Response>  SendEmail(List<Request> requests) {
         
       
@@ -164,7 +164,7 @@ public with sharing class SendHTMLEmail {
         if (curUsers != null) {
             List<String> extractedEmailAddresses = new List<String>();
             for (User curUser : curUsers) {
-                curEmail = curUser.email;
+                //curEmail = curUser.email;
                 if (curEmail != null) extractedEmailAddresses.add(curEmail);
             }
             addressList.addAll(extractedEmailAddresses);
@@ -206,7 +206,7 @@ public with sharing class SendHTMLEmail {
            'SendBCCtheEmailAddressesFromThisCollectionOfContacts' => request.SendBCCtheEmailAddressesFromThisCollectionOfContacts,
            'SendBCCtheEmailAddressesFromThisCollectionOfUsers' => request.SendBCCtheEmailAddressesFromThisCollectionOfUsers,
       	   'SendBCCtheEmailAddressesFromThisCollectionOfLeads' => request.SendBCCtheEmailAddressesFromThisCollectionOfLeads 
-  };
+  		};
        
     }
 
