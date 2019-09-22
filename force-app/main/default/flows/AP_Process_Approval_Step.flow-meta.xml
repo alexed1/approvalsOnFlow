@@ -12,6 +12,9 @@
                 <elementReference>placeholder</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>Enter_Step</targetReference>
+        </connector>
     </assignments>
     <assignments>
         <name>placeholder_for_Lock_Record</name>
@@ -29,6 +32,25 @@
             <targetReference>placeholder_for_Evaluate_Formula</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <name>Enter_Step</name>
+        <label>Enter Step?</label>
+        <locationX>678</locationX>
+        <locationY>230</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EntryCriteriaMet</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Get_Step_Approvers</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
     <interviewLabel>AP Process Approval Step {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Process Approval Step</label>
     <processMetadataValues>
@@ -89,6 +111,26 @@
         <queriedFields>Name</queriedFields>
         <queriedFields>Current_Approval_Step__c</queriedFields>
     </recordLookups>
+    <recordLookups>
+        <description>These are all of the entities allowed to approve this step.</description>
+        <name>Get_Step_Approvers</name>
+        <label>Get Step Approvers</label>
+        <locationX>243</locationX>
+        <locationY>353</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <filters>
+            <field>Approval_Process_Step_Definition__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curAPStepInstance.Approval_Process_Step_Definition__c</elementReference>
+            </value>
+        </filters>
+        <object>Approver__c</object>
+        <outputReference>curStepApprovers</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>Type__c</queriedFields>
+    </recordLookups>
     <start>
         <locationX>50</locationX>
         <locationY>50</locationY>
@@ -96,7 +138,7 @@
             <targetReference>Get_Approval_Process_Instance</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>curApprovalProcessInstance</name>
         <dataType>SObject</dataType>
@@ -118,6 +160,21 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>curStepApprovers</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Approver__c</objectType>
+    </variables>
+    <variables>
+        <name>EntryCriteriaMet</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
