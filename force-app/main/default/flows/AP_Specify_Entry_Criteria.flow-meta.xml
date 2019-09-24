@@ -333,24 +333,81 @@
         </connector>
         <fields>
             <name>radioSpecify_Step_Criteria</name>
-            <choiceReferences>AlwaysEnter</choiceReferences>
-            <choiceReferences>CriteriaOrFormula</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Specify Step Criteria</fieldText>
-            <fieldType>RadioButtons</fieldType>
+            <extensionName>c:expressChoice</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>choiceLabels</name>
+                <value>
+                    <elementReference>SpecifyStepCriteriaLabels</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>choiceValues</name>
+                <value>
+                    <elementReference>SpecifyStepCriteriaValues</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>inputMode</name>
+                <value>
+                    <stringValue>Choice labels</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>masterLabel</name>
+                <value>
+                    <stringValue>Specify Step Criteria</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>displayMode</name>
+                <value>
+                    <stringValue>Radio</stringValue>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
             <name>criteria_or_formula</name>
-            <choiceReferences>CriteriaBased</choiceReferences>
-            <choiceReferences>EvaluateFormula</choiceReferences>
-            <dataType>String</dataType>
-            <fieldType>RadioButtons</fieldType>
-            <isRequired>false</isRequired>
+            <extensionName>c:expressChoice</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>masterLabel</name>
+                <value>
+                    <stringValue>Criteria or Formula</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>inputMode</name>
+                <value>
+                    <stringValue>Choice labels</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>choiceLabels</name>
+                <value>
+                    <elementReference>CriteriaOrFormulaLabels</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>choiceValues</name>
+                <value>
+                    <elementReference>CriteriaOrFormulaValues</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>radioSpecify_Step_Criteria</leftValueReference>
+                    <leftValueReference>radioSpecify_Step_Criteria.value</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <elementReference>CriteriaOrFormula</elementReference>
@@ -360,17 +417,38 @@
         </fields>
         <fields>
             <name>If_Criteria_are_Met_or_Formula_is_True</name>
-            <choiceReferences>EnterStep</choiceReferences>
-            <choiceReferences>approveRecord</choiceReferences>
-            <choiceReferences>SkipToNextStep</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>If Criteria are Met, or Formula is True</fieldText>
-            <fieldType>RadioButtons</fieldType>
-            <isRequired>false</isRequired>
+            <extensionName>c:expressChoice</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>inputMode</name>
+                <value>
+                    <stringValue>Choice labels</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>masterLabel</name>
+                <value>
+                    <stringValue>If Criteria are Met, or Formula is True</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>choiceLabels</name>
+                <value>
+                    <elementReference>IfCriteriaLabels</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>choiceValues</name>
+                <value>
+                    <elementReference>IfCriteriaValues</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>radioSpecify_Step_Criteria</leftValueReference>
+                    <leftValueReference>radioSpecify_Step_Criteria.value</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <elementReference>CriteriaOrFormula</elementReference>
@@ -381,8 +459,36 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
-    <startElementReference>Specify_Step_Criteria</startElementReference>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Specify_Step_Criteria</targetReference>
+        </connector>
+    </start>
     <status>Draft</status>
+    <variables>
+        <description>Criteria or Formula Labels</description>
+        <name>CriteriaOrFormulaLabels</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Evaluate some expression criteria;Evaluate a formula</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Criteria or Formula Values</description>
+        <name>CriteriaOrFormulaValues</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>CriteriaExpression;formula</stringValue>
+        </value>
+    </variables>
     <variables>
         <name>curApprovalProcessDefinition</name>
         <dataType>SObject</dataType>
@@ -428,6 +534,28 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <description>If Criteria Labels</description>
+        <name>IfCriteriaLabels</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Enter the step;Approve Record;Go to next step (skip this one)</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>If Criteria Values</description>
+        <name>IfCriteriaValues</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>enterStep;approve;skip</stringValue>
+        </value>
+    </variables>
+    <variables>
         <description>This flow can be called as part of the editing of either an Approval Process Definition or an Approval Process Step Definition. This variable is a flag that says which one is being used, so we update the correct one. There are input attributes for both.</description>
         <name>objectType</name>
         <dataType>String</dataType>
@@ -441,5 +569,27 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Specify Step Criteria Labels</description>
+        <name>SpecifyStepCriteriaLabels</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>All records should enter this step;Use criteria or a formula</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Specify Step Criteria Values</description>
+        <name>SpecifyStepCriteriaValues</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>always;criteria</stringValue>
+        </value>
     </variables>
 </Flow>
