@@ -21,16 +21,16 @@ global with sharing class ManageApprovalInitialSubmitters implements RoleManager
 
     private static String add(Id userOrGroupID, Id recordId, String type) {
         List<AP_AllowedSubmitter__c> existingSubmitters = [
-                SELECT Id,Name, Allowed_Submitters__c,Type__c
+                SELECT Id,Name, Parent_Approval_Process_Definition__c,Type__c
                 FROM AP_AllowedSubmitter__c
-                WHERE Name = :userOrGroupID AND Allowed_Submitters__c = :recordId AND Type__c = :type
+                WHERE Name = :userOrGroupID AND Parent_Approval_Process_Definition__c = :recordId AND Type__c = :type
         ];
         if (!existingSubmitters.isEmpty()) {
             return JSON.serialize(existingSubmitters[0]);
         }
         AP_AllowedSubmitter__c newSubmitter = new AP_AllowedSubmitter__c(
                 Name = userOrGroupID,
-                Allowed_Submitters__c = recordId,
+                Parent_Approval_Process_Definition__c = recordId,
                 Type__c = type);
         try {
             insert newSubmitter;

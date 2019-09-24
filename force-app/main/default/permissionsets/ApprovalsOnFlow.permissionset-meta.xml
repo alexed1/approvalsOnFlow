@@ -2,6 +2,11 @@
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <fieldPermissions>
         <editable>true</editable>
+        <field>AP_AllowedSubmitter__c.Parent_Approval_Process_Definition__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>AP_AllowedSubmitter__c.Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -49,6 +54,11 @@
         <editable>true</editable>
         <field>ApprovalProcessDefinition__c.ClassicEmailTemplateName__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ApprovalProcessDefinition__c.ContextObjectTypeName__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -438,6 +448,10 @@
         <object>WorkOrder</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <tabSettings>
+        <tab>AP_AllowedSubmitter__c</tab>
+        <visibility>Available</visibility>
+    </tabSettings>
     <tabSettings>
         <tab>ApprovalProcessDefinition__c</tab>
         <visibility>Visible</visibility>

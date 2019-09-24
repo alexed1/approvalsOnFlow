@@ -5,7 +5,7 @@
     <externalId>false</externalId>
     <label>ContextObjectTypeName</label>
     <length>50</length>
-    <required>true</required>
+    <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>
     <unique>false</unique>

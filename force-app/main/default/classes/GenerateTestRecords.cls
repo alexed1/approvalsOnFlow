@@ -30,8 +30,20 @@ public with sharing class GenerateTestRecords {
 
         //ApprovalProcessStepDefinition__c[] APsteps = new ApprovalProcessStepDefinition__c();
         curAPD = [SELECT Id FROM ApprovalProcessDefinition__c WHERE Label__c='testDef1'];
+        generateApprovalSubmitter(curAPD.Id);
+        
         return curAPD;
     }
+
+    public static void generateApprovalSubmitter (String curAPD_Id) {
+        AP_AllowedSubmitter__c curSubmitter = new AP_AllowedSubmitter__c();
+        curSubmitter.Parent_Approval_Process_Definition__c = curAPD_Id;
+        curSubmitter.Type__c = 'User';
+        curSubmitter.Name = UserInfo.getUserId();
+        insert curSubmitter;
+    }
+     
+
 
     public static ApprovalProcessStepDefinition__c generateApprovalProcessStepDefinition(String APD_Id, String Label) {
         ApprovalProcessStepDefinition__c step = new ApprovalProcessStepDefinition__c();

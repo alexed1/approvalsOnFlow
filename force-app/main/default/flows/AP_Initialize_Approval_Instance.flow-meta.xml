@@ -16,12 +16,16 @@
                 <elementReference>recordId</elementReference>
             </value>
         </inputParameters>
+        <outputParameters>
+            <assignToReference>objectTypeName</assignToReference>
+            <name>objectType</name>
+        </outputParameters>
     </actionCalls>
     <actionCalls>
         <name>GetNamesFromGroupSubmitters</name>
         <label>GetNamesFromGroupSubmitters</label>
-        <locationX>541</locationX>
-        <locationY>463</locationY>
+        <locationX>553</locationX>
+        <locationY>460</locationY>
         <actionName>GetStringsFromLists</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -31,6 +35,12 @@
             <name>inputCollection</name>
             <value>
                 <elementReference>curGroupSubmitters</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>fieldName</name>
+            <value>
+                <stringValue>Name</stringValue>
             </value>
         </inputParameters>
         <outputParameters>
@@ -54,6 +64,12 @@
                 <elementReference>curAllowedSubmitters</elementReference>
             </value>
         </inputParameters>
+        <inputParameters>
+            <name>fieldName</name>
+            <value>
+                <stringValue>Name</stringValue>
+            </value>
+        </inputParameters>
         <outputParameters>
             <assignToReference>roleMemberNames</assignToReference>
             <name>stringList</name>
@@ -62,17 +78,23 @@
     <actionCalls>
         <name>GetUserNamesFromSubmitters</name>
         <label>GetUserNamesFromSubmitters</label>
-        <locationX>540</locationX>
-        <locationY>631</locationY>
+        <locationX>620</locationX>
+        <locationY>634</locationY>
         <actionName>GetStringsFromLists</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Is_Current_User_an_Approved_Submitter</targetReference>
+            <targetReference>Create_Approval_Process_Instance_Records</targetReference>
         </connector>
         <inputParameters>
             <name>inputCollection</name>
             <value>
                 <elementReference>curUserSubmitters</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>fieldName</name>
+            <value>
+                <stringValue>Name</stringValue>
             </value>
         </inputParameters>
         <outputParameters>
@@ -111,7 +133,7 @@
         <inputParameters>
             <name>userId</name>
             <value>
-                <elementReference>recordId</elementReference>
+                <elementReference>curUsername</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -122,8 +144,8 @@
     <decisions>
         <name>Allow_or_Reject_Submission</name>
         <label>Allow or Reject Submission</label>
-        <locationX>721</locationX>
-        <locationY>403</locationY>
+        <locationX>716</locationX>
+        <locationY>492</locationY>
         <defaultConnectorLabel>User Not on Approved List</defaultConnectorLabel>
         <rules>
             <name>User_is_Approved_to_Submit</name>
@@ -141,6 +163,11 @@
             <label>User is Approved to Submit</label>
         </rules>
     </decisions>
+    <formulas>
+        <name>curUsername</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Username}</expression>
+    </formulas>
     <interviewLabel>AP Initialize Approval Instance {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Initialize Approval Instance</label>
     <loops>
@@ -228,8 +255,8 @@
     <recordLookups>
         <name>ExtractUserSubmitters</name>
         <label>ExtractUserSubmitters</label>
-        <locationX>353</locationX>
-        <locationY>623</locationY>
+        <locationX>349</locationX>
+        <locationY>626</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GetUserNamesFromSubmitters</targetReference>
@@ -303,7 +330,7 @@
             <targetReference>Get_Object_Type</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <subflows>
         <name>Create_Approval_Process_Instance_Records</name>
         <label>Create Approval Process Instance Records</label>
