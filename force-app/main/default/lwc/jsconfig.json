@@ -3,20 +3,14 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
+            "c/addNewMembers": [
+                "addNewMembers/addNewMembers.js"
+            ],
             "c/approvalProcessHistory": [
                 "approvalProcessHistory/approvalProcessHistory.js"
             ],
             "c/buttonSet": [
                 "buttonSet/buttonSet.js"
-            ],
-            "c/lwcLogger": [
-                "lwcLogger/lwcLogger.js"
-            ],
-            "c/recordDetail": [
-                "recordDetail/recordDetail.js"
-            ],
-            "c/addNewMembers": [
-                "addNewMembers/addNewMembers.js"
             ],
             "c/buttonUtils": [
                 "buttonUtils/buttonUtils.js"
@@ -24,8 +18,14 @@
             "c/listBox": [
                 "listBox/listBox.js"
             ],
+            "c/lwcLogger": [
+                "lwcLogger/lwcLogger.js"
+            ],
             "c/manageApprovalProcessStep": [
                 "manageApprovalProcessStep/manageApprovalProcessStep.js"
+            ],
+            "c/recordDetail": [
+                "recordDetail/recordDetail.js"
             ],
             "c/roleManager": [
                 "roleManager/roleManager.js"
@@ -35,6 +35,9 @@
             ],
             "c/viewEditMembers": [
                 "viewEditMembers/viewEditMembers.js"
+            ],
+            "c/expressChoice": [
+                "expressChoice/expressChoice.js"
             ]
         }
     },
