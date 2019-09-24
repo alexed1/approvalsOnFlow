@@ -33,6 +33,28 @@ export default class manageApprovalProcessStep extends LightningElement {
                     "Order__c": this.steps.findIndex(curItem => curItem.value === curStep.value)
                 }
             })
+        }).then(result => {
+            this.showToast({
+                detail: {
+                    title: 'Success',
+                    message: 'Step order successfully changed.',
+                    variant: 'success',
+                    autoClose: true
+                }
+            });
+        }).catch(error => {
+            this.showToast({
+                detail: {
+                    title: 'Error',
+                    message: error.body.message,
+                    variant: 'error',
+                    autoClose: true
+                }
+            });
         });
+    }
+
+    showToast(event) {
+        this.template.querySelector('c-toast-message').showCustomNotice(event);
     }
 }
