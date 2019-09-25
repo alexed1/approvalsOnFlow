@@ -39,6 +39,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>type</name>
+            <value>
+                <stringValue>User</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>text</name>
             <value>
                 <elementReference>StatusUpdate</elementReference>
@@ -297,10 +303,10 @@
             <targetReference>Log_Status</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>StatusUpdate</name>
-        <text>&lt;p&gt;Process Approval Step has executed. &lt;/p&gt;&lt;p&gt;Cur Approval Process Instance is: {!curApprovalProcessInstance.Id}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
+        <text>&lt;p&gt;Process Approval Step has executed.&lt;/p&gt;&lt;p&gt;Cur Approval Process Instance is:  {!curProcessInstanceId}&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
         <name>templateEmailBody</name>
