@@ -4,10 +4,19 @@ public with sharing class CheckMembership {
     @InvocableMethod
     public static List <Results> ExecuteMembershipCheck (List<Requests> requestList) {
         System.debug('entering ExecuteMembershipCheck');
-        String  userId = requestList[0].userId;
-       
+        String  targetUsername = requestList[0].targetUsername;
+        List<String>  memberUsernames = requestList[0].memberUsernames;
+        Boolean isMember = false;
+        System.debug ('memberUsernames is: ' + memberUsernames);
+        System.debug ('targetUsername is ' + targetUsername);
+        if (memberUsernames.contains(targetUsername)) {
+          isMember = true;
+        }
 
-       //TO DO`
+       //TO DO
+       //implement the others
+       //find out what the user's role is and check it against roles that are allowed submitters
+       //for each group, find out if the user is in that group
 
 
 
@@ -16,7 +25,7 @@ public with sharing class CheckMembership {
         Results response = new Results();
 
         //add the return values to the Results object
-         
+        response.isMember = isMember;
 
         //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
         List<Results> responseWrapper= new List<Results>();
@@ -27,10 +36,10 @@ public with sharing class CheckMembership {
 
     public class Requests {
       @InvocableVariable(required=true)
-      public String userId; 
+      public String targetUsername; 
 
       @InvocableVariable 
-      public List<String> memberUserIds; //although the UI has separate search categories for Users, Owner, Creator, Partner Users, and Customer Portal Users, it appears that these are all just User records and can be treated as one set.
+      public List<String> memberUsernames; //although the UI has separate search categories for Users, Owner, Creator, Partner Users, and Customer Portal Users, it appears that these are all just User records and can be treated as one set.
 
       @InvocableVariable 
       public List<String> memberRoleNames; 

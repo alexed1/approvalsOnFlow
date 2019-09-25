@@ -32,15 +32,15 @@
             <targetReference>ExtractUserSubmitters</targetReference>
         </connector>
         <inputParameters>
-            <name>inputCollection</name>
-            <value>
-                <elementReference>curGroupSubmitters</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>fieldName</name>
             <value>
                 <stringValue>Name</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>inputCollection</name>
+            <value>
+                <elementReference>curGroupSubmitters</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -59,15 +59,15 @@
             <targetReference>ExtractGroupSubmitters</targetReference>
         </connector>
         <inputParameters>
-            <name>inputCollection</name>
-            <value>
-                <elementReference>curAllowedSubmitters</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>fieldName</name>
             <value>
                 <stringValue>Name</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>inputCollection</name>
+            <value>
+                <elementReference>curAllowedSubmitters</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -78,23 +78,23 @@
     <actionCalls>
         <name>GetUserNamesFromSubmitters</name>
         <label>GetUserNamesFromSubmitters</label>
-        <locationX>620</locationX>
-        <locationY>634</locationY>
+        <locationX>540</locationX>
+        <locationY>632</locationY>
         <actionName>GetStringsFromLists</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Create_Approval_Process_Instance_Records</targetReference>
+            <targetReference>Is_Current_User_an_Approved_Submitter</targetReference>
         </connector>
-        <inputParameters>
-            <name>inputCollection</name>
-            <value>
-                <elementReference>curUserSubmitters</elementReference>
-            </value>
-        </inputParameters>
         <inputParameters>
             <name>fieldName</name>
             <value>
                 <stringValue>Name</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>inputCollection</name>
+            <value>
+                <elementReference>curUserSubmitters</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -113,27 +113,27 @@
             <targetReference>Allow_or_Reject_Submission</targetReference>
         </connector>
         <inputParameters>
-            <name>memberGroupNames</name>
-            <value>
-                <elementReference>groupMemberNames</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>memberRoleNames</name>
             <value>
                 <elementReference>roleMemberNames</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>memberUserIds</name>
+            <name>targetUsername</name>
+            <value>
+                <elementReference>curUsername</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>memberUsernames</name>
             <value>
                 <elementReference>userMemberNames</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>userId</name>
+            <name>memberGroupNames</name>
             <value>
-                <elementReference>curUsername</elementReference>
+                <elementReference>groupMemberNames</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -144,8 +144,11 @@
     <decisions>
         <name>Allow_or_Reject_Submission</name>
         <label>Allow or Reject Submission</label>
-        <locationX>716</locationX>
-        <locationY>492</locationY>
+        <locationX>973</locationX>
+        <locationY>47</locationY>
+        <defaultConnector>
+            <targetReference>Iterate_Process_Defs</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>User Not on Approved List</defaultConnectorLabel>
         <rules>
             <name>User_is_Approved_to_Submit</name>
@@ -255,8 +258,8 @@
     <recordLookups>
         <name>ExtractUserSubmitters</name>
         <label>ExtractUserSubmitters</label>
-        <locationX>349</locationX>
-        <locationY>626</locationY>
+        <locationX>353</locationX>
+        <locationY>623</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GetUserNamesFromSubmitters</targetReference>
@@ -334,13 +337,22 @@
     <subflows>
         <name>Create_Approval_Process_Instance_Records</name>
         <label>Create Approval Process Instance Records</label>
-        <locationX>731</locationX>
-        <locationY>261</locationY>
+        <locationX>847</locationX>
+        <locationY>222</locationY>
+        <connector>
+            <targetReference>Iterate_Process_Defs</targetReference>
+        </connector>
         <flowName>AP_Create_Approval_Process_Instance</flowName>
         <inputAssignments>
             <name>curApprovalProcessDefinition</name>
             <value>
                 <elementReference>curProcessDef</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ApprovalCandidateRecordId</name>
+            <value>
+                <elementReference>recordId</elementReference>
             </value>
         </inputAssignments>
     </subflows>

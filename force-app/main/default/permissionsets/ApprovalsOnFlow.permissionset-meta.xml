@@ -56,11 +56,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>ApprovalProcessDefinition__c.ContextObjectTypeName__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>ApprovalProcessDefinition__c.Description__c</field>
         <readable>true</readable>
@@ -453,11 +448,27 @@
         <visibility>Available</visibility>
     </tabSettings>
     <tabSettings>
+        <tab>ApprovalInstanceHistory__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>ApprovalProcessDefinition__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
+        <tab>ApprovalProcessInstance__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>ApprovalProcessStepDefinition__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>ApprovalProcessStepInstance__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Approval_Process_Step_Task__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>

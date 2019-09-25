@@ -38,6 +38,9 @@
             ],
             "c/expressChoice": [
                 "expressChoice/expressChoice.js"
+            ],
+            "c/orderedListBox": [
+                "orderedListBox/orderedListBox.js"
             ]
         }
     },

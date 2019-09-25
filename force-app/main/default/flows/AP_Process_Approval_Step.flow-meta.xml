@@ -23,6 +23,29 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
+        <name>Log_Status</name>
+        <label>Log Status</label>
+        <locationX>102</locationX>
+        <locationY>203</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <connector>
+            <targetReference>Get_Approval_Process_Instance</targetReference>
+        </connector>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>curUsername</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <elementReference>StatusUpdate</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>Send_Email_Notification</name>
         <label>Send Email Notification</label>
         <locationX>228</locationX>
@@ -146,6 +169,11 @@
             <label>User</label>
         </rules>
     </decisions>
+    <formulas>
+        <name>curUsername</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Username}</expression>
+    </formulas>
     <interviewLabel>AP Process Approval Step {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Process Approval Step</label>
     <loops>
@@ -199,8 +227,8 @@
     <recordLookups>
         <name>Get_Approval_Process_Instance</name>
         <label>Get Approval Process Instance</label>
-        <locationX>233</locationX>
-        <locationY>55</locationY>
+        <locationX>235</locationX>
+        <locationY>50</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_AP_Step_Instance</targetReference>
@@ -266,10 +294,14 @@
         <locationX>50</locationX>
         <locationY>50</locationY>
         <connector>
-            <targetReference>Get_Approval_Process_Instance</targetReference>
+            <targetReference>Log_Status</targetReference>
         </connector>
     </start>
     <status>Draft</status>
+    <textTemplates>
+        <name>StatusUpdate</name>
+        <text>&lt;p&gt;Process Approval Step has executed. &lt;/p&gt;&lt;p&gt;Cur Approval Process Instance is: {!curApprovalProcessInstance.Id}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
+    </textTemplates>
     <textTemplates>
         <name>templateEmailBody</name>
         <text>&lt;p&gt;Click here to approve or reject: {!responseFlowLink}&lt;/p&gt;</text>

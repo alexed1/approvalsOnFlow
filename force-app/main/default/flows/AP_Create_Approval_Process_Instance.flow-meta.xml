@@ -1,7 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>Add_to_Step_Instances_Collection</name>
+        <label>Add to Step Instances Collection</label>
+        <locationX>663</locationX>
+        <locationY>161</locationY>
+        <assignmentItems>
+            <assignToReference>newStepInstances</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>newStepInstance</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Iterate_Over_Step_Definitions</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Define_New_Step_Instance</name>
+        <label>Define New Step Instance</label>
+        <locationX>478</locationX>
+        <locationY>286</locationY>
+        <assignmentItems>
+            <assignToReference>newStepInstance.Approval_Process_Step_Definition__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>curApprovalProcessStepDefinition.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>newStepInstance.Parent_Approval_Process_Instance__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>curApprovalProcessInstanceId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_to_Step_Instances_Collection</targetReference>
+        </connector>
+    </assignments>
     <interviewLabel>AP Create Approval Process Instance {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Create Approval Process Instance</label>
+    <loops>
+        <description>Create a Step Instance for each Step Definition</description>
+        <name>Iterate_Over_Step_Definitions</name>
+        <label>Iterate Over Step Definitions</label>
+        <locationX>479</locationX>
+        <locationY>50</locationY>
+        <assignNextValueToReference>curApprovalProcessStepDefinition</assignNextValueToReference>
+        <collectionReference>curApprovalProcessStepDefinitions</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Define_New_Step_Instance</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Create_Step_Instances</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -18,9 +73,12 @@
     <recordCreates>
         <name>Create_Approval_Process_Instance</name>
         <label>Create Approval Process Instance</label>
-        <locationX>196</locationX>
-        <locationY>50</locationY>
+        <locationX>197</locationX>
+        <locationY>51</locationY>
         <assignRecordIdToReference>curApprovalProcessInstanceId</assignRecordIdToReference>
+        <connector>
+            <targetReference>Get_Approval_Process_Step_Definitions</targetReference>
+        </connector>
         <inputAssignments>
             <field>ApprovalProcessDefinition__c</field>
             <value>
@@ -29,6 +87,114 @@
         </inputAssignments>
         <object>ApprovalProcessInstance__c</object>
     </recordCreates>
+    <recordCreates>
+        <name>Create_Step_Instances</name>
+        <label>Create Step Instances</label>
+        <locationX>729</locationX>
+        <locationY>46</locationY>
+        <connector>
+            <targetReference>Log_a_History_Item</targetReference>
+        </connector>
+        <inputReference>newStepInstances</inputReference>
+    </recordCreates>
+    <recordCreates>
+        <name>Log_a_History_Item</name>
+        <label>Log a History Item</label>
+        <locationX>858</locationX>
+        <locationY>46</locationY>
+        <connector>
+            <targetReference>Get_the_First_Step</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ApprovalCandidateRecordId__c</field>
+            <value>
+                <elementReference>ApprovalCandidateRecordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Approval_Process_Instance__c</field>
+            <value>
+                <elementReference>curApprovalProcessInstanceId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Approval Request Submitted</stringValue>
+            </value>
+        </inputAssignments>
+        <object>ApprovalInstanceHistory__c</object>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Approval_Process_Step_Definitions</name>
+        <label>Get Approval Process Step Definitions</label>
+        <locationX>341</locationX>
+        <locationY>50</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Iterate_Over_Step_Definitions</targetReference>
+        </connector>
+        <filters>
+            <field>ApprovalProcessDefinition__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curApprovalProcessDefinition.Id</elementReference>
+            </value>
+        </filters>
+        <object>ApprovalProcessStepDefinition__c</object>
+        <outputReference>curApprovalProcessStepDefinitions</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>EntryCriteria__c</queriedFields>
+        <queriedFields>Name</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_the_First_Step</name>
+        <label>Get the First Step</label>
+        <locationX>1003</locationX>
+        <locationY>46</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Add_First_Step_to_Process_Instance</targetReference>
+        </connector>
+        <filters>
+            <field>ApprovalProcessDefinition__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curApprovalProcessDefinition.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Order__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </filters>
+        <object>ApprovalProcessStepDefinition__c</object>
+        <outputReference>FirstStepDefinition</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <description>This will tell the system which step to execute first!</description>
+        <name>Add_First_Step_to_Process_Instance</name>
+        <label>Add First Step to Process Instance</label>
+        <locationX>1121</locationX>
+        <locationY>46</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curApprovalProcessInstanceId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Current_Approval_Step__c</field>
+            <value>
+                <elementReference>FirstStepDefinition.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ApprovalProcessInstance__c</object>
+    </recordUpdates>
     <start>
         <locationX>50</locationX>
         <locationY>50</locationY>
@@ -37,6 +203,14 @@
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <description>The original record that&#39;s being approved or rejected</description>
+        <name>ApprovalCandidateRecordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>curApprovalProcessDefinition</name>
         <dataType>SObject</dataType>
@@ -51,5 +225,57 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>curApprovalProcessStepDefinition</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ApprovalProcessStepDefinition__c</objectType>
+    </variables>
+    <variables>
+        <name>curApprovalProcessStepDefinitions</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ApprovalProcessStepDefinition__c</objectType>
+    </variables>
+    <variables>
+        <description>This is true until the id of the first step instance has been written into the parent instance</description>
+        <name>FirstStep</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>true</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>The step definition with Order = 1</description>
+        <name>FirstStepDefinition</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ApprovalProcessStepDefinition__c</objectType>
+    </variables>
+    <variables>
+        <name>newStepInstance</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ApprovalProcessStepInstance__c</objectType>
+    </variables>
+    <variables>
+        <name>newStepInstances</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ApprovalProcessStepInstance__c</objectType>
     </variables>
 </Flow>
