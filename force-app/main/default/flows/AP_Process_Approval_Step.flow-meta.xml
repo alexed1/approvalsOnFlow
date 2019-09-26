@@ -217,7 +217,7 @@
             <targetReference>placeholder_for_Lock_Record</targetReference>
         </connector>
         <filters>
-            <field>Id</field>
+            <field>Approval_Process_Step_Definition__c</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>curApprovalProcessInstance.Current_Approval_Step__c</elementReference>

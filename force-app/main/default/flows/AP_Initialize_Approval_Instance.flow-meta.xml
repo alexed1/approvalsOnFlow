@@ -333,7 +333,7 @@
             <targetReference>Get_Object_Type</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>Create_Approval_Process_Instance_Records</name>
         <label>Create Approval Process Instance Records</label>
@@ -344,15 +344,15 @@
         </connector>
         <flowName>AP_Create_Approval_Process_Instance</flowName>
         <inputAssignments>
-            <name>curApprovalProcessDefinition</name>
-            <value>
-                <elementReference>curProcessDef</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <name>ApprovalCandidateRecordId</name>
             <value>
                 <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>curApprovalProcessDefinition</name>
+            <value>
+                <elementReference>curProcessDef</elementReference>
             </value>
         </inputAssignments>
     </subflows>
