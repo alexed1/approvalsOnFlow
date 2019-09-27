@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>SingleApproverOrMultiple__c</fullName>
+    <defaultValue>&quot;Single&quot;</defaultValue>
     <description>Some choices result in a single approver, but there&#39;s also a way to create a list of possible approvers. This is recorded here because the flow processing is different depending on whether the flow has to deal with a list or a singleton</description>
     <externalId>false</externalId>
     <label>SingleApproverOrMultiple</label>

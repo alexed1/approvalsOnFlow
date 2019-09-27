@@ -1,12 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Find_Selected_Step_Definition</name>
+        <label>Find Selected Step Definition</label>
+        <locationX>1509</locationX>
+        <locationY>310</locationY>
+        <actionName>FindRecordsInCollection</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Manage_Specific_Step</targetReference>
+        </connector>
+        <inputParameters>
+            <name>targetValue</name>
+            <value>
+                <elementReference>selectedStepDefinitionId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetField</name>
+            <value>
+                <stringValue>Id</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetObject</name>
+            <value>
+                <stringValue>ApprovalProcessStepDefinition__c</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>inputCollection</name>
+            <value>
+                <elementReference>curApprovalProcessStepDefs</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>curApprovalProcessStepDefinition</assignToReference>
+            <name>singleOutputMember</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <description>Datatable returns a collection of rows. This extracts the first one.
 TODO: implement the enforceSingleMember flag and detect returned errors</description>
         <name>Get_Selected_Step</name>
         <label>Get Selected Step</label>
-        <locationX>1460</locationX>
-        <locationY>277</locationY>
+        <locationX>1627</locationX>
+        <locationY>243</locationY>
         <actionName>GetFirstFromCollection</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -96,7 +135,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <locationX>1322</locationX>
         <locationY>400</locationY>
         <defaultConnector>
-            <targetReference>Get_Selected_Step</targetReference>
+            <targetReference>Find_Selected_Step_Definition</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Add, Delete, Edit Step</defaultConnectorLabel>
         <rules>
@@ -190,6 +229,17 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <queriedFields>Name</queriedFields>
         <queriedFields>ApprovalFlow_API_Name__c</queriedFields>
         <queriedFields>RejectionFlow_API_Name__c</queriedFields>
+        <queriedFields>SingleApproverOrMultiple__c</queriedFields>
+        <queriedFields>EntryCriteriaDisplayType__c</queriedFields>
+        <queriedFields>EntryCriteriaMode__c</queriedFields>
+        <queriedFields>ifCriteriaNotMet__c</queriedFields>
+        <queriedFields>ApprovalProcessDefinition__c</queriedFields>
+        <queriedFields>AllowDelegate__c</queriedFields>
+        <queriedFields>ApproverType__c</queriedFields>
+        <queriedFields>EntryCriteria__c</queriedFields>
+        <queriedFields>Order__c</queriedFields>
+        <queriedFields>RejectBehavior__c</queriedFields>
+        <queriedFields>Label__c</queriedFields>
     </recordLookups>
     <screens>
         <name>Configure_Approval_Form</name>
@@ -339,6 +389,10 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <outputParameters>
                 <assignToReference>curApprovalProcessStepDefs</assignToReference>
                 <name>approvalProcessStepDefinitionCollection</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>selectedStepDefinitionId</assignToReference>
+                <name>recordId</name>
             </outputParameters>
         </fields>
         <fields>
@@ -542,6 +596,13 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ApprovalProcessDefinition__c</objectType>
+    </variables>
+    <variables>
+        <name>selectedStepDefinitionId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>selectedStepNames</name>

@@ -92,21 +92,6 @@
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
-        <componentInstances>
-            <componentInstanceProperties>
-                <name>flowArguments</name>
-                <value>[{&quot;label&quot;:&quot;recordId&quot;,&quot;value&quot;:null,&quot;dataType&quot;:&quot;String&quot;,&quot;supportsRecordId&quot;:true,&quot;selected&quot;:false}]</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>flowLayout</name>
-                <value>oneColumn</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>flowName</name>
-                <value>AP_Edit_Approval_Processes</value>
-            </componentInstanceProperties>
-            <componentName>flowruntime:interview</componentName>
-        </componentInstances>
         <mode>Replace</mode>
         <name>sidebar</name>
         <type>Region</type>

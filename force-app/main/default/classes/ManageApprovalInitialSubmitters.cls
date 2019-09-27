@@ -42,7 +42,7 @@ global with sharing class ManageApprovalInitialSubmitters implements RoleManager
 
     private static String remove(Id userOrGroupID, Id recordId) {
         try {
-            delete [SELECT Id FROM AP_AllowedSubmitter__c WHERE Name = :userOrGroupID AND Allowed_Submitters__c = :recordId];
+            delete [SELECT Id FROM AP_AllowedSubmitter__c WHERE Name = :userOrGroupID AND Parent_Approval_Process_Definition__c = :recordId];
             return 'SUCCESS';
         } catch (Exception ex) {
             throw new AuraHandledException(ex.getMessage());
@@ -55,7 +55,7 @@ global with sharing class ManageApprovalInitialSubmitters implements RoleManager
 
     private static List<RoleManagerController.MemberInfo> getAllInitialSubmitters(String recordId) {
         List<RoleManagerController.MemberInfo> results = new List<RoleManagerController.MemberInfo>();
-        List<AP_AllowedSubmitter__c> initialSubmitters = [SELECT Id, Name, Type__c FROM AP_AllowedSubmitter__c WHERE Allowed_Submitters__c = :recordId];
+        List<AP_AllowedSubmitter__c> initialSubmitters = [SELECT Id, Name, Type__c FROM AP_AllowedSubmitter__c WHERE Parent_Approval_Process_Definition__c = :recordId];
         Map<String, Set<String>> objectTypeToIdMap = getObjectTypeToIdMap(initialSubmitters);
         Map<String, String> initialSubmitterIdToName = SearchUtils.getMembersByTypeAndId(objectTypeToIdMap);
         for (AP_AllowedSubmitter__c app : initialSubmitters) {

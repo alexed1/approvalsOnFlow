@@ -15,6 +15,9 @@
             "c/buttonUtils": [
                 "buttonUtils/buttonUtils.js"
             ],
+            "c/expressChoice": [
+                "expressChoice/expressChoice.js"
+            ],
             "c/listBox": [
                 "listBox/listBox.js"
             ],
@@ -23,6 +26,9 @@
             ],
             "c/manageApprovalProcessStep": [
                 "manageApprovalProcessStep/manageApprovalProcessStep.js"
+            ],
+            "c/orderedListBox": [
+                "orderedListBox/orderedListBox.js"
             ],
             "c/recordDetail": [
                 "recordDetail/recordDetail.js"
@@ -35,12 +41,6 @@
             ],
             "c/viewEditMembers": [
                 "viewEditMembers/viewEditMembers.js"
-            ],
-            "c/expressChoice": [
-                "expressChoice/expressChoice.js"
-            ],
-            "c/orderedListBox": [
-                "orderedListBox/orderedListBox.js"
             ]
         }
     },
