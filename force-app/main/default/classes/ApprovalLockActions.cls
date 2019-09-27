@@ -13,14 +13,14 @@ public with sharing class ApprovalLockActions {
         String lockingAction = requests[0].lockingAction.toLowerCase();
         Map<String, List<Id>> sobjectTypeToIds = new Map<String, List<Id>>();
         if (requests[0].objectId != null) {
-            sobjectTypeToIds.put(requests[0].objectId.getSobjectType().getDescribe().label, new List<Id>{
+            sobjectTypeToIds.put(requests[0].objectId.getSobjectType().getDescribe().getName(), new List<Id>{
                     requests[0].objectId
             });
         }
 
         if (requests[0].objectsIds != null) {
             for (Id curObjectId : requests[0].objectsIds) {
-                String objectApiName = curObjectId.getSobjectType().getDescribe().label;
+                String objectApiName = curObjectId.getSobjectType().getDescribe().getName();
                 if (!sobjectTypeToIds.containsKey(objectApiName)) {
                     sobjectTypeToIds.put(objectApiName, new List<Id>());
                 }
