@@ -75,7 +75,7 @@
     <loops>
         <name>Iterate_over_Names</name>
         <label>Iterate over Names</label>
-        <locationX>370</locationX>
+        <locationX>369</locationX>
         <locationY>48</locationY>
         <assignNextValueToReference>currentName</assignNextValueToReference>
         <collectionReference>orderedStepNames</collectionReference>
@@ -115,9 +115,6 @@
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Iterate_over_Names</targetReference>
-        </connector>
         <fields>
             <name>dispReorderSubhead</name>
             <fieldText>&lt;p&gt;&lt;b&gt;Reorder the Approval Process Steps&lt;/b&gt;&lt;/p&gt;</fieldText>

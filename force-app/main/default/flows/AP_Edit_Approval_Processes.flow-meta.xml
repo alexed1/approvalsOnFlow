@@ -240,6 +240,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <queriedFields>Order__c</queriedFields>
         <queriedFields>RejectBehavior__c</queriedFields>
         <queriedFields>Label__c</queriedFields>
+        <sortField>Order__c</sortField>
+        <sortOrder>Asc</sortOrder>
     </recordLookups>
     <screens>
         <name>Configure_Approval_Form</name>
@@ -456,7 +458,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <targetReference>Configure_Qualified_Submitters</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <subflows>
         <name>Manage_Specific_Step</name>
         <label>Manage Specific Step</label>

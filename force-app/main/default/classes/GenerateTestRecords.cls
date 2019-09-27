@@ -4,10 +4,10 @@ public with sharing class GenerateTestRecords {
     @InvocableMethod
     public static List<Results> generate(List<Requests> requestList) {
         ApprovalProcessDefinition__c curAPD = generateApprovalProcessDefinition1();
-        ApprovalProcessStepDefinition__c curAPStep = generateApprovalProcessStepDefinition(curAPD.Id, 'Step 1');
+        ApprovalProcessStepDefinition__c curAPStep = generateApprovalProcessStepDefinition(curAPD.Id, 'StepA');
          generateApprover(curAPStep.Id, 'mikeManager@aof.org', 'User');
 
-        curAPStep = generateApprovalProcessStepDefinition(curAPD.Id, 'Step 2');
+        curAPStep = generateApprovalProcessStepDefinition(curAPD.Id, 'StepB');
         generateApprover(curAPStep.Id, 'dianneDirector@aof.org', 'User');
 
 

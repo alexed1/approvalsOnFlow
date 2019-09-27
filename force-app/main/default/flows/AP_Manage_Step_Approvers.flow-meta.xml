@@ -6,14 +6,14 @@
         <locationX>567</locationX>
         <locationY>333</locationY>
         <assignmentItems>
-            <assignToReference>curApprovalStep.SingleApproverOrMultiple__c</assignToReference>
+            <assignToReference>curApprovalStepDef.SingleApproverOrMultiple__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>Single</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>curApprovalStep.ApproverType__c</assignToReference>
+            <assignToReference>curApprovalStepDef.ApproverType__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>adhoc</stringValue>
@@ -29,14 +29,14 @@
         <locationX>773</locationX>
         <locationY>260</locationY>
         <assignmentItems>
-            <assignToReference>curApprovalStep.SingleApproverOrMultiple__c</assignToReference>
+            <assignToReference>curApprovalStepDef.SingleApproverOrMultiple__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>Multiple</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>curApprovalStep.ApproverType__c</assignToReference>
+            <assignToReference>curApprovalStepDef.ApproverType__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>multiple</stringValue>
@@ -53,14 +53,14 @@
         <locationX>405</locationX>
         <locationY>559</locationY>
         <assignmentItems>
-            <assignToReference>curApprovalStep.SingleApproverOrMultiple__c</assignToReference>
+            <assignToReference>curApprovalStepDef.SingleApproverOrMultiple__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>Single</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>curApprovalStep.ApproverType__c</assignToReference>
+            <assignToReference>curApprovalStepDef.ApproverType__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>hierarchy-based</stringValue>
@@ -83,14 +83,14 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>curApprovalStep.SingleApproverOrMultiple__c</assignToReference>
+            <assignToReference>curApprovalStepDef.SingleApproverOrMultiple__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>Single</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>curApprovalStep.ApproverType__c</assignToReference>
+            <assignToReference>curApprovalStepDef.ApproverType__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>queue</stringValue>
@@ -146,7 +146,7 @@
             <name>Multiple_Approvers</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>curApprovalStep.SingleApproverOrMultiple__c</leftValueReference>
+                <leftValueReference>curApprovalStepDef.SingleApproverOrMultiple__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Multiple</stringValue>
@@ -241,7 +241,7 @@
             <field>Approval_Process_Step_Definition__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>curApprovalStep.Id</elementReference>
+                <elementReference>curApprovalStepDef.Id</elementReference>
             </value>
         </filters>
         <object>Approver__c</object>
@@ -262,7 +262,7 @@
             <field>Approval_Process_Step_Definition__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>curApprovalStep.Id</elementReference>
+                <elementReference>curApprovalStepDef.Id</elementReference>
             </value>
         </filters>
         <object>Approver__c</object>
@@ -313,7 +313,7 @@
             <inputParameters>
                 <name>recordId</name>
                 <value>
-                    <elementReference>curApprovalStep.Id</elementReference>
+                    <elementReference>curApprovalStepDef.Id</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -387,7 +387,7 @@
     </start>
     <status>Draft</status>
     <variables>
-        <name>curApprovalStep</name>
+        <name>curApprovalStepDef</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

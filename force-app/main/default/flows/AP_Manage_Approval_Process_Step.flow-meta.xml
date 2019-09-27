@@ -444,8 +444,8 @@
     <subflows>
         <name>Manage_Approvers_for_Step</name>
         <label>Manage Approvers for Step</label>
-        <locationX>1316</locationX>
-        <locationY>151</locationY>
+        <locationX>1320</locationX>
+        <locationY>144</locationY>
         <connector>
             <targetReference>Check_Step_Order</targetReference>
         </connector>
