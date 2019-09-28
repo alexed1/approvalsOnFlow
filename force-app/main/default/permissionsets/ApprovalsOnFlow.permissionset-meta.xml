@@ -472,6 +472,10 @@
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
+        <tab>Approver__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
         <tab>standard-WorkOrder</tab>
         <visibility>Visible</visibility>
     </tabSettings>

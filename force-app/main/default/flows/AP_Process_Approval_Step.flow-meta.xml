@@ -4,17 +4,17 @@
         <description>This is the url that will go in the body of the notification email being sent out.</description>
         <name>Generate_Response_Link</name>
         <label>Generate Response Link</label>
-        <locationX>787</locationX>
-        <locationY>819</locationY>
+        <locationX>826</locationX>
+        <locationY>978</locationY>
         <actionName>GenerateFlowLink</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Send_Email_Notification</targetReference>
         </connector>
         <inputParameters>
-            <name>param1Name</name>
+            <name>param1Value</name>
             <value>
-                <stringValue>processStepTaskId</stringValue>
+                <elementReference>curApproverStepTaskId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -24,9 +24,9 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>param1Value</name>
+            <name>param1Name</name>
             <value>
-                <elementReference>curAPStepInstance.Id</elementReference>
+                <stringValue>processStepTaskId</stringValue>
             </value>
         </inputParameters>
         <outputParameters>
@@ -66,8 +66,8 @@
     <actionCalls>
         <name>Send_Email_Notification</name>
         <label>Send Email Notification</label>
-        <locationX>228</locationX>
-        <locationY>820</locationY>
+        <locationX>496</locationX>
+        <locationY>980</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -111,7 +111,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Generate_Response_Link</targetReference>
+            <targetReference>Create_Step_Task</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -219,9 +219,45 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>A StepTask is created for each target approver to track their responses (or lack thereof)</description>
+        <name>Create_Step_Task</name>
+        <label>Create Step Task</label>
+        <locationX>815</locationX>
+        <locationY>587</locationY>
+        <assignRecordIdToReference>curApproverStepTaskId</assignRecordIdToReference>
+        <connector>
+            <targetReference>Generate_Response_Link</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Approval_Process_Step_Instance__c</field>
+            <value>
+                <elementReference>curAPStepInstance.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Assigned_User__c</field>
+            <value>
+                <elementReference>curUser.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Parent_Approval_Process_Instance__c</field>
+            <value>
+                <elementReference>curApprovalProcessInstance.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Started</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Approval_Process_Step_Task__c</object>
+    </recordCreates>
     <recordLookups>
         <name>Get_AP_Step_Instance</name>
-        <label>Get AP Step Instance</label>
+        <label>Get Current AP Step</label>
         <locationX>385</locationX>
         <locationY>54</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
@@ -233,6 +269,13 @@
             <operator>EqualTo</operator>
             <value>
                 <elementReference>curApprovalProcessInstance.Current_Approval_Step__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Parent_Approval_Process_Instance__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curApprovalProcessInstance.Id</elementReference>
             </value>
         </filters>
         <object>ApprovalProcessStepInstance__c</object>
@@ -315,7 +358,7 @@
             <targetReference>Log_Status</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>StatusUpdate</name>
         <text>&lt;p&gt;Process Approval Step has executed.&lt;/p&gt;&lt;p&gt;Cur Approval Process Instance is:  {!curProcessInstanceId}&lt;/p&gt;</text>
@@ -339,6 +382,13 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Approver__c</objectType>
+    </variables>
+    <variables>
+        <name>curApproverStepTaskId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>curAPStepInstance</name>

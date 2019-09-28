@@ -111,7 +111,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>curApprovalProcessStepTask.Id</elementReference>
+                <elementReference>processStepTaskId</elementReference>
             </value>
         </filters>
         <object>ApprovalProcessInstance__c</object>
@@ -186,7 +186,7 @@
         <name>Approve_or_Reject_Record</name>
         <label>Approve or Reject Record</label>
         <locationX>659</locationX>
-        <locationY>53</locationY>
+        <locationY>54</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -212,7 +212,7 @@
             <inputParameters>
                 <name>mode</name>
                 <value>
-                    <stringValue>view</stringValue>
+                    <stringValue>edit</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -251,13 +251,6 @@
         </connector>
     </start>
     <status>Active</status>
-    <variables>
-        <name>ApprovalCandidateRecordId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
     <variables>
         <name>curApprovalProcessHistoryItem</name>
         <dataType>SObject</dataType>
