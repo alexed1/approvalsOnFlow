@@ -13,11 +13,16 @@ public with sharing class GenerateFlowLink {
         flowLink = baseURL + '/flow/' + flowName;
         
         String params = '';
-        params = generateParam(requestList[0].param1Name, requestList[0].param1Value) + 
-        generateParam(requestList[0].param2Name, requestList[0].param2Value) +
-        generateParam(requestList[0].param3Name, requestList[0].param3Value);
-        //todo need to insert the ampersands where appropriate
-        
+        params = generateParam(requestList[0].param1Name, requestList[0].param1Value);
+        System.debug('params is: ' + params);
+        String nextParam = generateParam(requestList[0].param2Name, requestList[0].param2Value);
+        if (nextParam != '')
+          params = params + '&' + nextParam;
+        System.debug('params is: ' + params);
+        nextParam = generateParam(requestList[0].param3Name, requestList[0].param3Value);
+        if (nextParam != '')
+          params = params + '&' + nextParam;
+        System.debug('params is: ' + params);
         if (params != '')
           flowLink = flowLink + '?' + params;
 
@@ -42,7 +47,9 @@ public with sharing class GenerateFlowLink {
           throw new InvocableErrorException('In the call to GenerateFlowLink, either a param name was passed without a value, or a value was passed without a name');
         if (name == null && value == null)
           return '';
-        return name + '=' + value;
+        String param = name + '=' + value;
+        System.debug('newly generated params is: ' + param);
+        return param;
 
     }
 

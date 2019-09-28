@@ -12,9 +12,21 @@
             <targetReference>Send_Email_Notification</targetReference>
         </connector>
         <inputParameters>
+            <name>param1Name</name>
+            <value>
+                <stringValue>processStepTaskId</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>flowName</name>
             <value>
                 <stringValue>AP_User_Approves_or_Rejects</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>param1Value</name>
+            <value>
+                <elementReference>curAPStepInstance.Id</elementReference>
             </value>
         </inputParameters>
         <outputParameters>

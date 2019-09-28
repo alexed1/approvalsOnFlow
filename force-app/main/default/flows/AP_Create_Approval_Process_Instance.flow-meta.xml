@@ -85,6 +85,12 @@
                 <elementReference>curApprovalProcessDefinition.Id</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>approvalProcessCandidateRecordId__c</field>
+            <value>
+                <elementReference>ApprovalCandidateRecordId</elementReference>
+            </value>
+        </inputAssignments>
         <object>ApprovalProcessInstance__c</object>
     </recordCreates>
     <recordCreates>

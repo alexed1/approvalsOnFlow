@@ -119,6 +119,7 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>ApprovalProcessDefinition__c</queriedFields>
         <queriedFields>Current_Approval_Step__c</queriedFields>
+        <queriedFields>approvalProcessCandidateRecordId__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_Approval_Process_Instance_History</name>
@@ -160,7 +161,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>curApprovalProcessStepTaskId</elementReference>
+                <elementReference>processStepTaskId</elementReference>
             </value>
         </filters>
         <object>Approval_Process_Step_Task__c</object>
@@ -192,6 +193,37 @@
         <connector>
             <targetReference>Update_Current_Step_Task</targetReference>
         </connector>
+        <fields>
+            <name>candidateRecordDetail</name>
+            <extensionName>c:recordDetail</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>curApprovalProcessInstance.approvalProcessCandidateRecordId__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>elementSize</name>
+                <value>
+                    <numberValue>6.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>mode</name>
+                <value>
+                    <stringValue>view</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>fields</name>
+                <value>
+                    <stringValue>Name, Status, Priority, Subject, Discount, Duration, Contact, Case, Asset, Account</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -218,7 +250,7 @@
             <targetReference>Get_Approval_Process_Step_Task</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>ApprovalCandidateRecordId</name>
         <dataType>String</dataType>
@@ -251,18 +283,18 @@
         <objectType>Approval_Process_Step_Task__c</objectType>
     </variables>
     <variables>
-        <description>This is the specific task that was assigned to a specific approver for a specific instance of step for a specific instance of an approval process</description>
-        <name>curApprovalProcessStepTaskId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
         <name>placeholderFromButtonBar</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>This is the specific task that was assigned to a specific approver for a specific instance of step for a specific instance of an approval process</description>
+        <name>processStepTaskId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
