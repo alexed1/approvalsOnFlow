@@ -20,7 +20,10 @@ global class ApprovalResponseEmailHandler implements Messaging.InboundEmailHandl
 
         Integer recordIdPrefixIndex = emailBody.indexOf(RECORD_ID_PREFIX);
         if (recordIdPrefixIndex > 0) {
-            recordId = emailBody.substring(recordIdPrefixIndex, emailBody.indexOf(RECORD_ID_SUFIX, recordIdPrefixIndex));
+            Integer recordIdSufixIndex = emailBody.indexOf(RECORD_ID_SUFIX, recordIdPrefixIndex);
+            if (recordIdSufixIndex > 0) {
+                recordId = emailBody.substring(recordIdPrefixIndex, recordIdSufixIndex);
+            }
         }
         if (actionResponse != null && recordId != null) {
             result.success = true;
