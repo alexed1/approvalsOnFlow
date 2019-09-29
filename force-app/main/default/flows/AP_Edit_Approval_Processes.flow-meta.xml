@@ -62,6 +62,22 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <name>outputMember</name>
         </outputParameters>
     </actionCalls>
+    <assignments>
+        <name>Count_Step_Definitions</name>
+        <label>Count Step Definitions</label>
+        <locationX>1156</locationX>
+        <locationY>160</locationY>
+        <assignmentItems>
+            <assignToReference>numStepDefs</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>curApprovalProcessStepDefs</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Manage_Approval_Process_Steps</targetReference>
+        </connector>
+    </assignments>
     <choices>
         <name>AddStep</name>
         <choiceText>Add</choiceText>
@@ -210,11 +226,11 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <recordLookups>
         <name>Get_ApprovalProcess_Step_Definitions</name>
         <label>Get ApprovalProcess Step Definitions</label>
-        <locationX>1134</locationX>
-        <locationY>145</locationY>
+        <locationX>1041</locationX>
+        <locationY>82</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Manage_Approval_Process_Steps</targetReference>
+            <targetReference>Count_Step_Definitions</targetReference>
         </connector>
         <filters>
             <field>ApprovalProcessDefinition__c</field>
@@ -252,27 +268,13 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Configure_Initial_Submitters</targetReference>
+            <targetReference>Get_ApprovalProcess_Step_Definitions</targetReference>
         </connector>
         <fields>
             <name>dispSpecifyEntryCriteria_0</name>
             <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Configure Approval Form&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
-        <name>Configure_Initial_Submitters</name>
-        <label>Configure Initial Submitters</label>
-        <locationX>1056</locationX>
-        <locationY>262</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Get_ApprovalProcess_Step_Definitions</targetReference>
-        </connector>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -396,6 +398,31 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
                 <assignToReference>selectedStepDefinitionId</assignToReference>
                 <name>recordId</name>
             </outputParameters>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>numStepDefs</leftValueReference>
+                    <operator>GreaterThan</operator>
+                    <rightValue>
+                        <numberValue>0.0</numberValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>warnNoSteps</name>
+            <fieldText>&lt;p&gt;No steps are defined. Click Add to start creating them.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>numStepDefs</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <numberValue>0.0</numberValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>What_Kind_Of_Modification_Needed</name>
@@ -462,8 +489,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <subflows>
         <name>Manage_Specific_Step</name>
         <label>Manage Specific Step</label>
-        <locationX>1325</locationX>
-        <locationY>162</locationY>
+        <locationX>1363</locationX>
+        <locationY>52</locationY>
         <connector>
             <targetReference>Get_ApprovalProcess_Step_Definitions</targetReference>
         </connector>
@@ -575,6 +602,14 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <isInput>false</isInput>
         <isOutput>true</isOutput>
         <objectType>ApprovalProcessStepDefinition__c</objectType>
+    </variables>
+    <variables>
+        <name>numStepDefs</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
     </variables>
     <variables>
         <name>Output</name>

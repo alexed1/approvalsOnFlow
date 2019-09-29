@@ -198,8 +198,11 @@
     <recordCreates>
         <name>Create_Approval_Process_Step_Record</name>
         <label>Create Approval Process Step Record</label>
-        <locationX>586</locationX>
-        <locationY>511</locationY>
+        <locationX>583</locationX>
+        <locationY>517</locationY>
+        <connector>
+            <targetReference>Step_Added</targetReference>
+        </connector>
         <inputAssignments>
             <field>ApprovalProcessDefinition__c</field>
             <value>
@@ -289,13 +292,6 @@
             <name>Proposed_Step_Name</name>
             <dataType>String</dataType>
             <fieldText>Approval Step Name</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>Is_Required</name>
-            <dataType>Boolean</dataType>
-            <fieldText>Make this step required. Its associated flow must be completed before the case can transition to the next case status.</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
@@ -416,6 +412,23 @@
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>IMPORTANT! This screen forces an important transaction. removing this will cause bugs.</description>
+        <name>Step_Added</name>
+        <label>Step Added</label>
+        <locationX>734</locationX>
+        <locationY>520</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>dispAddComplete</name>
+            <fieldText>&lt;p&gt;Step added.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Updated_Successfully</name>

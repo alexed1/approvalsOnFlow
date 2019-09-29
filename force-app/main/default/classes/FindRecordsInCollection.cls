@@ -10,24 +10,30 @@ public with sharing class FindRecordsInCollection {
 
         //Create a Results object to hold the return values
         Results response = new Results();
+		System.debug('inputCollection.size() is: ' + inputCollection.size());
+        System.debug(inputCollection[0]);
+        if(inputCollection.size() > 0) {
+            
+            //TRACE HERE
+            //
+            //given a list of items, and a search string, find all of the matches
+            //iterate through input collection
+            //check the value of the current input  
+            Schema.SobjectField curField = getFieldByName(targetObject,targetField);
+            for(ApprovalProcessStepDefinition__c curApprovalProcessStepDefinition : inputCollection) {
+                String value = (String)curApprovalProcessStepDefinition.get(curField);
+                if (value == targetValue){
+                    response.multipleOutputMembers.add(curApprovalProcessStepDefinition);
+                }
+            }
 
-
-        //given a list of items, and a search string, find all of the matches
-        //iterate through input collection
-        //check the value of the current input  
-        Schema.SobjectField curField = getFieldByName(targetObject,targetField);
-        for(ApprovalProcessStepDefinition__c curApprovalProcessStepDefinition : inputCollection) {
-            String value = (String)curApprovalProcessStepDefinition.get(curField);
-            if (value == targetValue){
-                response.multipleOutputMembers.add(curApprovalProcessStepDefinition);
+            //because a lot of flow manipulations are easier if you're dealing with a single record
+            //instead of a collection, we provide a single record return value if there's only one hit.
+            if(response.multipleOutputMembers.size() == 1) {
+                response.singleOutputMember = response.multipleOutputMembers[0];
             }
         }
-
-        //because a lot of flow manipulations are easier if you're dealing with a single record
-        //instead of a collection, we provide a single record return value if there's only one hit.
-        if(response.multipleOutputMembers.size() == 1) {
-            response.singleOutputMember = response.multipleOutputMembers[0];
-        }
+        
 
         //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
         List<Results> responseWrapper= new List<Results>();

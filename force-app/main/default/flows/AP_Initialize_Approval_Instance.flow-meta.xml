@@ -26,7 +26,7 @@
         <label>GetNamesFromGroupSubmitters</label>
         <locationX>553</locationX>
         <locationY>460</locationY>
-        <actionName>GetStringsFromLists</actionName>
+        <actionName>GetStringsFromLists2</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>ExtractUserSubmitters</targetReference>
@@ -53,7 +53,7 @@
         <label>GetRoleNamesFromRoleSubmitters</label>
         <locationX>521</locationX>
         <locationY>311</locationY>
-        <actionName>GetStringsFromLists</actionName>
+        <actionName>GetStringsFromLists2</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>ExtractGroupSubmitters</targetReference>
@@ -80,7 +80,7 @@
         <label>GetUserNamesFromSubmitters</label>
         <locationX>540</locationX>
         <locationY>632</locationY>
-        <actionName>GetStringsFromLists</actionName>
+        <actionName>GetStringsFromLists2</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Is_Current_User_an_Approved_Submitter</targetReference>

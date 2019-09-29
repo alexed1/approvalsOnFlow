@@ -64,6 +64,32 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
+        <name>Post_Chatter_Error</name>
+        <label>Post Chatter Error</label>
+        <locationX>141</locationX>
+        <locationY>811</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <elementReference>emailErrorText</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>curUsername</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>type</name>
+            <value>
+                <stringValue>User</stringValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>Send_Email_Notification</name>
         <label>Send Email Notification</label>
         <locationX>496</locationX>
@@ -71,18 +97,12 @@
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Iterate_Over_Approvers</targetReference>
+            <targetReference>Email_Sent_Successfully</targetReference>
         </connector>
         <inputParameters>
-            <name>SendTOthisOneEmailAddress</name>
+            <name>HTMLbody</name>
             <value>
-                <elementReference>curEmailAddress</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>subject</name>
-            <value>
-                <stringValue>test subject</stringValue>
+                <elementReference>templateEmailBody</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -92,17 +112,31 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>HTMLbody</name>
+            <name>subject</name>
             <value>
-                <elementReference>templateEmailBody</elementReference>
+                <stringValue>test subject</stringValue>
             </value>
         </inputParameters>
+        <inputParameters>
+            <name>SendTOthisOneEmailAddress</name>
+            <value>
+                <elementReference>curEmailAddress</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>emailErrorText</assignToReference>
+            <name>errors</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>emailSentSuccessfully</assignToReference>
+            <name>isSuccess</name>
+        </outputParameters>
     </actionCalls>
     <assignments>
         <name>Extract_Email_Address</name>
         <label>Extract Email Address</label>
-        <locationX>639</locationX>
-        <locationY>583</locationY>
+        <locationX>546</locationX>
+        <locationY>584</locationY>
         <assignmentItems>
             <assignToReference>curEmailAddress</assignToReference>
             <operator>Assign</operator>
@@ -111,7 +145,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Create_Step_Task</targetReference>
+            <targetReference>Get_Step_Task_If_Extant</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -146,6 +180,72 @@
             <targetReference>placeholder_for_Evaluate_Formula</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Use_StepTaskId</name>
+        <label>Use StepTaskId</label>
+        <locationX>951</locationX>
+        <locationY>421</locationY>
+        <assignmentItems>
+            <assignToReference>curApproverStepTaskId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>curStepTask.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Generate_Response_Link</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Does_Step_Task_Already_Exist</name>
+        <label>Does Step Task Already Exist?</label>
+        <locationX>806</locationX>
+        <locationY>417</locationY>
+        <defaultConnector>
+            <targetReference>Create_Step_Task</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_steptask_exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>curStepTask</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Use_StepTaskId</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Email_Sent_Successfully</name>
+        <label>Email Sent Successfully?</label>
+        <locationX>331</locationX>
+        <locationY>812</locationY>
+        <defaultConnector>
+            <targetReference>Post_Chatter_Error</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Email Error</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Email_Success</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>emailSentSuccessfully</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Iterate_Over_Approvers</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Enter_Step</name>
         <label>Enter Step?</label>
@@ -223,8 +323,8 @@
         <description>A StepTask is created for each target approver to track their responses (or lack thereof)</description>
         <name>Create_Step_Task</name>
         <label>Create Step Task</label>
-        <locationX>815</locationX>
-        <locationY>587</locationY>
+        <locationX>822</locationX>
+        <locationY>641</locationY>
         <assignRecordIdToReference>curApproverStepTaskId</assignRecordIdToReference>
         <connector>
             <targetReference>Generate_Response_Link</targetReference>
@@ -331,6 +431,33 @@
         <queriedFields>Type__c</queriedFields>
     </recordLookups>
     <recordLookups>
+        <name>Get_Step_Task_If_Extant</name>
+        <label>Get Step Task If Extant</label>
+        <locationX>672</locationX>
+        <locationY>415</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Does_Step_Task_Already_Exist</targetReference>
+        </connector>
+        <filters>
+            <field>Approval_Process_Step_Instance__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curAPStepInstance.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Assigned_User__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curUser.Id</elementReference>
+            </value>
+        </filters>
+        <object>Approval_Process_Step_Task__c</object>
+        <outputReference>curStepTask</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <name>Get_User</name>
         <label>Get User</label>
         <locationX>430</locationX>
@@ -358,7 +485,7 @@
             <targetReference>Log_Status</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>StatusUpdate</name>
         <text>&lt;p&gt;Process Approval Step has executed.&lt;/p&gt;&lt;p&gt;Cur Approval Process Instance is:  {!curProcessInstanceId}&lt;/p&gt;</text>
@@ -421,12 +548,34 @@
         <objectType>Approver__c</objectType>
     </variables>
     <variables>
+        <name>curStepTask</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Approval_Process_Step_Task__c</objectType>
+    </variables>
+    <variables>
         <name>curUser</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>User</objectType>
+    </variables>
+    <variables>
+        <name>emailErrorText</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>emailSentSuccessfully</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>EntryCriteriaMet</name>

@@ -1,5 +1,4 @@
-//Given a list of SObjects, return a list of Strings corresponding to a specified fieldname
-public with sharing class GetStringsFromLists {
+public with sharing class GetStringsFromLists2 {
 
   
     @InvocableMethod

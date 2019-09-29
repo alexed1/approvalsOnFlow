@@ -162,6 +162,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ApprovalProcessStepDefinition__c.RejectBehavior__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ApprovalProcessStepDefinition__c.RejectionFlow_API_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
