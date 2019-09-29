@@ -25,6 +25,7 @@
                     <property name="supportedEditCapabilities"    type="String"></property>
                     <property name="managerName"    type="String"></property>
                     <property name="availableObjectTypes"    type="String"></property>
+            <property name="selectionRequired" type="Boolean"></property>
             </targetConfig>
     </targetConfigs>
 
