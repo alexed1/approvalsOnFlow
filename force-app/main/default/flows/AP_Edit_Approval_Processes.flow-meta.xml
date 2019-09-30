@@ -3,7 +3,7 @@
     <actionCalls>
         <name>Find_Selected_Step_Definition</name>
         <label>Find Selected Step Definition</label>
-        <locationX>1509</locationX>
+        <locationX>1508</locationX>
         <locationY>310</locationY>
         <actionName>FindRecordsInCollection</actionName>
         <actionType>apex</actionType>
@@ -148,8 +148,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <decisions>
         <name>Done_Handling_Steps</name>
         <label>Done Handling Steps?</label>
-        <locationX>1322</locationX>
-        <locationY>400</locationY>
+        <locationX>1345</locationX>
+        <locationY>440</locationY>
         <defaultConnector>
             <targetReference>Find_Selected_Step_Definition</targetReference>
         </defaultConnector>

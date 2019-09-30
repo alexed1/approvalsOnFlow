@@ -11,11 +11,13 @@ public with sharing class FindRecordsInCollection {
         //Create a Results object to hold the return values
         Results response = new Results();
 		System.debug('inputCollection.size() is: ' + inputCollection.size());
-        System.debug(inputCollection[0]);
-        if(inputCollection.size() > 0) {
+        System.debug('inputCollection[0] is ' + inputCollection[0]);
+        System.debug('inputCollection is ' + inputCollection);
+        System.debug('inputCollection isempty: ' + inputCollection.isEmpty());
+        //if flow does a query that returns no results and passes that to this action, it actually shows up
+        // as a List containing a single member of 'null', making the null check different
+        if(inputCollection.size() > 0 && inputCollection[0] != null) {
             
-            //TRACE HERE
-            //
             //given a list of items, and a search string, find all of the matches
             //iterate through input collection
             //check the value of the current input  

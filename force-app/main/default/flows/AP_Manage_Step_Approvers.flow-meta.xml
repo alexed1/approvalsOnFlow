@@ -26,8 +26,8 @@
     <assignments>
         <name>Set_Type_to_Build_List</name>
         <label>Set Type to Build List</label>
-        <locationX>773</locationX>
-        <locationY>260</locationY>
+        <locationX>763</locationX>
+        <locationY>261</locationY>
         <assignmentItems>
             <assignToReference>curApprovalStepDef.SingleApproverOrMultiple__c</assignToReference>
             <operator>Assign</operator>
@@ -43,7 +43,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Update_Approver</targetReference>
+            <targetReference>Update_Step_Def_with_Approver_Details</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -73,13 +73,13 @@
     <assignments>
         <name>Set_Type_to_Queue</name>
         <label>Set Type to Queue</label>
-        <locationX>449</locationX>
-        <locationY>459</locationY>
+        <locationX>480</locationX>
+        <locationY>456</locationY>
         <assignmentItems>
             <assignToReference>curApprover.Name</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Select_Queue</elementReference>
+                <elementReference>QueuePicker</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -275,7 +275,17 @@
         <label>Update Approver</label>
         <locationX>795</locationX>
         <locationY>450</locationY>
+        <connector>
+            <targetReference>Update_Step_Def_with_Approver_Details</targetReference>
+        </connector>
         <inputReference>curApprover</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Step_Def_with_Approver_Details</name>
+        <label>Update Step Def with Approver Details</label>
+        <locationX>928</locationX>
+        <locationY>449</locationY>
+        <inputReference>curApprovalStepDef</inputReference>
     </recordUpdates>
     <screens>
         <description>get back a list of Approvers and update</description>
@@ -369,7 +379,7 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>Select_Queue</name>
+            <name>QueuePicker</name>
             <dataType>String</dataType>
             <fieldText>Select Queue (lookup placeholder)</fieldText>
             <fieldType>InputField</fieldType>

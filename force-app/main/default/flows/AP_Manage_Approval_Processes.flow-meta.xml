@@ -56,6 +56,14 @@
         </value>
     </choices>
     <choices>
+        <name>deleteChoice</name>
+        <choiceText>Delete an Approval Process</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>delete</stringValue>
+        </value>
+    </choices>
+    <choices>
         <name>Done</name>
         <choiceText>Done with steps</choiceText>
         <dataType>String</dataType>
@@ -85,14 +93,14 @@
         <locationX>1010</locationX>
         <locationY>322</locationY>
         <defaultConnector>
-            <targetReference>Get_Selected_Approval_Process</targetReference>
+            <targetReference>Edit_or_Delete</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Is_Null</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>existingApprovalProcessDefinitionId</leftValueReference>
+                <leftValueReference>selectedApprovalProcessDefinitionId</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -151,7 +159,39 @@
             <label>Create Approval Process</label>
         </rules>
         <rules>
-            <name>Edit_Approval_Process</name>
+            <name>Edit_or_Delete_Approval_Process</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>ApprovalProcessAction</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>edit_choice</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ApprovalProcessAction</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>deleteChoice</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Approval_Process_Definitions</targetReference>
+            </connector>
+            <label>Edit or Delete Approval Process</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Edit_or_Delete</name>
+        <label>Edit or Delete?</label>
+        <locationX>1008</locationX>
+        <locationY>524</locationY>
+        <defaultConnector>
+            <targetReference>Delete_Selected_Approval_Process</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Delete</defaultConnectorLabel>
+        <rules>
+            <name>EditApprovalProcess2</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>ApprovalProcessAction</leftValueReference>
@@ -161,9 +201,9 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Approval_Process_Definitions</targetReference>
+                <targetReference>Get_Selected_Approval_Process</targetReference>
             </connector>
-            <label>Edit Approval Process</label>
+            <label>Edit</label>
         </rules>
     </decisions>
     <decisions>
@@ -217,6 +257,23 @@
         </connector>
         <inputReference>curApprovalProcessDefinition</inputReference>
     </recordCreates>
+    <recordDeletes>
+        <name>Delete_Selected_Approval_Process</name>
+        <label>Delete Selected Approval Process</label>
+        <locationX>1015</locationX>
+        <locationY>1091</locationY>
+        <connector>
+            <targetReference>DeleteConfirmation</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>selectedApprovalProcessDefinitionId</elementReference>
+            </value>
+        </filters>
+        <object>ApprovalProcessDefinition__c</object>
+    </recordDeletes>
     <recordLookups>
         <name>Get_Approval_Process_Definitions</name>
         <label>Get Approval Process Definitions</label>
@@ -248,7 +305,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>existingApprovalProcessDefinitionId</elementReference>
+                <elementReference>selectedApprovalProcessDefinitionId</elementReference>
             </value>
         </filters>
         <object>ApprovalProcessDefinition__c</object>
@@ -278,8 +335,8 @@
     <screens>
         <name>Create_or_Edit</name>
         <label>Create or Edit</label>
-        <locationX>263</locationX>
-        <locationY>50</locationY>
+        <locationX>133</locationX>
+        <locationY>49</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -295,6 +352,7 @@
             <name>ApprovalProcessAction</name>
             <choiceReferences>create_Choice</choiceReferences>
             <choiceReferences>edit_choice</choiceReferences>
+            <choiceReferences>deleteChoice</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Select an Action</fieldText>
             <fieldType>RadioButtons</fieldType>
@@ -302,6 +360,25 @@
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>DeleteConfirmation</name>
+        <label>DeleteConfirmation</label>
+        <locationX>123</locationX>
+        <locationY>1363</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Create_or_Edit</targetReference>
+        </connector>
+        <fields>
+            <name>dispDeleteConfirm</name>
+            <fieldText>&lt;p&gt;Approval Process deleted.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Error</name>
@@ -426,7 +503,7 @@
             </inputParameters>
             <isRequired>true</isRequired>
             <outputParameters>
-                <assignToReference>existingApprovalProcessDefinitionId</assignToReference>
+                <assignToReference>selectedApprovalProcessDefinitionId</assignToReference>
                 <name>recordId</name>
             </outputParameters>
         </fields>
@@ -507,18 +584,18 @@
         </value>
     </variables>
     <variables>
-        <name>existingApprovalProcessDefinitionId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
         <description>This is the record for which approval is being sought.</description>
         <name>recordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>selectedApprovalProcessDefinitionId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
 </Flow>
