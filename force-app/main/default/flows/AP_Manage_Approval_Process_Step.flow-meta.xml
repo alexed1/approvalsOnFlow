@@ -5,7 +5,7 @@
         <name>Assign_Name_to</name>
         <label>Update Current Step Def</label>
         <locationX>738</locationX>
-        <locationY>522</locationY>
+        <locationY>523</locationY>
         <assignmentItems>
             <assignToReference>curApprovalProcessStepDefinition.Name</assignToReference>
             <operator>Assign</operator>
