@@ -20,6 +20,16 @@ global with sharing class ManageApprovalStepApprovers implements RoleManagerProv
     }
 
     private static String add(String userOrGroupID, Id recordId, String type) {
+
+        List<Approver__c> existingApprovers = [
+                SELECT Id, Name, Approval_Process_Step_Definition__c, Type__c
+                FROM Approver__c
+                WHERE Name =:userOrGroupID AND Approval_Process_Step_Definition__c = :recordId AND Type__c = :type
+        ];
+        if (!existingApprovers.isEmpty()) {
+            return JSON.serialize(existingApprovers[0]);
+        }
+
         Approver__c newApprover = new Approver__c(
                 Name = userOrGroupID,
                 Approval_Process_Step_Definition__c = recordId,
