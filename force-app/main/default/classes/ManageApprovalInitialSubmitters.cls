@@ -19,7 +19,7 @@ global with sharing class ManageApprovalInitialSubmitters implements RoleManager
         throw new AuraHandledException('Button "' + buttonName + '" is not supported');
     }
 
-    private static String add(Id userOrGroupID, Id recordId, String type) {
+    private static String add(String userOrGroupID, Id recordId, String type) {
         List<AP_AllowedSubmitter__c> existingSubmitters = [
                 SELECT Id,Name, Parent_Approval_Process_Definition__c,Type__c
                 FROM AP_AllowedSubmitter__c
@@ -40,7 +40,7 @@ global with sharing class ManageApprovalInitialSubmitters implements RoleManager
         }
     }
 
-    private static String remove(Id userOrGroupID, Id recordId) {
+    private static String remove(String userOrGroupID, Id recordId) {
         try {
             delete [SELECT Id FROM AP_AllowedSubmitter__c WHERE Name = :userOrGroupID AND Parent_Approval_Process_Definition__c = :recordId];
             return 'SUCCESS';

@@ -19,7 +19,17 @@ global with sharing class ManageApprovalStepApprovers implements RoleManagerProv
         throw new AuraHandledException('Button "' + buttonName + '" is not supported');
     }
 
-    private static String add(Id userOrGroupID, Id recordId, String type) {
+    private static String add(String userOrGroupID, Id recordId, String type) {
+
+        List<Approver__c> existingApprovers = [
+                SELECT Id, Name, Approval_Process_Step_Definition__c, Type__c
+                FROM Approver__c
+                WHERE Name =:userOrGroupID AND Approval_Process_Step_Definition__c = :recordId AND Type__c = :type
+        ];
+        if (!existingApprovers.isEmpty()) {
+            return JSON.serialize(existingApprovers[0]);
+        }
+
         Approver__c newApprover = new Approver__c(
                 Name = userOrGroupID,
                 Approval_Process_Step_Definition__c = recordId,
@@ -32,7 +42,7 @@ global with sharing class ManageApprovalStepApprovers implements RoleManagerProv
         }
     }
 
-    private static String remove(Id userOrGroupID, Id recordId) {
+    private static String remove(String userOrGroupID, Id recordId) {
         try {
             delete [SELECT Id FROM Approver__c WHERE Name = :userOrGroupID AND Approval_Process_Step_Definition__c = :recordId];
             return 'SUCCESS';

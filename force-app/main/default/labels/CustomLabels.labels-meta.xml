@@ -6,7 +6,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>TooManyResultsMessage</shortDescription>
-        <value>Your search found more than 200 results.  Keep typing to make it more specific</value>
+        <value>Your search found more than 200 results. Keep typing to make it more specific</value>
     </labels>
     <labels>
         <fullName>InvalidRecordIdMessage</fullName>
@@ -22,7 +22,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>RoleDoesNotHaveGroup</shortDescription>
-        <value>Selected role does not have corresponding group.</value>
+        <value>Selected role does not have corresponding group. Note that Roles do not currently work on Salesforce Scratch Orgs</value>
     </labels>
     <labels>
         <fullName>CantReduceSharingLevelMessage</fullName>
@@ -38,7 +38,9 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>RoleDoesNotHaveGroup</shortDescription>
-        <value>The RoleManager component was unable to make that change to that User or Group. It may be restricted in some way.</value>
+        <value>The RoleManager component was unable to make that change to that User or Group. It may be restricted in
+            some way.
+        </value>
     </labels>
     <labels>
         <fullName>NoSearchResultsMessage</fullName>
@@ -46,7 +48,39 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>NoSearchResultsMessage</shortDescription>
-        <value>No results found.</value>
+        <value>No results found</value>
+    </labels>
+    <labels>
+        <fullName>NoMembersAddedMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>NoSearchResultsMessage</shortDescription>
+        <value>No members have been added</value>
+    </labels>
+    <labels>
+        <fullName>Owner</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Owner</shortDescription>
+        <value>Owner</value>
+    </labels>
+    <labels>
+        <fullName>Creator</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Creator</shortDescription>
+        <value>Creator</value>
+    </labels>
+    <labels>
+        <fullName>OneMemberRequiredMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OneMemberRequiredMessage</shortDescription>
+        <value>At least one submitter should be selected.</value>
     </labels>
     <labels>
         <fullName>ButtonIsNotSupportedMessage</fullName>
@@ -54,7 +88,15 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>ButtonIsNotSupportedMessage</shortDescription>
-        <value>Following buttons are not supported: </value>
+        <value>Following buttons are not supported:</value>
+    </labels>
+    <labels>
+        <fullName>NotSupportedMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>NotSupportedMessage</shortDescription>
+        <value>Unable to access a field called</value>
     </labels>
     <labels>
         <fullName>SupportedButtonsEmptyMessage</fullName>
