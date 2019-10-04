@@ -330,7 +330,7 @@
         <name>screenCreateApprovalProcess</name>
         <label>Create Approval Process</label>
         <locationX>265</locationX>
-        <locationY>386</locationY>
+        <locationY>385</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -354,7 +354,7 @@
             <dataType>String</dataType>
             <fieldText>Associated Object Type (Account, Foo__c, etc)</fieldText>
             <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>

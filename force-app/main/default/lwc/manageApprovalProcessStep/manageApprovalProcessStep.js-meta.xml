@@ -11,6 +11,8 @@
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
             <property name="approvalProcessId" type="String" required="true" default="{!recordId}"></property>
+            <property name="selectedRecords" type="String[]" ></property>
+            <property name="steps"  label="Sorted Strings" type="String[]" ></property> 
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

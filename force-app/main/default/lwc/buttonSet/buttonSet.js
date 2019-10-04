@@ -1,3 +1,7 @@
+//buttonAlignment can be right, left?, center?
+//buttonLabel example: Go Back, Go Forward, Game Over
+//buttonNavigationDirective example, back,next,finish
+
 import {LightningElement, api} from 'lwc';
 import {
     FlowNavigationNextEvent,
@@ -6,11 +10,21 @@ import {
     FlowNavigationPauseEvent,
     FlowNavigationResumeEvent
 } from 'lightning/flowSupport';
+import {logger} from 'c/lwcLogger';
 
 export default class buttonSet extends LightningElement {
     @api buttonLabels;
     @api buttonAlignment;
     @api buttonNavigationDirective;
+    @api action; //what was clicked?
+
+    connectedCallback() {
+        logger(this.log, this.source, `buttonLabels is now ${this.buttonLabels}`);
+        logger(this.log, this.source, `buttonAlignment is now ${this.buttonAlignment}`);
+        logger(this.log, this.source, `buttonNavigationDirective is now ${this.buttonNavigationDirective}`);  
+        //logger(this.log, this.source, `buttons is now ${this.buttons()}`);  
+
+    }
 
     get buttons() {
         let buttonDescriptor = [];
@@ -54,6 +68,9 @@ export default class buttonSet extends LightningElement {
     handleButtonClick(event) {
         let nextNavigationEvent;
         let eventParam = '';
+        this.action = event.target.label;
+        logger(this.log, this.source, `setting action prop to${this.action}`);  
+        
         switch (event.currentTarget.dataset.navigation) {
             case 'next':
                 nextNavigationEvent = new FlowNavigationNextEvent(eventParam);

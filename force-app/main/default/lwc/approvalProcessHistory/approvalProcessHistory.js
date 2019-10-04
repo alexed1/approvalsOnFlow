@@ -1,11 +1,20 @@
 import {LightningElement, api, track, wire} from 'lwc';
 import getApprovalProcessHistory from '@salesforce/apex/ApprovalProcessHelper.getApprovalProcessHistory';
 import {NavigationMixin} from 'lightning/navigation';
+import {logger} from 'c/lwcLogger';
 
 export default class approvalProcessHistory extends NavigationMixin(LightningElement) {
-    @api recordId = '';
+    @api recordId;
     @track historyData;
     @track openSteps = [];
+    connectedCallback() {
+        logger(this.log, this.source, `recordId is now ${this.recordId}`);
+        
+            
+
+    }
+   
+
 
     @wire(getApprovalProcessHistory, {processId: '$recordId'})
     _getApprovalProcessHistory({error, data}) {

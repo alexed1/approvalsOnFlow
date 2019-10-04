@@ -10,7 +10,7 @@
             <assignToReference>curApprovalProcessStepTask.Status__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>placeholderFromButtonBar</elementReference>
+                <elementReference>requestedAction</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -67,6 +67,12 @@
             <targetReference>screenFinishMessage</targetReference>
         </connector>
         <inputAssignments>
+            <field>ApprovalCandidateRecordId__c</field>
+            <value>
+                <elementReference>curApprovalProcessInstance.approvalProcessCandidateRecordId__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>ApprovalProcessStepTaskId__c</field>
             <value>
                 <elementReference>curApprovalProcessStepTask.Id</elementReference>
@@ -93,7 +99,7 @@
         <inputAssignments>
             <field>Status__c</field>
             <value>
-                <elementReference>placeholderFromButtonBar</elementReference>
+                <elementReference>requestedAction</elementReference>
             </value>
         </inputAssignments>
         <object>ApprovalInstanceHistory__c</object>
@@ -111,7 +117,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>processStepTaskId</elementReference>
+                <elementReference>curApprovalProcessStepTask.Parent_Approval_Process_Instance__c</elementReference>
             </value>
         </filters>
         <object>ApprovalProcessInstance__c</object>
@@ -171,6 +177,7 @@
         <queriedFields>Assigned_User__c</queriedFields>
         <queriedFields>Original_Assignee__c</queriedFields>
         <queriedFields>Status__c</queriedFields>
+        <queriedFields>Parent_Approval_Process_Instance__c</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Save_Step_Task_Changes</name>
@@ -193,6 +200,11 @@
         <connector>
             <targetReference>Update_Current_Step_Task</targetReference>
         </connector>
+        <fields>
+            <name>dispHeader</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 20px;&quot;&gt;Please Approve or Reject this record:&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>candidateRecordDetail</name>
             <extensionName>c:recordDetail</extensionName>
@@ -218,14 +230,61 @@
             <inputParameters>
                 <name>fields</name>
                 <value>
-                    <stringValue>Name, Status, Priority, Subject, Discount, Duration, Contact, Case, Asset, Account</stringValue>
+                    <stringValue>Status, Priority, Subject, Discount, Duration, ContactId, CaseId, AssetId, AccountId</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <fields>
+            <name>showHistoryTable</name>
+            <extensionName>c:approvalProcessHistory</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>curApprovalProcessInstance.Id</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Comments</name>
+            <fieldText>Comments</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>approveButtons</name>
+            <extensionName>c:buttonSet</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>buttonLabels</name>
+                <value>
+                    <stringValue>Approve, Reject</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>buttonNavigationDirective</name>
+                <value>
+                    <stringValue>next,next</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>buttonAlignment</name>
+                <value>
+                    <stringValue>center</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>requestedAction</assignToReference>
+                <name>action</name>
+            </outputParameters>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>screenFinishMessage</name>
@@ -250,7 +309,7 @@
             <targetReference>Get_Approval_Process_Step_Task</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>curApprovalProcessHistoryItem</name>
         <dataType>SObject</dataType>
@@ -288,6 +347,13 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>requestedAction</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>

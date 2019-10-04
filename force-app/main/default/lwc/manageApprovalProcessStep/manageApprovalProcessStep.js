@@ -5,8 +5,8 @@ import saveApprovalSteps from '@salesforce/apex/ManageApprovalSteps.saveApproval
 
 export default class manageApprovalProcessStep extends LightningElement {
     @api approvalProcessId;
-    @track steps = [];
-    @track selectedRecords = [];
+    @api steps = [];   //alex: removed @track here so I could expose this to flow
+    @api selectedRecords = []; //alex: removed @track here so I could expose this to flow
 
     @wire(getApprovalProcessSteps, {approvalProcessId: '$approvalProcessId'})
     _getApprovalProcessSteps(result) {

@@ -76,7 +76,7 @@
         <name>Iterate_over_Names</name>
         <label>Iterate over Names</label>
         <locationX>369</locationX>
-        <locationY>48</locationY>
+        <locationY>50</locationY>
         <assignNextValueToReference>currentName</assignNextValueToReference>
         <collectionReference>orderedStepNames</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -108,20 +108,42 @@
         <inputReference>modifiedApprovalProcessStepDefinitions</inputReference>
     </recordUpdates>
     <screens>
-        <name>Order_Steps</name>
-        <label>Order Steps</label>
-        <locationX>202</locationX>
-        <locationY>49</locationY>
+        <name>console1</name>
+        <label>console1</label>
+        <locationX>267</locationX>
+        <locationY>50</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Iterate_over_Names</targetReference>
+        </connector>
+        <fields>
+            <name>dispSelected</name>
+            <fieldText>&lt;p&gt;Selected rows are:{!selectedRecords}&lt;/p&gt;&lt;p&gt;sorted all rows are: {!sortedSteps}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Order_Steps</name>
+        <label>Order Steps</label>
+        <locationX>162</locationX>
+        <locationY>50</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>console1</targetReference>
+        </connector>
         <fields>
             <name>dispReorderSubhead</name>
             <fieldText>&lt;p&gt;&lt;b&gt;Reorder the Approval Process Steps&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>manage_reordering</name>
+            <name>reorderingComponent</name>
             <extensionName>c:manageApprovalProcessStep</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
@@ -131,7 +153,10 @@
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <outputParameters>
+                <assignToReference>selectedRecords</assignToReference>
+                <name>selectedRecords</name>
+            </outputParameters>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -201,5 +226,19 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ApprovalProcessStepDefinition__c</objectType>
+    </variables>
+    <variables>
+        <name>selectedRecords</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>sortedSteps</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

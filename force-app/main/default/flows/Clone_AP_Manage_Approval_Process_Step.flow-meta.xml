@@ -1,43 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <assignments>
-        <description>On an edit the full Step Def is passed in from the parent. In the case of an Add, we&#39;ve just received the Name and generated the ID. The ID has just been overwritten onto the main Step Def variable, and now we need to add the Name.</description>
-        <name>Assign_Name_to</name>
-        <label>Update Current Step Def</label>
-        <locationX>737</locationX>
-        <locationY>523</locationY>
-        <assignmentItems>
-            <assignToReference>curApprovalProcessStepDefinition.Name</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Proposed_Step_Name</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>curApprovalProcessStepDefinition.ApprovalFlow_API_Name__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>&quot;&quot;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>curApprovalProcessStepDefinition.RejectionFlow_API_Name__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>&quot;&quot;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>curApprovalProcessStepDefinition.SingleApproverOrMultiple__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Single</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Step_Added</targetReference>
-        </connector>
-    </assignments>
     <choices>
         <name>AlwaysEnter</name>
         <choiceText>All records should enter this step.</choiceText>
@@ -218,8 +180,8 @@
         <picklistField>RejectBehavior__c</picklistField>
         <picklistObject>ApprovalProcessStepDefinition__c</picklistObject>
     </dynamicChoiceSets>
-    <interviewLabel>AP Manage Approval Process Step {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>AP Manage Approval Process Step</label>
+    <interviewLabel>Clone AP Manage Approval Process Step {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Clone AP Manage Approval Process Step</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -236,11 +198,10 @@
     <recordCreates>
         <name>Create_Approval_Process_Step_Record</name>
         <label>Create Approval Process Step Record</label>
-        <locationX>591</locationX>
-        <locationY>522</locationY>
-        <assignRecordIdToReference>curApprovalProcessStepDefinition.Id</assignRecordIdToReference>
+        <locationX>583</locationX>
+        <locationY>517</locationY>
         <connector>
-            <targetReference>Assign_Name_to</targetReference>
+            <targetReference>Step_Added</targetReference>
         </connector>
         <inputAssignments>
             <field>ApprovalProcessDefinition__c</field>
@@ -265,13 +226,6 @@
         <connector>
             <targetReference>Similar_Name_Exist</targetReference>
         </connector>
-        <filters>
-            <field>ApprovalProcessDefinition__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>curApprovalProcessDefinition.Id</elementReference>
-            </value>
-        </filters>
         <filters>
             <field>Name</field>
             <operator>EqualTo</operator>
@@ -388,7 +342,7 @@
     <screens>
         <name>Select_Step_Actions</name>
         <label>Select Step Actions</label>
-        <locationX>984</locationX>
+        <locationX>983</locationX>
         <locationY>152</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -463,14 +417,11 @@
         <description>IMPORTANT! This screen forces an important transaction. removing this will cause bugs.</description>
         <name>Step_Added</name>
         <label>Step Added</label>
-        <locationX>876</locationX>
-        <locationY>523</locationY>
+        <locationX>734</locationX>
+        <locationY>520</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Select_Step_Actions</targetReference>
-        </connector>
         <fields>
             <name>dispAddComplete</name>
             <fieldText>&lt;p&gt;Step added.&lt;/p&gt;</fieldText>
@@ -506,7 +457,7 @@
     <subflows>
         <name>Manage_Approvers_for_Step</name>
         <label>Manage Approvers for Step</label>
-        <locationX>1320</locationX>
+        <locationX>1321</locationX>
         <locationY>144</locationY>
         <connector>
             <targetReference>Check_Step_Order</targetReference>

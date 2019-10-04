@@ -13,6 +13,8 @@
             <property name="buttonLabels" type="String"></property>
             <property name="buttonNavigationDirective" type="String"></property>
             <property name="buttonAlignment" type="String" datasource="left,center,right"></property>
+            <property name="action" type="String"> </property>
+
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

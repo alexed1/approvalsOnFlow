@@ -57,6 +57,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ApprovalProcessDefinition__c.ContextObjectTypeName__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ApprovalProcessDefinition__c.Description__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -118,6 +123,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ApprovalProcessInstance__c.State__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ApprovalProcessInstance__c.approvalProcessCandidateRecordId__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
