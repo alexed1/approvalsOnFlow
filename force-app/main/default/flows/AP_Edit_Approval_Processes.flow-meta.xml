@@ -65,8 +65,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <assignments>
         <name>Count_Step_Definitions</name>
         <label>Count Step Definitions</label>
-        <locationX>1156</locationX>
-        <locationY>160</locationY>
+        <locationX>1243</locationX>
+        <locationY>172</locationY>
         <assignmentItems>
             <assignToReference>numStepDefs</assignToReference>
             <operator>AssignCount</operator>
@@ -226,8 +226,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <recordLookups>
         <name>Get_ApprovalProcess_Step_Definitions</name>
         <label>Get ApprovalProcess Step Definitions</label>
-        <locationX>1041</locationX>
-        <locationY>83</locationY>
+        <locationX>1128</locationX>
+        <locationY>95</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Count_Step_Definitions</targetReference>
@@ -259,16 +259,26 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <sortField>Order__c</sortField>
         <sortOrder>Asc</sortOrder>
     </recordLookups>
+    <recordUpdates>
+        <name>Update_Process_Definition</name>
+        <label>Update Process Definition</label>
+        <locationX>1053</locationX>
+        <locationY>468</locationY>
+        <connector>
+            <targetReference>Get_ApprovalProcess_Step_Definitions</targetReference>
+        </connector>
+        <inputReference>curApprovalProcessDefinition</inputReference>
+    </recordUpdates>
     <screens>
         <name>Configure_Approval_Form</name>
         <label>Configure Approval Form</label>
-        <locationX>957</locationX>
-        <locationY>262</locationY>
+        <locationX>874</locationX>
+        <locationY>593</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Get_ApprovalProcess_Step_Definitions</targetReference>
+            <targetReference>Update_Process_Definition</targetReference>
         </connector>
         <fields>
             <name>dispSpecifyEntryCriteria_0</name>
@@ -354,8 +364,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <screens>
         <name>Manage_Approval_Process_Steps</name>
         <label>Manage Approval Process Steps</label>
-        <locationX>1208</locationX>
-        <locationY>264</locationY>
+        <locationX>1295</locationX>
+        <locationY>276</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -443,13 +453,13 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <description>This screen combines Step 3 and Step 4 from the original Approval Process Edit wizard.</description>
         <name>Notification_Templates</name>
         <label>Routing Automation &amp; Notification Templates</label>
-        <locationX>827</locationX>
-        <locationY>264</locationY>
+        <locationX>728</locationX>
+        <locationY>265</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Configure_Approval_Form</targetReference>
+            <targetReference>Specify_Actions</targetReference>
         </connector>
         <fields>
             <name>dispRouting</name>
@@ -478,11 +488,131 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
+    <screens>
+        <name>Specify_Actions</name>
+        <label>Specify Actions</label>
+        <locationX>834</locationX>
+        <locationY>411</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Configure_Approval_Form</targetReference>
+        </connector>
+        <fields>
+            <name>flowInitialSubmission</name>
+            <extensionName>c:flowListFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Run this flow when a record is initially submitted for approval:</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showActiveFlowsOnly</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectedFlowApiName</name>
+                <value>
+                    <elementReference>curApprovalProcessDefinition.ActionFlow_InitialSubmission__c</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>selectedFlowInitialSubmission</assignToReference>
+                <name>selectedFlowApiName</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>pickFlowFinalApproval</name>
+            <extensionName>c:flowListFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Run this flow upon final approval</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showActiveFlowsOnly</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectedFlowApiName</name>
+                <value>
+                    <elementReference>curApprovalProcessDefinition.ActionFlow_FinalApproval__c</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>selectedFlowFinalApproval</assignToReference>
+                <name>selectedFlowApiName</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>pickFlowFinalRejection</name>
+            <extensionName>c:flowListFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Run this flow upon Final Rejection of approval request:</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectedFlowApiName</name>
+                <value>
+                    <elementReference>curApprovalProcessDefinition.ActionFlow_FinalRejection__c</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>selectedFlowFinalRejection</assignToReference>
+                <name>selectedFlowApiName</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>pickFlowRecall</name>
+            <extensionName>c:flowListFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Run this flow if the approval request is recalled</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showActiveFlowsOnly</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectedFlowApiName</name>
+                <value>
+                    <elementReference>curApprovalProcessDefinition.ActionFlow_Recall__c</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>selectedFlowRecall</assignToReference>
+                <name>selectedFlowApiName</name>
+            </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <start>
         <locationX>50</locationX>
         <locationY>50</locationY>
         <connector>
-            <targetReference>Configure_Qualified_Submitters</targetReference>
+            <targetReference>Specify_Entry_Criteria</targetReference>
         </connector>
     </start>
     <status>Draft</status>
@@ -625,6 +755,34 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ApprovalProcessDefinition__c</objectType>
+    </variables>
+    <variables>
+        <name>selectedFlowFinalApproval</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>selectedFlowFinalRejection</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>selectedFlowInitialSubmission</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>selectedFlowRecall</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>selectedStepDefinitionId</name>

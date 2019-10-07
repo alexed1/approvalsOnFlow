@@ -55,6 +55,10 @@
                 <behavior>Edit</behavior>
                 <field>RejectBehavior__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>DecisionCriteria__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

@@ -42,6 +42,13 @@
                 <stringValue>multiple</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalStepDef.DecisionCriteria__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>radioDecisionProcess</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Update_Step_Def_with_Approver_Details</targetReference>
         </connector>
@@ -130,6 +137,30 @@
         <dataType>String</dataType>
         <value>
             <stringValue>hierarchy</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choiceMajority</name>
+        <choiceText>Approve or Reject based on the &lt;b&gt;MAJORITY&lt;/b&gt; of approvers</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>majority</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choiceUnanimous</name>
+        <choiceText>Require&amp;nbsp;&lt;b&gt;UNANIMOUS&lt;/b&gt;&amp;nbsp;approval from all selected approvers.</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>unanimous</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choiceUseFirstResponse</name>
+        <choiceText>Approve or Reject based on the &lt;b&gt;First&lt;/b&gt; response</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>first</stringValue>
         </value>
     </choices>
     <decisions>
@@ -384,6 +415,36 @@
             <fieldText>Select Queue (lookup placeholder)</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>ApproverType</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <elementReference>approverType_queue</elementReference>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>radioDecisionProcess</name>
+            <choiceReferences>choiceUseFirstResponse</choiceReferences>
+            <choiceReferences>choiceUnanimous</choiceReferences>
+            <choiceReferences>choiceMajority</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>When multiple approvers are selected:</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>ApproverType</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <elementReference>approverType_multiple</elementReference>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>

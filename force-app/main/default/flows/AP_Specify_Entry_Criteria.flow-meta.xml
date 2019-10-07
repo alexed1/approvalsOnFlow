@@ -472,7 +472,7 @@
         <name>CriteriaOrFormulaLabels</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
             <stringValue>Evaluate some expression criteria;Evaluate a formula</stringValue>
@@ -483,7 +483,7 @@
         <name>CriteriaOrFormulaValues</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
             <stringValue>CriteriaExpression;formula</stringValue>
@@ -510,7 +510,7 @@
         <name>EntryCriteria</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
@@ -518,7 +518,7 @@
         <name>EntryCriteriaDisplayType</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
@@ -530,7 +530,7 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <name>EntryCriteriaMode</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
@@ -538,7 +538,7 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <name>IfCriteriaLabels</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
             <stringValue>Enter the step;Approve Record;Go to next step (skip this one)</stringValue>
@@ -549,7 +549,7 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <name>IfCriteriaValues</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
             <stringValue>enterStep;approve;skip</stringValue>
@@ -560,7 +560,7 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <name>objectType</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
@@ -575,7 +575,7 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <name>SpecifyStepCriteriaLabels</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
             <stringValue>All records should enter this step;Use criteria or a formula</stringValue>
@@ -586,7 +586,7 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <name>SpecifyStepCriteriaValues</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
             <stringValue>always;criteria</stringValue>

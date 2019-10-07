@@ -42,6 +42,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ApprovalProcessDefinition__c.ActionFlow_FinalApproval__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ApprovalProcessDefinition__c.ActionFlow_FinalRejection__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ApprovalProcessDefinition__c.ActionFlow_InitialSubmission__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ApprovalProcessDefinition__c.ActionFlow_Recall__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ApprovalProcessDefinition__c.Active__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -143,6 +163,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ApprovalProcessStepDefinition__c.ApproverType__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ApprovalProcessStepDefinition__c.DecisionCriteria__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
