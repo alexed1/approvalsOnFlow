@@ -59,9 +59,16 @@ global with sharing class ManageApprovalStepApprovers implements RoleManagerProv
         List<RoleManagerController.MemberInfo> results = new List<RoleManagerController.MemberInfo>();
         List<Approver__c> approvers = [SELECT Id, Name, Type__c FROM Approver__c WHERE Approval_Process_Step_Definition__c = :recordId];
         Map<String, Set<String>> objectTypeToIdMap = getObjectTypeToIdMap(approvers);
-        Map<String, String> approverIdToName = SearchUtils.getMembersByTypeAndId(objectTypeToIdMap);
+        Map<String, SObject> approverIdToName = SearchUtils.getMembersByTypeAndId(objectTypeToIdMap);
         for (Approver__c app : approvers) {
-            results.add(new RoleManagerController.MemberInfo(app.Id, app.Name, approverIdToName.get(app.Name), approverIdToName.get(app.Name) + ' (' + app.Type__c + ')', app));
+            String idField;
+            if (SearchUtils.TYPE_TO_ID_FIELD.containsKey(app.Type__c)) {
+                idField = (String) approverIdToName.get(app.Name).get(SearchUtils.TYPE_TO_ID_FIELD.get(app.Type__c));
+            } else {
+                idField = (String) approverIdToName.get(app.Name).get('Id');
+            }
+            String nameField = (String) approverIdToName.get(app.Name).get('Name');
+            results.add(new RoleManagerController.MemberInfo(app.Id, app.Name, idField, nameField + ' (' + app.Type__c + ')', app));
         }
         return results;
     }
