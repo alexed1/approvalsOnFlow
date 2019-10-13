@@ -32,6 +32,7 @@ export default class addNewMembers extends LightningElement {
     @api memberData;
     @api objectData;
     @api typeMapping;
+    @api customTypes;
     @track label = {
         Search,
         TooManyResultsMessage,
@@ -45,6 +46,7 @@ export default class addNewMembers extends LightningElement {
     viewEditMembers = [];
     @track isSearchApplied = false;
     source = 'addNewMembers';
+
 
     connectedCallback() {
         if (this.availableObjectTypes && this.availableObjectTypes.length > 0) {
@@ -111,18 +113,10 @@ export default class addNewMembers extends LightningElement {
         let results = new Object();
         if (this.selectedType === 'RelatedUsers') {
             results[this.selectedType] = this.searchRelatedUsers(this.searchString);
-        } else if (this.selectedType === 'Owner') {
-            let ownerId = this.searchRelatedUsers().find(curUser => curUser.value === 'OwnerId');
-            if(ownerId){
-                results[this.selectedType] = [ownerId];
-            }else{
-                results[this.selectedType] = [];
-            }
-
-        } else if (this.selectedType === 'Creator') {
+        } else if (this.customTypes[this.selectedType] != null) {
             results[this.selectedType] = [{
-                label: this.memberData.fields.CreatedBy.displayValue,
-                value: this.memberData.fields.CreatedBy.value.id
+                label: this.selectedType,
+                value: this.customTypes[this.selectedType]
             }];
         } else {
             results =

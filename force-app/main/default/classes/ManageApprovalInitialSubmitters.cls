@@ -57,10 +57,18 @@ global with sharing class ManageApprovalInitialSubmitters implements RoleManager
         List<RoleManagerController.MemberInfo> results = new List<RoleManagerController.MemberInfo>();
         List<AP_AllowedSubmitter__c> initialSubmitters = [SELECT Id, Name, Type__c FROM AP_AllowedSubmitter__c WHERE Parent_Approval_Process_Definition__c = :recordId];
         Map<String, Set<String>> objectTypeToIdMap = getObjectTypeToIdMap(initialSubmitters);
-        Map<String, String> initialSubmitterIdToName = SearchUtils.getMembersByTypeAndId(objectTypeToIdMap);
+        Map<String, SObject> initialSubmitterIdToName = SearchUtils.getMembersByTypeAndId(objectTypeToIdMap);
         for (AP_AllowedSubmitter__c app : initialSubmitters) {
-            results.add(new RoleManagerController.MemberInfo(app.Id, app.Name, initialSubmitterIdToName.get(app.Name), initialSubmitterIdToName.get(app.Name) + ' (' + app.Type__c + ')', app));
+            String idField;
+            if (SearchUtils.TYPE_TO_ID_FIELD.containsKey(app.Type__c)) {
+                idField = (String) initialSubmitterIdToName.get(app.Name).get(SearchUtils.TYPE_TO_ID_FIELD.get(app.Type__c));
+            } else {
+                idField = (String) initialSubmitterIdToName.get(app.Name).get('Id');
+            }
+            String nameField = (String) initialSubmitterIdToName.get(app.Name).get('Name');
+            results.add(new RoleManagerController.MemberInfo(app.Id, app.Name, idField, nameField + ' (' + app.Type__c + ')', app));
         }
+
         return results;
     }
 
@@ -75,7 +83,7 @@ global with sharing class ManageApprovalInitialSubmitters implements RoleManager
         return resultMap;
     }
 
-    private static void generateButtonSettings()  {
+    private static void generateButtonSettings() {
         supportedButtonSettings = new List<RoleManagerController.ButtonSetting>();
         supportedButtonSettings.add(new RoleManagerController.ButtonSetting('Add', new RoleManagerController.ButtonMatchingRule(RoleManagerController.MatchingAction.EXISTS)));
         supportedButtonSettings.add(new RoleManagerController.ButtonSetting('Remove', new RoleManagerController.ButtonMatchingRule(RoleManagerController.MatchingAction.NOTEXISTS)));
