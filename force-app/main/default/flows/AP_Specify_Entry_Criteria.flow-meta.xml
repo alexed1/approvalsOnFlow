@@ -390,7 +390,7 @@
         <name>Specify_Step_Criteria</name>
         <label>Specify Step Criteria</label>
         <locationX>475</locationX>
-        <locationY>50</locationY>
+        <locationY>49</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -633,7 +633,7 @@
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
         <objectType>ApprovalProcessDefinition__c</objectType>
     </variables>
     <variables>
@@ -641,7 +641,7 @@
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
         <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>

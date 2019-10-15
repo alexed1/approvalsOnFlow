@@ -223,8 +223,8 @@
     <recordLookups>
         <name>Get_Selected_Approval_Process</name>
         <label>Get Selected Approval Process</label>
-        <locationX>830</locationX>
-        <locationY>535</locationY>
+        <locationX>833</locationX>
+        <locationY>320</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>AP_Edit_Approval_Process</targetReference>
@@ -239,6 +239,11 @@
         <object>ApprovalProcessDefinition__c</object>
         <outputReference>curApprovalProcessDefinition</outputReference>
         <queriedFields>Id</queriedFields>
+        <queriedFields>ContextObjectTypeName__c</queriedFields>
+        <queriedFields>ActionFlow_FinalApproval__c</queriedFields>
+        <queriedFields>ActionFlow_InitialSubmission__c</queriedFields>
+        <queriedFields>ActionFlow_FinalRejection__c</queriedFields>
+        <queriedFields>ActionFlow_Recall__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_Similiar_Record</name>
@@ -259,6 +264,7 @@
         <object>ApprovalProcessDefinition__c</object>
         <outputReference>curApprovalProcessDefinition</outputReference>
         <queriedFields>Id</queriedFields>
+        <queriedFields>ContextObjectTypeName__c</queriedFields>
     </recordLookups>
     <screens>
         <name>Create_or_Edit</name>
@@ -437,7 +443,7 @@
         <name>AP_Edit_Approval_Process</name>
         <label>AP Edit Approval Process</label>
         <locationX>830</locationX>
-        <locationY>726</locationY>
+        <locationY>725</locationY>
         <flowName>AP_Edit_Approval_Processes</flowName>
         <inputAssignments>
             <name>curApprovalProcessDefinition</name>
@@ -471,7 +477,7 @@
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
         <objectType>ApprovalProcessDefinition__c</objectType>
     </variables>
     <variables>

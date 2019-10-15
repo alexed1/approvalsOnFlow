@@ -491,8 +491,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <screens>
         <name>Specify_Actions</name>
         <label>Specify Actions</label>
-        <locationX>834</locationX>
-        <locationY>411</locationY>
+        <locationX>833</locationX>
+        <locationY>412</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -670,11 +670,37 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </connector>
         <flowName>AP_Specify_Entry_Criteria</flowName>
         <inputAssignments>
-            <name>curApprovalProcessDefinition</name>
+            <name>contextObjectType</name>
             <value>
-                <elementReference>retrievedApprovalProcessDefinition</elementReference>
+                <elementReference>curApprovalProcessDefinition.ContextObjectTypeName__c</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <name>curApprovalProcessDefinition</name>
+            <value>
+                <elementReference>curApprovalProcessDefinition</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>objectType</name>
+            <value>
+                <stringValue>approval process</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>curApprovalProcessDefinition.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>curApprovalProcessDefinition</assignToReference>
+            <name>curApprovalProcessDefinition</name>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>curApprovalProcessStepDefinition</assignToReference>
+            <name>curApprovalProcessStepDefinition</name>
+        </outputAssignments>
     </subflows>
     <variables>
         <description>extracted from the Step records so we can feed just the names to the dual list box</description>
@@ -706,7 +732,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
         <objectType>ApprovalProcessDefinition__c</objectType>
     </variables>
     <variables>

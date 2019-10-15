@@ -529,9 +529,33 @@
         </connector>
         <flowName>AP_Specify_Entry_Criteria</flowName>
         <inputAssignments>
+            <name>contextObjectType</name>
+            <value>
+                <elementReference>curApprovalProcessDefinition.ContextObjectTypeName__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>curApprovalProcessDefinition</name>
+            <value>
+                <elementReference>curApprovalProcessDefinition</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>curApprovalProcessStepDefinition</name>
             <value>
                 <elementReference>curApprovalProcessStepDefinition</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>objectType</name>
+            <value>
+                <stringValue>approval process step</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>curApprovalProcessStepDefinition.Id</elementReference>
             </value>
         </inputAssignments>
     </subflows>
