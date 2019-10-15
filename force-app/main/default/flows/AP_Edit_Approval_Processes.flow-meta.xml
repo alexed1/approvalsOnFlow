@@ -63,6 +63,43 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </outputParameters>
     </actionCalls>
     <assignments>
+        <name>Assign_Action_Flows</name>
+        <label>Assign Action Flows</label>
+        <locationX>834</locationX>
+        <locationY>627</locationY>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.ActionFlow_FinalApproval__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>selectedFlowFinalApproval</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.ActionFlow_FinalRejection__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>selectedFlowFinalRejection</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.ActionFlow_InitialSubmission__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>selectedFlowInitialSubmission</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.ActionFlow_Recall__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>selectedFlowRecall</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Configure_Approval_Form</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Count_Step_Definitions</name>
         <label>Count Step Definitions</label>
         <locationX>1243</locationX>
@@ -272,8 +309,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <screens>
         <name>Configure_Approval_Form</name>
         <label>Configure Approval Form</label>
-        <locationX>874</locationX>
-        <locationY>593</locationY>
+        <locationX>1053</locationX>
+        <locationY>627</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -497,7 +534,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Configure_Approval_Form</targetReference>
+            <targetReference>Assign_Action_Flows</targetReference>
         </connector>
         <fields>
             <name>flowInitialSubmission</name>

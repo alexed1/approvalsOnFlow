@@ -20,6 +20,22 @@
                 <elementReference>AssociatedObjectType</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.ActionFlow_InitialSubmission__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.ActionFlow_FinalRejection__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.ActionFlow_FinalApproval__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.ActionFlow_Recall__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
         <connector>
             <targetReference>Create_Approval_Process_Definition</targetReference>
         </connector>
@@ -265,6 +281,10 @@
         <outputReference>curApprovalProcessDefinition</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>ContextObjectTypeName__c</queriedFields>
+        <queriedFields>ActionFlow_FinalApproval__c</queriedFields>
+        <queriedFields>ActionFlow_InitialSubmission__c</queriedFields>
+        <queriedFields>ActionFlow_FinalRejection__c</queriedFields>
+        <queriedFields>ActionFlow_Recall__c</queriedFields>
     </recordLookups>
     <screens>
         <name>Create_or_Edit</name>
@@ -451,6 +471,10 @@
                 <elementReference>curApprovalProcessDefinition</elementReference>
             </value>
         </inputAssignments>
+        <outputAssignments>
+            <assignToReference>curApprovalProcessDefinition</assignToReference>
+            <name>curApprovalProcessDefinition</name>
+        </outputAssignments>
     </subflows>
     <variables>
         <name>ApprovalProcessColumns</name>
