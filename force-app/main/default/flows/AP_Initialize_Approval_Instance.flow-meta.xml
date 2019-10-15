@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Evaluate_Formula</name>
+        <label>Evaluate Formula</label>
+        <locationX>612</locationX>
+        <locationY>216</locationY>
+        <actionName>FlowFormulaEvaluator</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Is_Formula_True</targetReference>
+        </connector>
+        <inputParameters>
+            <name>apDefinitionId</name>
+            <value>
+                <elementReference>curProcessDef.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>contextObjectId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>Formula_Value</assignToReference>
+            <name>formulaValue</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>Get_Object_Type</name>
         <label>Get Object Type</label>
         <locationX>193</locationX>
@@ -166,6 +193,31 @@
             <label>User is Approved to Submit</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Is_Formula_True</name>
+        <label>Is Formula True</label>
+        <locationX>459</locationX>
+        <locationY>217</locationY>
+        <defaultConnector>
+            <targetReference>Iterate_Process_Defs</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>True</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Formula_Value</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>true</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ExtractRoleSubmitters</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
     <formulas>
         <name>curUsername</name>
         <dataType>String</dataType>
@@ -182,7 +234,7 @@
         <collectionReference>curApprovalDefs</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>ExtractRoleSubmitters</targetReference>
+            <targetReference>Evaluate_Formula</targetReference>
         </nextValueConnector>
     </loops>
     <processMetadataValues>
@@ -395,6 +447,13 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>AP_AllowedSubmitter__c</objectType>
+    </variables>
+    <variables>
+        <name>Formula_Value</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>groupMemberNames</name>

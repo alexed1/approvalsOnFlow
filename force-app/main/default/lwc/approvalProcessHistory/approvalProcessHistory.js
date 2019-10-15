@@ -7,16 +7,12 @@ export default class approvalProcessHistory extends NavigationMixin(LightningEle
     @api recordId;
     @track historyData;
     @track openSteps = [];
+
     connectedCallback() {
         logger(this.log, this.source, `recordId is now ${this.recordId}`);
-        
-            
-
     }
-   
 
-
-    @wire(getApprovalProcessHistory, {processId: '$recordId'})
+    @wire(getApprovalProcessHistory, {processInstanceId: '$recordId'})
     _getApprovalProcessHistory({error, data}) {
         if (error) {
             this.errors.push(error.body.message);

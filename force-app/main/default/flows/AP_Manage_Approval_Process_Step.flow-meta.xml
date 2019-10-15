@@ -394,7 +394,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Manage_Approvers_for_Step</targetReference>
+            <targetReference>Specify_Entry_Criteria_for_Step</targetReference>
         </connector>
         <fields>
             <name>EditScreenDisplayText</name>
@@ -506,8 +506,8 @@
     <subflows>
         <name>Manage_Approvers_for_Step</name>
         <label>Manage Approvers for Step</label>
-        <locationX>1320</locationX>
-        <locationY>144</locationY>
+        <locationX>1321</locationX>
+        <locationY>151</locationY>
         <connector>
             <targetReference>Check_Step_Order</targetReference>
         </connector>
@@ -522,8 +522,8 @@
     <subflows>
         <name>Specify_Entry_Criteria_for_Step</name>
         <label>Specify Entry Criteria for Step</label>
-        <locationX>1145</locationX>
-        <locationY>50</locationY>
+        <locationX>1155</locationX>
+        <locationY>152</locationY>
         <connector>
             <targetReference>Manage_Approvers_for_Step</targetReference>
         </connector>
