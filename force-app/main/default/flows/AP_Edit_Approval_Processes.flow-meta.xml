@@ -63,6 +63,43 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </outputParameters>
     </actionCalls>
     <assignments>
+        <name>Assign_Action_Flows</name>
+        <label>Assign Action Flows</label>
+        <locationX>834</locationX>
+        <locationY>627</locationY>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.ActionFlow_FinalApproval__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>selectedFlowFinalApproval</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.ActionFlow_FinalRejection__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>selectedFlowFinalRejection</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.ActionFlow_InitialSubmission__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>selectedFlowInitialSubmission</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.ActionFlow_Recall__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>selectedFlowRecall</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Configure_Approval_Form</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Count_Step_Definitions</name>
         <label>Count Step Definitions</label>
         <locationX>1243</locationX>
@@ -272,8 +309,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <screens>
         <name>Configure_Approval_Form</name>
         <label>Configure Approval Form</label>
-        <locationX>874</locationX>
-        <locationY>593</locationY>
+        <locationX>1053</locationX>
+        <locationY>627</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -491,13 +528,13 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <screens>
         <name>Specify_Actions</name>
         <label>Specify Actions</label>
-        <locationX>834</locationX>
-        <locationY>411</locationY>
+        <locationX>833</locationX>
+        <locationY>412</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Configure_Approval_Form</targetReference>
+            <targetReference>Assign_Action_Flows</targetReference>
         </connector>
         <fields>
             <name>flowInitialSubmission</name>
@@ -670,11 +707,37 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </connector>
         <flowName>AP_Specify_Entry_Criteria</flowName>
         <inputAssignments>
-            <name>curApprovalProcessDefinition</name>
+            <name>contextObjectType</name>
             <value>
-                <elementReference>retrievedApprovalProcessDefinition</elementReference>
+                <elementReference>curApprovalProcessDefinition.ContextObjectTypeName__c</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <name>curApprovalProcessDefinition</name>
+            <value>
+                <elementReference>curApprovalProcessDefinition</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>objectType</name>
+            <value>
+                <stringValue>approval process</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>recordId</name>
+            <value>
+                <elementReference>curApprovalProcessDefinition.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>curApprovalProcessDefinition</assignToReference>
+            <name>curApprovalProcessDefinition</name>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>curApprovalProcessStepDefinition</assignToReference>
+            <name>curApprovalProcessStepDefinition</name>
+        </outputAssignments>
     </subflows>
     <variables>
         <description>extracted from the Step records so we can feed just the names to the dual list box</description>
@@ -706,7 +769,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
         <objectType>ApprovalProcessDefinition__c</objectType>
     </variables>
     <variables>

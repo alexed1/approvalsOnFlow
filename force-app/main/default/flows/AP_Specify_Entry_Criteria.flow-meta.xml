@@ -1,45 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <assignments>
-        <name>Assign_Display_Type_Expression_Builder</name>
-        <label>Assign Display Type &quot;Expression Builder&quot;</label>
-        <locationX>1199</locationX>
-        <locationY>326</locationY>
+        <name>Assign_AP_Field_Values</name>
+        <label>Assign AP Field Values</label>
+        <locationX>209</locationX>
+        <locationY>742</locationY>
         <assignmentItems>
-            <assignToReference>placeholderVar</assignToReference>
-            <operator>Assign</operator>
-        </assignmentItems>
-        <connector>
-            <targetReference>Assign_Formula_String</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Assign_Display_Type_Formula</name>
-        <label>Assign Display Type &quot;Formula&quot;</label>
-        <locationX>1261</locationX>
-        <locationY>61</locationY>
-        <assignmentItems>
-            <assignToReference>placeholderVar</assignToReference>
+            <assignToReference>curApprovalProcessDefinition.EntryCriteria__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>placeholder</stringValue>
+                <elementReference>EntryCriteria</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.EntryCriteriaMode__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EntryCriteriaMode</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.EntryCriteriaDisplayType__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EntryCriteriaDisplayType</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Assign_Formula_String</targetReference>
+            <targetReference>Update_Approval_Process_Definition</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <description>Take the output from the Formula Builder or Expression Builder and save it to the EntryCritera attribute of the Approval Process Definition or Step Definition</description>
-        <name>Assign_Formula_String</name>
-        <label>Assign Formula String</label>
-        <locationX>1494</locationX>
-        <locationY>57</locationY>
+        <name>Assign_AP_Step_Field_Values</name>
+        <label>Assign AP Step Field Values</label>
+        <locationX>730</locationX>
+        <locationY>733</locationY>
         <assignmentItems>
-            <assignToReference>placeholderVar</assignToReference>
+            <assignToReference>curApprovalProcessStepDefinition.EntryCriteria__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>placeholder</stringValue>
+                <elementReference>EntryCriteria</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessStepDefinition.EntryCriteriaMode__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EntryCriteriaMode</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessStepDefinition.EntryCriteriaDisplayType__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EntryCriteriaDisplayType</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessStepDefinition.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Approval_Process_Step_Definition</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Display_Type</name>
+        <label>Assign Display Type</label>
+        <locationX>475</locationX>
+        <locationY>171</locationY>
+        <assignmentItems>
+            <assignToReference>EntryCriteriaDisplayType</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>criteria_or_formula.value</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Which_Criteria_To_Choose</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Entry_Criteria_From_Expression_Builder</name>
+        <label>Assign Entry Criteria From Expression Builder</label>
+        <locationX>276</locationX>
+        <locationY>322</locationY>
+        <assignmentItems>
+            <assignToReference>EntryCriteria</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>expression_builder_lwc.value</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Is_Always_Enter</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Entry_Criteria_From_Formula_Builder</name>
+        <label>Assign Entry Criteria From Formula Builder</label>
+        <locationX>663</locationX>
+        <locationY>320</locationY>
+        <assignmentItems>
+            <assignToReference>EntryCriteria</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>formula_builder_lwc.value</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Is_Always_Enter</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Entry_Criteria_Mode</name>
+        <label>Assign Entry Criteria Mode</label>
+        <locationX>677</locationX>
+        <locationY>565</locationY>
+        <assignmentItems>
+            <assignToReference>EntryCriteriaMode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>If_Criteria_are_Met_or_Formula_is_True.value</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -47,67 +139,19 @@
         </connector>
     </assignments>
     <assignments>
-        <name>assignment2</name>
-        <label>Mode 2</label>
-        <locationX>824</locationX>
-        <locationY>144</locationY>
+        <name>Assign_Entry_Criteria_Mode2</name>
+        <label>Assign Entry Criteria Mode</label>
+        <locationX>254</locationX>
+        <locationY>553</locationY>
         <assignmentItems>
-            <assignToReference>placeholderVar</assignToReference>
+            <assignToReference>EntryCriteriaMode</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>placeholder</stringValue>
+                <stringValue>Always Enter</stringValue>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Set_EntryCriteriaDisplayType</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>assignment3</name>
-        <label>Mode 3</label>
-        <locationX>883</locationX>
-        <locationY>298</locationY>
-        <assignmentItems>
-            <assignToReference>placeholderVar</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>placeholder</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_EntryCriteriaDisplayType</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>assignment4</name>
-        <label>Mode 4</label>
-        <locationX>947</locationX>
-        <locationY>419</locationY>
-        <assignmentItems>
-            <assignToReference>placeholderVar</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>placeholder</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_EntryCriteriaDisplayType</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>assignment_1</name>
-        <label>Mode 1</label>
-        <locationX>824</locationX>
-        <locationY>38</locationY>
-        <assignmentItems>
-            <assignToReference>placeholderVar</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>placeholder</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_EntryCriteriaDisplayType</targetReference>
+            <targetReference>Update_Which_Record</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -175,90 +219,50 @@
         </value>
     </choices>
     <decisions>
-        <name>Process_Selected_Entry_Criteria_Mode</name>
-        <label>Process Selected Entry Criteria Mode</label>
-        <locationX>458</locationX>
-        <locationY>51</locationY>
+        <name>Is_Always_Enter</name>
+        <label>Is Always Enter</label>
+        <locationX>467</locationX>
+        <locationY>494</locationY>
         <defaultConnector>
-            <targetReference>assignment4</targetReference>
+            <targetReference>Assign_Entry_Criteria_Mode2</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>EnterIfCriteriaTrueElseApprove</defaultConnectorLabel>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>outcomeAlwaysEnter</name>
+            <name>Yes</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>placeholderVar</leftValueReference>
+                <leftValueReference>radioSpecify_Step_Criteria.value</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>placeholder</stringValue>
+                    <stringValue>always</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>assignment_1</targetReference>
+                <targetReference>Assign_Entry_Criteria_Mode2</targetReference>
             </connector>
-            <label>alwaysEnter</label>
+            <label>Yes</label>
         </rules>
         <rules>
-            <name>enterIfCriteriaTrueElseSkip</name>
+            <name>No</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>placeholderVar</leftValueReference>
+                <leftValueReference>radioSpecify_Step_Criteria.value</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>placeholder</stringValue>
+                    <stringValue>criteria</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>assignment2</targetReference>
+                <targetReference>Assign_Entry_Criteria_Mode</targetReference>
             </connector>
-            <label>enterIfCriteriaTrueElseSkip</label>
-        </rules>
-        <rules>
-            <name>enterIfCriteriaTrueElseReject</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>placeholderVar</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>placeholder</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>assignment3</targetReference>
-            </connector>
-            <label>enterIfCriteriaTrueElseReject</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Set_EntryCriteriaDisplayType</name>
-        <label>Set EntryCriteriaDisplayType</label>
-        <locationX>1023</locationX>
-        <locationY>58</locationY>
-        <defaultConnector>
-            <targetReference>Assign_Display_Type_Expression_Builder</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Expression Builder</defaultConnectorLabel>
-        <rules>
-            <name>Formula_Builder</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>placeholderVar</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>placeholder</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Assign_Display_Type_Formula</targetReference>
-            </connector>
-            <label>Formula Builder</label>
+            <label>No</label>
         </rules>
     </decisions>
     <decisions>
         <name>Update_Which_Record</name>
-        <label>Update Which Record?</label>
-        <locationX>1615</locationX>
-        <locationY>60</locationY>
+        <label>AP OR AP Step Definition</label>
+        <locationX>463</locationX>
+        <locationY>727</locationY>
         <defaultConnectorLabel>Error</defaultConnectorLabel>
         <rules>
             <name>Approval_Process_Definition</name>
@@ -271,7 +275,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_Approval_Process_Definition</targetReference>
+                <targetReference>Assign_AP_Field_Values</targetReference>
             </connector>
             <label>Approval Process Definition</label>
         </rules>
@@ -286,9 +290,49 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_Approval_Process_Step_Definition</targetReference>
+                <targetReference>Assign_AP_Step_Field_Values</targetReference>
             </connector>
             <label>Approval Process Step Definition</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Which_Criteria_To_Choose</name>
+        <label>Which Criteria To Choose</label>
+        <locationX>471</locationX>
+        <locationY>314</locationY>
+        <defaultConnector>
+            <targetReference>Is_Always_Enter</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>All Records</defaultConnectorLabel>
+        <rules>
+            <name>From_Formula_Builder</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>criteria_or_formula.value</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>FormulaBuilder</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Entry_Criteria_From_Formula_Builder</targetReference>
+            </connector>
+            <label>From Formula Builder</label>
+        </rules>
+        <rules>
+            <name>From_Expression_Builder</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>criteria_or_formula.value</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>ExpressionBuilder</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Entry_Criteria_From_Expression_Builder</targetReference>
+            </connector>
+            <label>From Expression Builder</label>
         </rules>
     </decisions>
     <interviewLabel>AP Specify Entry Criteria {!$Flow.CurrentDateTime}</interviewLabel>
@@ -309,27 +353,49 @@
     <recordUpdates>
         <name>Update_Approval_Process_Definition</name>
         <label>Update Approval Process Definition</label>
-        <locationX>1738</locationX>
-        <locationY>286</locationY>
+        <locationX>208</locationX>
+        <locationY>894</locationY>
+        <faultConnector>
+            <targetReference>Error</targetReference>
+        </faultConnector>
         <inputReference>curApprovalProcessDefinition</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_Approval_Process_Step_Definition</name>
         <label>Update Approval Process Step Definition</label>
-        <locationX>1823</locationX>
-        <locationY>65</locationY>
+        <locationX>732</locationX>
+        <locationY>883</locationY>
+        <faultConnector>
+            <targetReference>Error</targetReference>
+        </faultConnector>
         <inputReference>curApprovalProcessStepDefinition</inputReference>
     </recordUpdates>
     <screens>
+        <name>Error</name>
+        <label>Error</label>
+        <locationX>474</locationX>
+        <locationY>893</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>error3</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;{!$Flow.FaultMessage}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Specify_Step_Criteria</name>
         <label>Specify Step Criteria</label>
-        <locationX>256</locationX>
-        <locationY>50</locationY>
+        <locationX>475</locationX>
+        <locationY>49</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Process_Selected_Entry_Criteria_Mode</targetReference>
+            <targetReference>Assign_Display_Type</targetReference>
         </connector>
         <fields>
             <name>radioSpecify_Step_Criteria</name>
@@ -369,6 +435,12 @@
                 <name>displayMode</name>
                 <value>
                     <stringValue>Radio</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>StepCriteriaValue</elementReference>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -416,6 +488,46 @@
             </visibilityRule>
         </fields>
         <fields>
+            <name>formula_builder_lwc</name>
+            <extensionName>c:formulaBuilder</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>objectName</name>
+                <value>
+                    <elementReference>contextObjectType</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>criteria_or_formula.value</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>FormulaBuilder</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>expression_builder_lwc</name>
+            <extensionName>c:expressionBuilder</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <visibilityRule>
+                <conditionLogic>1</conditionLogic>
+                <conditions>
+                    <leftValueReference>criteria_or_formula.value</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>ExpressionBuilder</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
             <name>If_Criteria_are_Met_or_Formula_is_True</name>
             <extensionName>c:expressChoice</extensionName>
             <fieldType>ComponentInstance</fieldType>
@@ -443,6 +555,12 @@
                     <elementReference>IfCriteriaValues</elementReference>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>CriteriaIsMetValue</elementReference>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
@@ -460,13 +578,27 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
+        <locationX>266</locationX>
         <locationY>50</locationY>
         <connector>
             <targetReference>Specify_Step_Criteria</targetReference>
         </connector>
     </start>
     <status>Draft</status>
+    <variables>
+        <name>contextObjectType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>CriteriaIsMetValue</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
     <variables>
         <description>Criteria or Formula Labels</description>
         <name>CriteriaOrFormulaLabels</name>
@@ -475,8 +607,15 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>Evaluate some expression criteria;Evaluate a formula</stringValue>
+            <stringValue>Evaluate a formula;Evaluate some expression criteria</stringValue>
         </value>
+    </variables>
+    <variables>
+        <name>CriteriaOrFormulaValue</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <description>Criteria or Formula Values</description>
@@ -486,7 +625,7 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>CriteriaExpression;formula</stringValue>
+            <stringValue>FormulaBuilder;ExpressionBuilder</stringValue>
         </value>
     </variables>
     <variables>
@@ -494,7 +633,7 @@
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
         <objectType>ApprovalProcessDefinition__c</objectType>
     </variables>
     <variables>
@@ -502,7 +641,7 @@
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
-        <isOutput>false</isOutput>
+        <isOutput>true</isOutput>
         <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>
@@ -552,7 +691,7 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>enterStep;approve;skip</stringValue>
+            <stringValue>Enter If True, Else Bypass;Enter If True, Else Approve;Enter If True, Else Reject</stringValue>
         </value>
     </variables>
     <variables>
@@ -560,7 +699,7 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <name>objectType</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>false</isInput>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
@@ -569,6 +708,13 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <description>Specify Step Criteria Labels</description>
@@ -591,5 +737,12 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <value>
             <stringValue>always;criteria</stringValue>
         </value>
+    </variables>
+    <variables>
+        <name>StepCriteriaValue</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
 </Flow>

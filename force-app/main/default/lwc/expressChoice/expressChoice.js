@@ -1,5 +1,5 @@
-import { LightningElement, api, track } from 'lwc';
-import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+import {LightningElement, api, track} from 'lwc';
+import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 
 export default class ExpressChoice extends LightningElement {
     @api masterLabel;
@@ -12,7 +12,7 @@ export default class ExpressChoice extends LightningElement {
     @api useWhichFieldForLabel;
     @api inputMode;
     @api required;
-    @api value;
+    // @api value;
 
     @track selectedValue;
     @track showRadio = true;
@@ -22,6 +22,15 @@ export default class ExpressChoice extends LightningElement {
         'Approval process definitions'
     ];
     @track options = [];
+
+    @api
+    get value() {
+        return this.selectedValue;
+    }
+
+    set value(curValue) {
+        this.selectedValue = curValue;
+    }
 
     connectedCallback() {
 
@@ -36,31 +45,28 @@ export default class ExpressChoice extends LightningElement {
             if (index === 0) {
                 let labels = this.choiceLabels.split(';');
                 let values = this.choiceValues.split(';');
-                
+
                 labels.forEach((label, ind) => {
-                    options.push({ label: label, value: values[ind] });
+                    options.push({label: label, value: values[ind]});
                 });
             }
 
             if (index === 1) {
                 let approvalProcessStepDefinitions = JSON.parse(this.approvalProcessStepDefinitions);
                 approvalProcessStepDefinitions.forEach(item => {
-                    options.push({ label: item[this.useWhichFieldForLabel], value: item[this.useWhichFieldForValue] });
+                    options.push({label: item[this.useWhichFieldForLabel], value: item[this.useWhichFieldForValue]});
                 })
             }
 
             if (index === 2) {
                 let approvalProcessDefinitions = JSON.parse(this.approvalProcessDefinitions);
                 approvalProcessDefinitions.forEach(item => {
-                    options.push({ label: item[this.useWhichFieldForLabel], value: item[this.useWhichFieldForValue] });
+                    options.push({label: item[this.useWhichFieldForLabel], value: item[this.useWhichFieldForValue]});
                 })
             }
 
             this.options = options;
 
-            if (this.value !== undefined) {
-                this.selectedValue = this.value
-            }
         }
     }
 

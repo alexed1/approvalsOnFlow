@@ -11,9 +11,9 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>AlwaysEnter</fullName>
+                <fullName>Always Enter</fullName>
                 <default>false</default>
-                <label>AlwaysEnter</label>
+                <label>Always Enter</label>
             </value>
             <value>
                 <fullName>Enter If True, Else Bypass</fullName>
