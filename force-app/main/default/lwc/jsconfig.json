@@ -41,6 +41,18 @@
             ],
             "c/viewEditMembers": [
                 "viewEditMembers/viewEditMembers.js"
+            ],
+            "c/expressionBuilder": [
+                "expressionBuilder/expressionBuilder.js"
+            ],
+            "c/expressionLine": [
+                "expressionLine/expressionLine.js"
+            ],
+            "c/fieldPicker": [
+                "fieldPicker/fieldPicker.js"
+            ],
+            "c/formulaBuilder": [
+                "formulaBuilder/formulaBuilder.js"
             ]
         }
     },
