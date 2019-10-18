@@ -115,7 +115,7 @@ public with sharing class FormulaEvaluator {
     }
 
     public static String updateFormulaFields(String objectName, String objectId, String formula, Set<String> fields) {
-        System.debug('fields:::' + fields);
+
         String queryString = 'SELECT ';
 
         for (String field : fields) {
@@ -131,8 +131,7 @@ public with sharing class FormulaEvaluator {
         }
 
         List<sObject> objectInfo = Database.query(queryString);
-        System.debug('queryString:::' + queryString);
-        System.debug('objectInfo:::' + objectInfo);
+
         if (objectInfo.size() > 0) {
             for (String field : fields) {
                 String replaceValue = '[$!{]{1,2}';
@@ -141,15 +140,11 @@ public with sharing class FormulaEvaluator {
                 } else {
                     replaceValue = replaceValue + objectName + '.' + field + '[}]{0,}';
                 }
-                System.debug('replaceValue:::'+replaceValue);
-                System.debug('objectInfo[0]:::'+objectInfo[0]);
-                System.debug('objectInfo[0].get(field):::'+objectInfo[0].get(field));
-                System.debug('String.valueOf(objectInfo[0].get(field)):::'+String.valueOf(objectInfo[0].get(field)));
+
                 formula = formula.replaceAll(replaceValue, String.valueOf(objectInfo[0].get(field)));
             }
         }
 
-        System.debug('formula:::'+formula);
         return formula;
     }
 

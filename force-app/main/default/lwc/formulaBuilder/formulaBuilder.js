@@ -38,6 +38,10 @@ export default class FormulaBuilder extends LightningElement {
         return this.formula;
     }
 
+    set value(value){
+        this.formula = value;
+    }
+
     set objectName(name) {
         this.name = name;
         getFieldList({objectName: name})
