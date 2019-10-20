@@ -11,15 +11,15 @@
             <targetReference>Is_Formula_True</targetReference>
         </connector>
         <inputParameters>
-            <name>apDefinitionId</name>
-            <value>
-                <elementReference>curProcessDef.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>contextObjectId</name>
             <value>
                 <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>formula</name>
+            <value>
+                <elementReference>curProcessDef.EntryCriteria__c</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -377,6 +377,7 @@
         <outputReference>curApprovalDefs</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>Name</queriedFields>
+        <queriedFields>EntryCriteria__c</queriedFields>
     </recordLookups>
     <start>
         <locationX>50</locationX>

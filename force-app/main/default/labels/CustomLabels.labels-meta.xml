@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>UnableToParseFormulaMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>TooManyResultsMessage</shortDescription>
+        <value>The EvaluateFormula Flow Action was unable to parse the formula string you’re passing it. It may be because you’re using a function that EvaluateFormula doesn’t know yet. To view supported functions, see https://unofficialsf.com/?p=14339</value>
+    </labels>
+    <labels>
         <fullName>TooManyResultsMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>

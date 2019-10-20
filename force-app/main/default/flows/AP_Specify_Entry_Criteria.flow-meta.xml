@@ -147,7 +147,7 @@
             <assignToReference>EntryCriteria</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>formula_builder_lwc.value</elementReference>
+                <elementReference>formula_builder_lwc.formulaValue</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -653,7 +653,7 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>value</name>
+                <name>formulaValue</name>
                 <value>
                     <elementReference>EntryCriteria</elementReference>
                 </value>

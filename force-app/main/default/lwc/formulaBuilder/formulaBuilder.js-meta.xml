@@ -10,7 +10,7 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="value" type="String"></property>
+            <property name="formulaValue" type="String"></property>
             <property name="objectName" type="String"></property>
 <!--            <property name="fields" type="String"></property>-->
 <!--            <property name="functions" type="String"></property>-->

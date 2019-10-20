@@ -61,7 +61,6 @@ public with sharing class FormulaEvaluator {
         if (objectWithFields.containsKey('Profile')) {
             formula = updateFormulaFields('Profile', UserInfo.getProfileId(), formula, objectWithFields.get('Profile'));
         }
-
         if (objectWithFields.containsKey('Setup')) {
             Set<String> dataSet = objectWithFields.get('Setup');
             Map<String, Set<String>> objectAndField = new Map<String, Set<String>>();
@@ -109,7 +108,6 @@ public with sharing class FormulaEvaluator {
             String item = '"' + mMatcher.group(0).trim() + '"';
             formula = formula.replaceFirst(mMatcher.group(0), item);
         }
-
         return evaluateFormula(formula, 'STRING');
 
     }
@@ -151,6 +149,7 @@ public with sharing class FormulaEvaluator {
     public static String evaluateFormula(String formula, String resultType) {
         Pattern mPattern = pattern.compile('[0-9.]{3,}');
         Matcher mMatcher = mPattern.matcher(formula);
+        //TODO: add scale as an input param for Numeric values
         Integer scale = 0;
 
         while (mMatcher.find()) {
@@ -253,7 +252,6 @@ public with sharing class FormulaEvaluator {
 
                 RegExps.clearParentesis(context, 'ALL');
             }
-
             context.result = RegExps.evaluateResult(context);
 
         } catch (Exception e) {

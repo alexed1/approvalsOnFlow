@@ -7,7 +7,7 @@ export default class FormulaBuilder extends LightningElement {
     @track _fields;
     @api functions;
     @api operators;
-    @api formula = '';
+    @track formula = '';
     @api name;
 
     @api
@@ -23,7 +23,8 @@ export default class FormulaBuilder extends LightningElement {
         'ASIN', 'ATAN', 'COS', 'SIN', 'TAN', 'COSH', 'SINH', 'TANH', 'EXP', 'LOG', 'LOG10', 'RINT',
         'SIGNUM', 'INTEGER', 'POW', 'MAX', 'MIN', 'MOD', 'TEXT', 'DATETIME', 'DECIMAL', 'BOOLEAN',
         'DATE', 'DAY', 'MONTH', 'YEAR', 'HOURS', 'MINUTES', 'SECONDS', 'ADDDAYS', 'ADDMONTHS',
-        'ADDYEARS', 'ADDHOURS', 'ADDMINUTES', 'ADDSECONDS'
+        'ADDYEARS', 'ADDHOURS', 'ADDMINUTES', 'ADDSECONDS', 'CONTAINS','FIND','LOWER','UPPER'
+        ,'MID','SUBSTITUTE','TRIM','VALUE','CONCATENATE'
     ];
 
     @api supportedOperators = ['+', '-', '/', '*', '==', '!=', '>', '<', '>=', '<=', '<>'];
@@ -34,11 +35,11 @@ export default class FormulaBuilder extends LightningElement {
     }
 
     @api
-    get value(){
+    get formulaValue(){
         return this.formula;
     }
 
-    set value(value){
+    set formulaValue(value){
         this.formula = value;
     }
 
@@ -55,14 +56,14 @@ export default class FormulaBuilder extends LightningElement {
             })
     }
 
-    formulaChanged() {
-        const memberRefreshedEvt = new CustomEvent('formulachanged', {
-            bubbles: true, detail: {
-                value: this.formula
-            }
-        });
-        this.dispatchEvent(memberRefreshedEvt);
-    }
+    // formulaChanged() {
+    //     const memberRefreshedEvt = new CustomEvent('formulachanged', {
+    //         bubbles: true, detail: {
+    //             value: this.formula
+    //         }
+    //     });
+    //     this.dispatchEvent(memberRefreshedEvt);
+    // }
 
     connectedCallback() {
 
@@ -84,23 +85,29 @@ export default class FormulaBuilder extends LightningElement {
 
     }
 
+    formulaChangedFlowEvent() {
+        const valueChangeEvent = new FlowAttributeChangeEvent('value', this.formula);
+        this.dispatchEvent(valueChangeEvent);
+    }
+
     selectOperator(event) {
         if (event.detail.value !== '') {
             this.formula = this.formula + ' ' + event.detail.value + ' ';
-            event.target.value = '';
+            // event.target.value = '';
+            this.formulaChangedFlowEvent();
         }
     }
 
     changeFormula(event) {
         this.formula = event.target.value;
-        const valueChangeEvent = new FlowAttributeChangeEvent('value', this.formula);
-        this.dispatchEvent(valueChangeEvent);
+        this.formulaChangedFlowEvent();
     }
 
     selectField(event) {
         if (event.detail.value !== '') {
             this.formula = this.formula + event.detail.value + ' ';
-            event.target.value = '';
+            // event.target.value = '';
+            this.formulaChangedFlowEvent();
         }
     }
 }
