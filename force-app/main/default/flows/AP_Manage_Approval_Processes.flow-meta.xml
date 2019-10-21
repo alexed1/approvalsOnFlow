@@ -36,6 +36,18 @@
             <assignToReference>curApprovalProcessDefinition.ActionFlow_Recall__c</assignToReference>
             <operator>Assign</operator>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.EntryCriteria__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.EntryCriteriaDisplayType__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.EntryCriteriaMode__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
         <connector>
             <targetReference>Create_Approval_Process_Definition</targetReference>
         </connector>
@@ -260,6 +272,9 @@
         <queriedFields>ActionFlow_InitialSubmission__c</queriedFields>
         <queriedFields>ActionFlow_FinalRejection__c</queriedFields>
         <queriedFields>ActionFlow_Recall__c</queriedFields>
+        <queriedFields>EntryCriteria__c</queriedFields>
+        <queriedFields>EntryCriteriaDisplayType__c</queriedFields>
+        <queriedFields>EntryCriteriaMode__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_Similiar_Record</name>
