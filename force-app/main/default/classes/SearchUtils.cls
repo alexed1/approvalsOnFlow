@@ -80,9 +80,27 @@ global with sharing class SearchUtils {
     private static String getQueriedFields(String objectType) {
         String requiredFields = 'Id, Name';
         if (TYPE_TO_ID_FIELD.containsKey(objectType)) {
-            requiredFields+= ', ' + TYPE_TO_ID_FIELD.get(objectType);
+            requiredFields += ', ' + TYPE_TO_ID_FIELD.get(objectType);
         }
         return requiredFields;
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static Map<String, List<Member>> describeSObjects(List<String> types) {
+
+        Map<String, List<SearchUtils.Member>> objectToFieldDescribe = new Map<String, List<SearchUtils.Member>>();
+        Schema.DescribeSobjectResult[] results = Schema.describeSObjects(types);
+
+        for (Schema.DescribeSobjectResult res : results) {
+            objectToFieldDescribe.put(res.getLabel(), new List<SearchUtils.Member>());
+            Map<String, SObjectField> fieldMap = res.fields.getMap();
+            for (String fieldApiName : fieldMap.keySet()) {
+                Schema.DescribeFieldResult fieldDescribe = fieldMap.get(fieldApiName).getDescribe();
+                objectToFieldDescribe.get(res.getLabel()).add(new Member(fieldDescribe.getLabel(), fieldDescribe.getName()));
+            }
+        }
+
+        return objectToFieldDescribe;
     }
 
     global class Member {

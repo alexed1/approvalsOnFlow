@@ -24,6 +24,10 @@ export default class expressionBuilder extends LightningElement {
         return this.convertedExpression;
     }
 
+    set value(value) {
+        this.convertedExpression = value;
+    }
+
     lastExpressionIndex = 0;
     logicTypes = [
         {value: 'AND', label: 'All Conditions Are Met'},
@@ -33,8 +37,8 @@ export default class expressionBuilder extends LightningElement {
     conditionLogicHelpText = 'placeholder for conditionLogicHelpTest' //conditionLogicHelpText;
 
     connectedCallback() {
-
-        disassemblyFormulaString({expression: this.expressions}).then(result => {
+        let expressionsToDisassemble = this.convertedExpression ? this.convertedExpression : this.expressions;
+        disassemblyFormulaString({expression: expressionsToDisassemble}).then(result => {
             if (result.logicType !== undefined) {
                 this.logicType = result.logicType;
             }
@@ -45,27 +49,34 @@ export default class expressionBuilder extends LightningElement {
                 let expressionLines = [];
                 result.expressionLines.forEach((line, index) => {
                     expressionLines.push({
-                        fieldName: line.fieldName,
-                        id: index,
-                        objectType: line.objectType,
-                        operator: line.operator,
-                        parameter: line.parameter
+                        ...this.generateNewExpression(), ...{
+                            fieldName: line.fieldName,
+                            id: index,
+                            objectType: line.objectType,
+                            operator: line.operator,
+                            parameter: line.parameter
+                        }
                     });
                     this.lastExpressionIndex = index + 1
-                })
+                });
                 this.expressionLines = expressionLines;
             }
         })
     }
 
-    handleAddExpression() {
-        this.expressionLines.push({
+    generateNewExpression() {
+        return {
             id: this.lastExpressionIndex++,
             objectType: this.contextRecordObjectName,
             localVariables: this.localVariables !== undefined ? JSON.parse(this.localVariables) : [],
             systemVariables: this.systemVariables !== undefined ? JSON.parse(this.systemVariables) : [],
-            availableRHSMergeFields: this.availableRHSMergeFields !== undefined ? JSON.parse(this.availableRHSMergeFields) : []
-        });
+            availableRHSMergeFields: this.availableRHSMergeFields !== undefined ? JSON.parse(this.availableRHSMergeFields) : [],
+            parameter: ''
+        };
+    }
+
+    handleAddExpression() {
+        this.expressionLines.push(this.generateNewExpression());
     }
 
     get showCustomLogicInput() {
@@ -90,8 +101,9 @@ export default class expressionBuilder extends LightningElement {
                 expressionToModify[detailKey] = event.detail[detailKey];
             }
         }
-
-        this.assembleFormula();
+        if (event.detail.isInit !== true) {
+            this.assembleFormula();
+        }
     }
 
     handleRemoveExpression(event) {
@@ -111,8 +123,10 @@ export default class expressionBuilder extends LightningElement {
         } else {
             this.convertedExpression = ''
         }
+
         const valueChangeEvent = new FlowAttributeChangeEvent('value', this.convertedExpression);
         this.dispatchEvent(valueChangeEvent);
+
     }
 
     get disabledAddButton() {

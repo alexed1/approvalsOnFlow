@@ -61,7 +61,6 @@ public with sharing class FormulaEvaluator {
         if (objectWithFields.containsKey('Profile')) {
             formula = updateFormulaFields('Profile', UserInfo.getProfileId(), formula, objectWithFields.get('Profile'));
         }
-
         if (objectWithFields.containsKey('Setup')) {
             Set<String> dataSet = objectWithFields.get('Setup');
             Map<String, Set<String>> objectAndField = new Map<String, Set<String>>();
@@ -109,13 +108,12 @@ public with sharing class FormulaEvaluator {
             String item = '"' + mMatcher.group(0).trim() + '"';
             formula = formula.replaceFirst(mMatcher.group(0), item);
         }
-
         return evaluateFormula(formula, 'STRING');
 
     }
 
     public static String updateFormulaFields(String objectName, String objectId, String formula, Set<String> fields) {
-        System.debug('fields:::' + fields);
+
         String queryString = 'SELECT ';
 
         for (String field : fields) {
@@ -131,8 +129,7 @@ public with sharing class FormulaEvaluator {
         }
 
         List<sObject> objectInfo = Database.query(queryString);
-        System.debug('queryString:::' + queryString);
-        System.debug('objectInfo:::' + objectInfo);
+
         if (objectInfo.size() > 0) {
             for (String field : fields) {
                 String replaceValue = '[$!{]{1,2}';
@@ -141,21 +138,18 @@ public with sharing class FormulaEvaluator {
                 } else {
                     replaceValue = replaceValue + objectName + '.' + field + '[}]{0,}';
                 }
-                System.debug('replaceValue:::'+replaceValue);
-                System.debug('objectInfo[0]:::'+objectInfo[0]);
-                System.debug('objectInfo[0].get(field):::'+objectInfo[0].get(field));
-                System.debug('String.valueOf(objectInfo[0].get(field)):::'+String.valueOf(objectInfo[0].get(field)));
+
                 formula = formula.replaceAll(replaceValue, String.valueOf(objectInfo[0].get(field)));
             }
         }
 
-        System.debug('formula:::'+formula);
         return formula;
     }
 
     public static String evaluateFormula(String formula, String resultType) {
         Pattern mPattern = pattern.compile('[0-9.]{3,}');
         Matcher mMatcher = mPattern.matcher(formula);
+        //TODO: add scale as an input param for Numeric values
         Integer scale = 0;
 
         while (mMatcher.find()) {
@@ -258,7 +252,6 @@ public with sharing class FormulaEvaluator {
 
                 RegExps.clearParentesis(context, 'ALL');
             }
-
             context.result = RegExps.evaluateResult(context);
 
         } catch (Exception e) {

@@ -4,7 +4,7 @@
         <description>On an edit the full Step Def is passed in from the parent. In the case of an Add, we&#39;ve just received the Name and generated the ID. The ID has just been overwritten onto the main Step Def variable, and now we need to add the Name.</description>
         <name>Assign_Name_to</name>
         <label>Update Current Step Def</label>
-        <locationX>737</locationX>
+        <locationX>738</locationX>
         <locationY>523</locationY>
         <assignmentItems>
             <assignToReference>curApprovalProcessStepDefinition.Name</assignToReference>
@@ -33,6 +33,22 @@
             <value>
                 <stringValue>Single</stringValue>
             </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessStepDefinition.SingleApproverOrMultiple__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessStepDefinition.EntryCriteria__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessStepDefinition.EntryCriteriaMode__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessStepDefinition.EntryCriteriaDisplayType__c</assignToReference>
+            <operator>Assign</operator>
         </assignmentItems>
         <connector>
             <targetReference>Step_Added</targetReference>
@@ -140,7 +156,7 @@
         <name>Similar_Name_Exist</name>
         <label>Similar Name Exist</label>
         <locationX>369</locationX>
-        <locationY>519</locationY>
+        <locationY>518</locationY>
         <defaultConnector>
             <targetReference>Create_Approval_Process_Step_Record</targetReference>
         </defaultConnector>
@@ -236,7 +252,7 @@
     <recordCreates>
         <name>Create_Approval_Process_Step_Record</name>
         <label>Create Approval Process Step Record</label>
-        <locationX>591</locationX>
+        <locationX>592</locationX>
         <locationY>522</locationY>
         <assignRecordIdToReference>curApprovalProcessStepDefinition.Id</assignRecordIdToReference>
         <connector>
@@ -247,6 +263,15 @@
             <value>
                 <elementReference>curApprovalProcessDefinition.Id</elementReference>
             </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>EntryCriteriaDisplayType__c</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>EntryCriteriaMode__c</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>EntryCriteria__c</field>
         </inputAssignments>
         <inputAssignments>
             <field>Name</field>

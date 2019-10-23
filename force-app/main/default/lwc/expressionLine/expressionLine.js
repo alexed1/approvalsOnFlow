@@ -16,7 +16,7 @@ export default class expressionLine extends LightningElement {
     @track filterValue = '';
 
     initialized = false;
- 
+
     renderedCallback() {
         if (this.initialized) {
             return;
@@ -29,15 +29,15 @@ export default class expressionLine extends LightningElement {
     handleFieldChange(event) {
         if (event.detail.dataType !== undefined) {
             let dataType = event.detail.dataType;
-            
+
             if (dataType === 'Boolean') {
                 this.availableOperators = [
                     {value: 'equals', label: 'Equals'},
                     {value: 'not_equal_to', label: 'Not Equal To'},
                 ];
             } else if (
-                dataType === 'Integer' || dataType === 'Currency' || 
-                dataType === 'Percent' || dataType === 'Double' || 
+                dataType === 'Integer' || dataType === 'Currency' ||
+                dataType === 'Percent' || dataType === 'Double' ||
                 dataType === 'Date' || dataType === 'DateTime' || dataType === 'Time') {
                 this.availableOperators = [
                     {value: 'equals', label: 'Equals'},
@@ -48,7 +48,7 @@ export default class expressionLine extends LightningElement {
                     {value: 'less_or_equal', label: 'Less Or Equal'}
                 ];
             } else if (
-                dataType === 'String' || dataType === 'Email' || 
+                dataType === 'String' || dataType === 'Email' ||
                 dataType === 'Phone' || dataType === 'TextArea' || dataType === 'Url') {
                 this.availableOperators = [
                     {value: 'equals', label: 'Equals'},
@@ -73,11 +73,12 @@ export default class expressionLine extends LightningElement {
 
             this.disabledFilter = false;
         }
-        this.dispatchChangeEvent({
-            ...event.detail, ...{
-                id: this.expressionId
-            }
-        });
+
+            this.dispatchChangeEvent({
+                ...event.detail, ...{
+                    id: this.expressionId
+                }
+            });
     }
 
     handleOperatorChange(event) {
