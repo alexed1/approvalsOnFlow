@@ -28,6 +28,7 @@
             </lightning-combobox>
         </div>
         <lightning-textarea onchange={changeFormula} value={formula} name="formula" variant="label-hidden" onblur={formulaChanged}></lightning-textarea>
-        <p>Use formula syntax</p>
+        <p>Use formula syntax: Enclose text and picklist value API names in double quotes : "the_text", include numbers without quotes : 25,
+           show percentages as decimals: 0.10, and express date calculations in the standard format: Today() + 7</p>
     </div>
 </template>
