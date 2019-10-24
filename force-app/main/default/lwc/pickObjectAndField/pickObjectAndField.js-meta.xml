@@ -9,9 +9,22 @@
         <target>lightning__RecordPage</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__RecordPage, lightning__FlowScreen">
-            <property name="masterLabel" type="String"></property>
-            <property name="objectLabel" type="String"></property>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="masterLabel" type="String" role="inputOnly"> </property>
+            <property name="objectLabel" type="String" role="inputOnly"> </property>
+            <property name="fieldLabel" type="String" role="inputOnly"> </property>
+            <property name="objectType" type="String"> </property>
+            <property name="field" type="String"> </property>
+            <property name="objectDisabled" type="Boolean" role="inputOnly"> </property>
+            <property name="supportedObjectTypes" type="String" role="inputOnly"> </property>
+            <property name="supportedFieldRelationTypes" type="String" role="inputOnly"> </property>
+            <property name="hideObjectTypeSelect" type="Boolean" role="inputOnly"> </property>
+            <property name="hideFieldSelect" type="Boolean" role="inputOnly"> </property>
+            <property name="showFieldType" type="Boolean" role="inputOnly"> </property>
+        </targetConfig>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="masterLabel" type="String"> </property>
+            <property name="objectLabel" type="String"> </property>
             <property name="fieldLabel" type="String"> </property>
             <property name="objectType" type="String"> </property>
             <property name="field" type="String"> </property>
@@ -20,9 +33,7 @@
             <property name="supportedFieldRelationTypes" type="String"> </property>
             <property name="hideObjectTypeSelect" type="Boolean"> </property>
             <property name="hideFieldSelect" type="Boolean"> </property>
-            <property name="showFieldType" type="Boolean"> </property>
-<!--            <property name="buttonAlignment" type="String" datasource="left,center,right"></property>-->
-<!--            <property name="action" type="String"> </property>-->
+            <property name="showFieldType" type="Boolean" > </property>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

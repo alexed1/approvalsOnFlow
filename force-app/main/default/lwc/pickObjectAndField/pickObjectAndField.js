@@ -1,5 +1,5 @@
 import {LightningElement, api, track, wire} from 'lwc';
-
+import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 import getObjects from '@salesforce/apex/FieldPickerController.getObjects';
 
@@ -136,12 +136,16 @@ export default class PickObjectAndField extends LightningElement {
         this._objectType = event.detail.value;
         this._field = null;
         this.dispatchDataChangedEvent({});
+        const attributeChangeEvent = new FlowAttributeChangeEvent('objectType', this._objectType);
+        this.dispatchEvent(attributeChangeEvent);
         this.errors = [];
     }
 
     handleFieldChange(event) {
         this._field = event.detail.value;
         this.dispatchDataChangedEvent(this.fields.find(curField => curField.value == this._field));
+        const attributeChangeEvent = new FlowAttributeChangeEvent('field', this._field);
+        this.dispatchEvent(attributeChangeEvent);
     }
 
     dispatchDataChangedEvent(detail) {
@@ -155,6 +159,7 @@ export default class PickObjectAndField extends LightningElement {
             }
         });
         this.dispatchEvent(memberRefreshedEvt);
+
     }
 
     splitValues(originalString) {
