@@ -6,6 +6,7 @@ public with sharing class FormulaEvaluator {
 
         for (ContextWraper cont : contextResult) {
             if (!String.isEmpty(cont.value) && cont.name == '$Record') {
+                //TODO: replace Schema.getGlobalDescribe() code with recordId.getSObjectType();
                 String keyPrefix = cont.value.substring(0, 3);
                 for (Schema.SObjectType obj : Schema.getGlobalDescribe().Values()) {
                     String prefix = obj.getDescribe().getKeyPrefix();
@@ -23,7 +24,7 @@ public with sharing class FormulaEvaluator {
             }
         }
 
-        Pattern mPattern = pattern.compile('[$!{]{1,2}[A-z_.]*[}]{0,}');
+        Pattern mPattern = pattern.compile('(?<!")[$!{]{1,2}[A-z_.]*[}]{0,}');
         Matcher mMatcher = mPattern.matcher(formula);
         List<String> variables = new List<String>();
 
@@ -113,6 +114,7 @@ public with sharing class FormulaEvaluator {
     }
 
     public static String updateFormulaFields(String objectName, String objectId, String formula, Set<String> fields) {
+        Map<String, Schema.DisplayType> fieldNameToType = getFieldTypes(objectName, fields);
 
         String queryString = 'SELECT ';
 
@@ -132,18 +134,55 @@ public with sharing class FormulaEvaluator {
 
         if (objectInfo.size() > 0) {
             for (String field : fields) {
-                String replaceValue = '[$!{]{1,2}';
+                String replaceValue = '(?<!")[$!{]{1,2}';
                 if (String.isEmpty(objectId)) {
                     replaceValue = replaceValue + 'Setup.' + objectName + '.' + field + '[}]{0,}';
                 } else {
                     replaceValue = replaceValue + objectName + '.' + field + '[}]{0,}';
                 }
 
-                formula = formula.replaceAll(replaceValue, String.valueOf(objectInfo[0].get(field)));
+                formula = formula.replaceAll(replaceValue, handleFieldByType(String.valueOf(objectInfo[0].get(field)), fieldNameToType.get(field)));
             }
         }
-
         return formula;
+    }
+
+    private static String handleFieldByType(String fieldValue, Schema.DisplayType fieldType) {
+        Set<Schema.DisplayType> enquoteTypes = new Set<DisplayType>{
+                Schema.DisplayType.STRING,
+                Schema.DisplayType.ID,
+                Schema.DisplayType.STRING,
+                Schema.DisplayType.PICKLIST,
+                Schema.DisplayType.EMAIL,
+                Schema.DisplayType.PHONE,
+                Schema.DisplayType.URL,
+                Schema.DisplayType.TIME,
+                Schema.DisplayType.MULTIPICKLIST
+        };
+
+        Set<Schema.DisplayType> dateTypes = new Set<DisplayType>{
+                Schema.DisplayType.DATE, Schema.DisplayType.DATETIME
+        };
+
+        if (enquoteTypes.contains(fieldType)) {
+            return '"' + fieldValue + '"';
+        } else if (dateTypes.contains(fieldType)) {
+            Datetime dt = Datetime.valueOf(fieldValue);
+            return 'DATETIME(' + dt.year() + ',' + dt.month() + ',' + dt.day() + ',' + dt.hour() + ',' + dt.minute() + ',' + dt.second() + ')';
+        }
+
+        return fieldValue;
+    }
+    private static Map<String, Schema.DisplayType> getFieldTypes(String objectName, Set<String> fieldNames) {
+        SObjectType r = ((SObject) (Type.forName('Schema.' + objectName).newInstance())).getSObjectType();
+        DescribeSObjectResult d = r.getDescribe();
+        Map<String, Schema.DisplayType> fieldNameToType = new Map<String, Schema.DisplayType>();
+        for (String fieldName : fieldNames) {
+            if (d.fields.getMap().containsKey(fieldName)) {
+                fieldNameToType.put(fieldName, d.fields.getMap().get(fieldName).getDescribe().getType());
+            }
+        }
+        return fieldNameToType;
     }
 
     public static String evaluateFormula(String formula, String resultType) {
