@@ -528,7 +528,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <screens>
         <name>Specify_Actions</name>
         <label>Specify Actions</label>
-        <locationX>833</locationX>
+        <locationX>834</locationX>
         <locationY>412</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -537,9 +537,15 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <targetReference>Assign_Action_Flows</targetReference>
         </connector>
         <fields>
-            <name>flowInitialSubmission</name>
-            <extensionName>c:flowListFSC</extensionName>
+            <name>flowInitialSubmission2</name>
+            <extensionName>c:flowPickerFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>selectedFlowApiName</name>
+                <value>
+                    <elementReference>curApprovalProcessDefinition.ActionFlow_InitialSubmission__c</elementReference>
+                </value>
+            </inputParameters>
             <inputParameters>
                 <name>label</name>
                 <value>
@@ -553,9 +559,9 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>selectedFlowApiName</name>
+                <name>required</name>
                 <value>
-                    <elementReference>curApprovalProcessDefinition.ActionFlow_InitialSubmission__c</elementReference>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -565,15 +571,9 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             </outputParameters>
         </fields>
         <fields>
-            <name>pickFlowFinalApproval</name>
-            <extensionName>c:flowListFSC</extensionName>
+            <name>pickFlowFinalApproval2</name>
+            <extensionName>c:flowPickerFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Run this flow upon final approval</stringValue>
-                </value>
-            </inputParameters>
             <inputParameters>
                 <name>showActiveFlowsOnly</name>
                 <value>
@@ -586,6 +586,18 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
                     <elementReference>curApprovalProcessDefinition.ActionFlow_FinalApproval__c</elementReference>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Run this flow upon final approval</stringValue>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>selectedFlowFinalApproval</assignToReference>
@@ -593,19 +605,31 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             </outputParameters>
         </fields>
         <fields>
-            <name>pickFlowFinalRejection</name>
-            <extensionName>c:flowListFSC</extensionName>
+            <name>pickFlowFinalRejection2</name>
+            <extensionName>c:flowPickerFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
-                <name>label</name>
+                <name>required</name>
                 <value>
-                    <stringValue>Run this flow upon Final Rejection of approval request:</stringValue>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showActiveFlowsOnly</name>
+                <value>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>selectedFlowApiName</name>
                 <value>
                     <elementReference>curApprovalProcessDefinition.ActionFlow_FinalRejection__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Run this flow upon Final Rejection of approval request:</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -615,13 +639,13 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             </outputParameters>
         </fields>
         <fields>
-            <name>pickFlowRecall</name>
-            <extensionName>c:flowListFSC</extensionName>
+            <name>pickFlowRecall2</name>
+            <extensionName>c:flowPickerFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
-                <name>label</name>
+                <name>required</name>
                 <value>
-                    <stringValue>Run this flow if the approval request is recalled</stringValue>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -634,6 +658,12 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
                 <name>selectedFlowApiName</name>
                 <value>
                     <elementReference>curApprovalProcessDefinition.ActionFlow_Recall__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Run this flow if the approval request is recalled</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
