@@ -161,7 +161,7 @@ export default class fieldPicker extends LightningElement {
     }
 
     get supportedObjectTypesList() {
-        return this.supportedObjectTypes ? this.splitValues(this.supportedObjectTypes.toLowerCase()) : [];
+        return this.supportedObjectTypes ? this.splitValues(this.supportedObjectTypes.toLowerCase()) : [this.objectType];
     }
 
     get isError() {
