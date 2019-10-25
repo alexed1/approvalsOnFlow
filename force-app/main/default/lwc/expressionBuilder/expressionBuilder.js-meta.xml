@@ -19,6 +19,4 @@
             <property name="availableRHSMergeFields" type="String"></property>
         </targetConfig>
     </targetConfigs>
-
-
 </LightningComponentBundle>
