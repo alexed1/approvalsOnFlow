@@ -432,8 +432,8 @@
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>ApprovalFlow</name>
-            <extensionName>c:flowListFSC</extensionName>
+            <name>ApprovalFlow2</name>
+            <extensionName>c:flowPickerFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>label</name>
@@ -447,6 +447,18 @@
                     <elementReference>curApprovalProcessStepDefinition.ApprovalFlow_API_Name__c</elementReference>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>showActiveFlowsOnly</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>approvalFlowName</assignToReference>
@@ -454,25 +466,31 @@
             </outputParameters>
         </fields>
         <fields>
-            <name>RejectionFlow</name>
-            <extensionName>c:flowListFSC</extensionName>
+            <name>RejectionFlow2</name>
+            <extensionName>c:flowPickerFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
-                <name>label</name>
+                <name>required</name>
                 <value>
-                    <stringValue>Run this flow when this Approval Step is REJECTED:</stringValue>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>showActiveFlowsOnly</name>
                 <value>
-                    <booleanValue>false</booleanValue>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>selectedFlowApiName</name>
                 <value>
                     <elementReference>curApprovalProcessStepDefinition.RejectionFlow_API_Name__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Run this flow when this Approval Step is REJECTED:</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
