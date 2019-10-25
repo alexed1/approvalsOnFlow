@@ -4,7 +4,7 @@
         <description>Start assembling the Approval Process Definition</description>
         <name>Configure_Definition</name>
         <label>Configure Definition</label>
-        <locationX>562</locationX>
+        <locationX>563</locationX>
         <locationY>733</locationY>
         <assignmentItems>
             <assignToReference>curApprovalProcessDefinition.Name</assignToReference>
@@ -370,8 +370,8 @@
     <screens>
         <name>screenCreateApprovalProcess</name>
         <label>Create Approval Process</label>
-        <locationX>265</locationX>
-        <locationY>385</locationY>
+        <locationX>266</locationX>
+        <locationY>386</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -391,11 +391,56 @@
             <isRequired>true</isRequired>
         </fields>
         <fields>
-            <name>AssociatedObjectType</name>
-            <dataType>String</dataType>
-            <fieldText>Associated Object Type (Account, Foo__c, etc)</fieldText>
-            <fieldType>InputField</fieldType>
+            <name>Pick_Object</name>
+            <extensionName>c:pickObjectAndField</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>masterLabel</name>
+                <value>
+                    <stringValue>Pick an Object</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectDisabled</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectLabel</name>
+                <value>
+                    <stringValue>Object</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showFieldType</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>hideFieldSelect</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>hideObjectTypeSelect</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectType</name>
+                <value>
+                    <elementReference>AssociatedObjectType</elementReference>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>AssociatedObjectType</assignToReference>
+                <name>objectType</name>
+            </outputParameters>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -500,6 +545,13 @@
         <value>
             <stringValue>Name,Name,text;</stringValue>
         </value>
+    </variables>
+    <variables>
+        <name>AssociatedObjectType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>createChoice</name>
