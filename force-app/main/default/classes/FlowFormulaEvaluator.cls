@@ -5,9 +5,9 @@ public with sharing class FlowFormulaEvaluator {
         String formula = requestList[0].formula;
 
         List<Results> responseWrapper = new List<Results>();
-        List<FormulaEvaluator.ContextWraper> context = new List<FormulaEvaluator.ContextWraper>();
+        List<FormulaEvaluator.ContextWrapper> context = new List<FormulaEvaluator.ContextWrapper>();
 
-        context.add(new FormulaEvaluator.ContextWraper('$Record', contextObjectId));
+        context.add(new FormulaEvaluator.ContextWrapper('$Record', contextObjectId));
         String stringContext = JSON.serialize(context);
         responseWrapper.add(new Results(FormulaEvaluator.parseFormula(formula, stringContext)));
 
