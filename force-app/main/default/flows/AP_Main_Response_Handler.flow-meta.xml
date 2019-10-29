@@ -18,10 +18,27 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
+        <name>Run_Filal_Rejection_Flow</name>
+        <label>Run Filal Rejection Flow</label>
+        <locationX>507</locationX>
+        <locationY>741</locationY>
+        <actionName>AutolaunchFlow</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Set_Instance_Status_To_Rejected</targetReference>
+        </connector>
+        <inputParameters>
+            <name>flowName</name>
+            <value>
+                <elementReference>curApprovalProcessDefinition.ActionFlow_FinalRejection__c</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>Run_Final_Approval_Flow</name>
         <label>Run Final Approval Flow</label>
-        <locationX>1154</locationX>
-        <locationY>661</locationY>
+        <locationX>1147</locationX>
+        <locationY>555</locationY>
         <actionName>AutolaunchFlow</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -34,6 +51,39 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <actionCalls>
+        <name>Run_Rejection_Flow</name>
+        <label>Run Rejection Flow</label>
+        <locationX>323</locationX>
+        <locationY>514</locationY>
+        <actionName>AutolaunchFlow</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Final_Rejection_or_Back_One_Step</targetReference>
+        </connector>
+        <inputParameters>
+            <name>flowName</name>
+            <value>
+                <elementReference>curApprovalProcessStepDefinition.RejectionFlow_API_Name__c</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <assignments>
+        <name>Set_Instance_Status_To_Rejected</name>
+        <label>Set Instance Status To Rejected</label>
+        <locationX>506</locationX>
+        <locationY>912</locationY>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessInstance.State__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Resolved-Rejected</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Process_Instance2</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <name>Set_Process_Instance_Current_Step</name>
         <label>Set Process Instance Current Step</label>
@@ -51,10 +101,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Set_Process_Instance_Current_Step2</name>
+        <label>Set Process Instance Current Step</label>
+        <locationX>654</locationX>
+        <locationY>698</locationY>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessInstance.Current_Approval_Step__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>nextStepDefinition.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Process_Instance2</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Set_Process_Instance_Status_to_ResolvedApproved</name>
         <label>Set Process Instance Status to ResolvedApproved</label>
-        <locationX>1295</locationX>
-        <locationY>660</locationY>
+        <locationX>1450</locationX>
+        <locationY>555</locationY>
         <assignmentItems>
             <assignToReference>curApprovalProcessInstance.State__c</assignToReference>
             <operator>Assign</operator>
@@ -97,7 +163,47 @@
                     <stringValue>Reject</stringValue>
                 </rightValue>
             </conditions>
+            <connector>
+                <targetReference>Run_Rejection_Flow</targetReference>
+            </connector>
             <label>Reject</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Final_Rejection_or_Back_One_Step</name>
+        <label>Final Rejection or Back One Step</label>
+        <locationX>499</locationX>
+        <locationY>516</locationY>
+        <defaultConnectorLabel>Default</defaultConnectorLabel>
+        <rules>
+            <name>Final_Rejection</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>curApprovalProcessStepDefinition.RejectBehavior__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>FinalRejection</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Run_Filal_Rejection_Flow</targetReference>
+            </connector>
+            <label>Final Rejection</label>
+        </rules>
+        <rules>
+            <name>Back_One_Step</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>curApprovalProcessStepDefinition.RejectBehavior__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>BackOneStep</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Try_To_Get_Previous_Step</targetReference>
+            </connector>
+            <label>Back One Step</label>
         </rules>
     </decisions>
     <decisions>
@@ -166,6 +272,12 @@
         <expression>{!curApprovalProcessStepDefinition.Order__c} + 1</expression>
         <scale>2</scale>
     </formulas>
+    <formulas>
+        <name>previousStepOrderValue</name>
+        <dataType>Number</dataType>
+        <expression>IF({!curApprovalProcessStepDefinition.Order__c} == 0,0,{!curApprovalProcessStepDefinition.Order__c} - 1)</expression>
+        <scale>2</scale>
+    </formulas>
     <interviewLabel>AP Main Response Handler {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Main Response Handler</label>
     <processMetadataValues>
@@ -184,8 +296,8 @@
     <recordCreates>
         <name>Log_Step_Transition</name>
         <label>Log Step Transition</label>
-        <locationX>1567</locationX>
-        <locationY>495</locationY>
+        <locationX>1592</locationX>
+        <locationY>325</locationY>
         <inputAssignments>
             <field>ApprovalProcessStepInstance__c</field>
             <value>
@@ -212,15 +324,52 @@
         </inputAssignments>
         <object>ApprovalInstanceHistory__c</object>
     </recordCreates>
+    <recordCreates>
+        <name>Log_Step_Transition2</name>
+        <label>Log Step Transition</label>
+        <locationX>784</locationX>
+        <locationY>912</locationY>
+        <inputAssignments>
+            <field>ApprovalCandidateRecordId__c</field>
+            <value>
+                <elementReference>curApprovalProcessInstance.approvalProcessCandidateRecordId__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ApprovalProcessStepInstance__c</field>
+            <value>
+                <elementReference>curApprovalProcessStepInstance.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ApprovalProcessStepTaskId__c</field>
+            <value>
+                <elementReference>curApprovalProcessStepTask.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Approval_Process_Instance__c</field>
+            <value>
+                <elementReference>curApprovalProcessInstance.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Step Rejected</stringValue>
+            </value>
+        </inputAssignments>
+        <object>ApprovalInstanceHistory__c</object>
+    </recordCreates>
     <recordLookups>
         <description>Needed to pull information about scenarios like final approval</description>
         <name>Get_Approval_Process_Definition</name>
         <label>Get Approval Process Definition</label>
-        <locationX>1004</locationX>
-        <locationY>605</locationY>
+        <locationX>603</locationX>
+        <locationY>49</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Is_there_a_Next_Step</targetReference>
+            <targetReference>Get_Process_Instance</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -240,11 +389,11 @@
     <recordLookups>
         <name>Get_Approval_Process_Step_Definition</name>
         <label>Get Approval Process Step Definition</label>
-        <locationX>188</locationX>
-        <locationY>324</locationY>
+        <locationX>463</locationX>
+        <locationY>49</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Action_Taken</targetReference>
+            <targetReference>Get_Approval_Process_Definition</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -262,16 +411,18 @@
         <queriedFields>RejectionFlow_API_Name__c</queriedFields>
         <queriedFields>ApprovalFlow_API_Name__c</queriedFields>
         <queriedFields>RejectBehavior__c</queriedFields>
+        <queriedFields>ApprovalProcessDefinition__c</queriedFields>
+        <queriedFields>Order__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <description>Something has happened that warrants updating the process instance itself</description>
         <name>Get_Process_Instance</name>
         <label>Get Process Instance</label>
-        <locationX>890</locationX>
-        <locationY>490</locationY>
+        <locationX>603</locationX>
+        <locationY>241</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Approval_Process_Definition</targetReference>
+            <targetReference>Action_Taken</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -285,13 +436,14 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>Current_Approval_Step__c</queriedFields>
         <queriedFields>State__c</queriedFields>
+        <queriedFields>approvalProcessCandidateRecordId__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <description>Need this to get to the Step Definition and find out how approvals should be evaluated</description>
         <name>Get_Process_Step_Instance</name>
         <label>Get Process Step Instance</label>
-        <locationX>194</locationX>
-        <locationY>179</locationY>
+        <locationX>334</locationX>
+        <locationY>49</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Approval_Process_Step_Definition</targetReference>
@@ -307,12 +459,13 @@
         <outputReference>curApprovalProcessStepInstance</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>Approval_Process_Step_Definition__c</queriedFields>
+        <queriedFields>Parent_Approval_Process_Instance__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_Step_Task</name>
         <label>Get Step Task</label>
-        <locationX>196</locationX>
-        <locationY>50</locationY>
+        <locationX>178</locationX>
+        <locationY>49</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Process_Step_Instance</targetReference>
@@ -338,11 +491,11 @@
         <description>If nothing comes back, this was the final step</description>
         <name>Try_to_Get_Next_Step</name>
         <label>Try to Get Next Step</label>
-        <locationX>889</locationX>
-        <locationY>334</locationY>
+        <locationX>899</locationX>
+        <locationY>330</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Process_Instance</targetReference>
+            <targetReference>Is_there_a_Next_Step</targetReference>
         </connector>
         <filters>
             <field>ApprovalProcessDefinition__c</field>
@@ -364,6 +517,35 @@
         <queriedFields>ApprovalProcessDefinition__c</queriedFields>
         <queriedFields>Order__c</queriedFields>
     </recordLookups>
+    <recordLookups>
+        <name>Try_To_Get_Previous_Step</name>
+        <label>Try To Get Previous Step</label>
+        <locationX>655</locationX>
+        <locationY>522</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_Process_Instance_Current_Step2</targetReference>
+        </connector>
+        <filters>
+            <field>ApprovalProcessDefinition__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curApprovalProcessStepDefinition.ApprovalProcessDefinition__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Order__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>previousStepOrderValue</elementReference>
+            </value>
+        </filters>
+        <object>ApprovalProcessStepDefinition__c</object>
+        <outputReference>nextStepDefinition</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ApprovalProcessDefinition__c</queriedFields>
+        <queriedFields>Order__c</queriedFields>
+    </recordLookups>
     <recordUpdates>
         <name>Update_Process_Instance</name>
         <label>Update Process Instance</label>
@@ -371,6 +553,16 @@
         <locationY>325</locationY>
         <connector>
             <targetReference>Log_Step_Transition</targetReference>
+        </connector>
+        <inputReference>curApprovalProcessInstance</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Process_Instance2</name>
+        <label>Update Process Instance</label>
+        <locationX>654</locationX>
+        <locationY>912</locationY>
+        <connector>
+            <targetReference>Log_Step_Transition2</targetReference>
         </connector>
         <inputReference>curApprovalProcessInstance</inputReference>
     </recordUpdates>
