@@ -287,8 +287,7 @@ public with sharing class ExpressionBuilder {
     }
 
     public static String convertExpressionLines(ExpressionLineWraper expressionLine) {
-        String leftItem = expressionLine.objectType != '' ? '\\$' + expressionLine.objectType + '.' : '';
-        leftItem = leftItem + expressionLine.fieldName;
+        String leftItem = '\\'+expressionLine.fieldName;
         String rightItem = expressionLine.parameter;
         String dataType = expressionLine.dataType.toUpperCase();
         String result = '';
@@ -352,7 +351,7 @@ public with sharing class ExpressionBuilder {
             List<String> lineParameters = line.split(' ');
             if (lineParameters.size() == 3) {
                 List<String> fieldInfo = lineParameters[0].replaceAll('[$]', '').split('\\.');
-                result.add(new ExpressionLineWraper(fieldInfo[0], fieldInfo[1], '', lineParameters[1], lineParameters[2]));
+                result.add(new ExpressionLineWraper(fieldInfo[0], lineParameters[0], '', lineParameters[1], lineParameters[2]));
             }
         }
 

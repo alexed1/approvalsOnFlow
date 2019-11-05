@@ -37,6 +37,7 @@
                         local-variables={expression.localVariables}
                         system-variables={expression.systemVariables}
                         available-merge-fields={expression.availableRHSMergeFields}
+                        fields={contextFields}
                         onexpressionremoved={handleRemoveExpression}
                         onfieldselected={handleExpressionChange}>
                     </c-expression-line>

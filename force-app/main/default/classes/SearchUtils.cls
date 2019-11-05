@@ -51,6 +51,14 @@ global with sharing class SearchUtils {
 
         return resultMap;
     }
+    @AuraEnabled(cacheable=true)
+    public static Map<String, SObject> getSingleMembersByTypeAndId(String type, String id) {
+        return getMembersByTypeAndId(new Map<String, Set<String>>{
+                type => new Set<String>{
+                        id
+                }
+        });
+    }
     public static Map<String, SObject> getMembersByTypeAndId(Map<String, Set<String>> typeToIds) {
 
         Map<String, SObject> results = new Map<String, SObject>();
@@ -89,14 +97,19 @@ global with sharing class SearchUtils {
     public static Map<String, List<Member>> describeSObjects(List<String> types) {
 
         Map<String, List<SearchUtils.Member>> objectToFieldDescribe = new Map<String, List<SearchUtils.Member>>();
+        if (types == null || types.isEmpty()) {
+            return objectToFieldDescribe;
+        }
+
         Schema.DescribeSobjectResult[] results = Schema.describeSObjects(types);
 
         for (Schema.DescribeSobjectResult res : results) {
-            objectToFieldDescribe.put(res.getLabel(), new List<SearchUtils.Member>());
+            String objName = res.getName();
+            objectToFieldDescribe.put(objName, new List<SearchUtils.Member>());
             Map<String, SObjectField> fieldMap = res.fields.getMap();
             for (String fieldApiName : fieldMap.keySet()) {
                 Schema.DescribeFieldResult fieldDescribe = fieldMap.get(fieldApiName).getDescribe();
-                objectToFieldDescribe.get(res.getLabel()).add(new Member(fieldDescribe.getLabel(), fieldDescribe.getName()));
+                objectToFieldDescribe.get(res.getName()).add(new Member(fieldDescribe.getLabel(), fieldDescribe.getName(), objName, fieldDescribe.getType().name()));
             }
         }
 
@@ -106,9 +119,17 @@ global with sharing class SearchUtils {
     global class Member {
         @AuraEnabled global String label;
         @AuraEnabled global String value;
+        @AuraEnabled global String dataType;
+        @AuraEnabled global String type;
         public Member(String label, String value) {
             this.label = label;
             this.value = value;
+        }
+        public Member(String label, String value, String type, String dataType) {
+            this.label = label;
+            this.value = value;
+            this.dataType = dataType;
+            this.type = type;
         }
     }
 }

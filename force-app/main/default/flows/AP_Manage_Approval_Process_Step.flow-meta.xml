@@ -601,6 +601,10 @@
                 <elementReference>curApprovalProcessStepDefinition.Id</elementReference>
             </value>
         </inputAssignments>
+        <outputAssignments>
+            <assignToReference>curApprovalProcessStepDefinition</assignToReference>
+            <name>curApprovalProcessStepDefinition</name>
+        </outputAssignments>
     </subflows>
     <variables>
         <name>approvalFlowName</name>
