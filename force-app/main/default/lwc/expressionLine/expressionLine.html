@@ -8,15 +8,13 @@
                     </div>
                 </lightning-layout-item>
                 <lightning-layout-item size="11">
-                    <c-field-picker
-                            hide-object-type-select="true"
-                            supported-object-types={objectType}
-                            onfieldselected={handleFieldChange}
-                            field={fieldName}
-                            object-type={objectType}
-                            local-variables={localVariables}
-                            system-variables={systemVariables}
-                    ></c-field-picker>
+                    <lightning-combobox name="field"
+                                        label="Field"
+                                        placeholder="Field"
+                                        options={fields}
+                                        value={fieldName}
+                                        onchange={selectField}>
+                    </lightning-combobox>
                 </lightning-layout-item>
             </lightning-layout>
         </lightning-layout-item>
@@ -42,8 +40,8 @@
                                class="slds-input"
                                type="text"
                                disabled={disabledFilter}
-                               value={value}
                                oninput={handleValueChange}
+                               value={value}
                         />
                         <datalist id="valueList" class="">
                             <template for:each={availableMergeFields} for:item='item'>

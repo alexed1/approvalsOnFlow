@@ -392,7 +392,7 @@
         </fields>
         <fields>
             <name>Pick_Object</name>
-            <extensionName>c:pickObjectAndField</extensionName>
+            <extensionName>c:pickObjectAndFieldFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>masterLabel</name>
@@ -401,7 +401,7 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>objectDisabled</name>
+                <name>disableObjectPicklist</name>
                 <value>
                     <booleanValue>false</booleanValue>
                 </value>
@@ -413,19 +413,19 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>showFieldType</name>
+                <name>displayFieldType</name>
                 <value>
                     <booleanValue>false</booleanValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>hideFieldSelect</name>
+                <name>hideFieldPicklist</name>
                 <value>
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>hideObjectTypeSelect</name>
+                <name>hideObjectPicklist</name>
                 <value>
                     <booleanValue>false</booleanValue>
                 </value>

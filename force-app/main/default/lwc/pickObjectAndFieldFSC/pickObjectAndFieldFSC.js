@@ -6,23 +6,24 @@ import getObjects from '@salesforce/apex/FieldPickerController.getObjects';
 import NonePicklistValueLabel from '@salesforce/label/c.NonePicklistValueLabel';
 import FieldIsNotSupportedMessage from '@salesforce/label/c.FieldIsNotSupportedMessage';
 
-export default class PickObjectAndField extends LightningElement {
+export default class pickObjectAndFieldFSC extends LightningElement {
     @api masterLabel;
     @api objectLabel = 'Object';
     @api fieldLabel = 'Field';
     @api objectType;
     @api field;
-    @api supportedObjectTypes;
-    @api supportedFieldRelationTypes;
+    @api availableFields;
 
-    @api objectDisabled = false;
-    @api hideObjectTypeSelect = false;
-    @api hideFieldSelect = false;
-    @api showFieldType = false;
-
+    @api disableObjectPicklist = false;
+    @api hideObjectPicklist = false;
+    @api hideFieldPicklist = false;
+    @api displayFieldType = false;
+    @api prependObjectNameToFieldLabel = false;
 
     @track _objectType;
     @track _field;
+    @track _availableObjectTypes;
+    @track availableObjectTypesList = [];
     @track objectTypes;
     @track fields;
     @track errors = [];
@@ -34,14 +35,18 @@ export default class PickObjectAndField extends LightningElement {
     };
 
     connectedCallback() {
-        if (this.objectType)
+        if (this.objectType) {
             this._objectType = this.objectType;
+            if (this.disableObjectPicklist || this.hideObjectPicklist) {
+                this.availableObjectTypesList = this._availableObjectTypes ? this.splitValues(this._supportedObjectTypes.toLowerCase()) : [this._objectType];
+            }
+        }
 
         if (this.objectType && this.field)
             this._field = this.field;
     }
 
-    @wire(getObjects, {supportedObjectTypes: '$supportedObjectTypesList'})
+    @wire(getObjects, {availableObjectTypes: '$availableObjectTypesList'})
     _getObjects({error, data}) {
         if (error) {
             this.errors.push(error.body.message);
@@ -56,13 +61,14 @@ export default class PickObjectAndField extends LightningElement {
         if (error) {
             this.errors.push(error.body[0].message);
         } else if (data) {
+            let objectLabel = data.label;
             let fields = data.fields;
             let fieldResults = [];
             for (let field in this.fields = fields) {
                 if (Object.prototype.hasOwnProperty.call(fields, field)) {
                     if (this.isTypeSupported(fields[field])) {
                         fieldResults.push({
-                            label: fields[field].label,
+                            label: this.prependObjectNameToFieldLabel ? objectLabel + ': ' + fields[field].label : fields[field].label,
                             value: fields[field].apiName,
                             dataType: fields[field].dataType,
                             required: fields[field].required,
@@ -78,7 +84,12 @@ export default class PickObjectAndField extends LightningElement {
                     this._field = null;
                 }
             }
+            if (fieldResults) {
+                fieldResults.sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0))
+            }
+
             this.fields = fieldResults;
+
             if (this.fields) {
                 this.dispatchDataChangedEvent({...this.fields.find(curField => curField.value == this._field), ...{isInit: true}});
             }
@@ -86,17 +97,17 @@ export default class PickObjectAndField extends LightningElement {
     }
 
     get isFieldTypeVisible() {
-        return (this.fieldType && this.showFieldType);
+        return (this.fieldType && this.displayFieldType);
     }
 
     isTypeSupported(field) {
         let result = false;
-        if (!this.supportedFieldRelationTypes) {
+        if (!this.availableFields) {
             result = true;
         }
         if (!result && field.referenceToInfos.length > 0) {
             field.referenceToInfos.forEach(curRef => {
-                if (this.supportedFieldRelationTypes.toLowerCase().includes(curRef.apiName.toLowerCase())) {
+                if (this.availableFields.toLowerCase().includes(curRef.apiName.toLowerCase())) {
                     result = true;
                 }
             });
@@ -104,12 +115,13 @@ export default class PickObjectAndField extends LightningElement {
         return result;
     }
 
-    get supportedObjectTypesList() {
-        if (this.supportedObjectTypes) {
-            return this.splitValues(this.supportedObjectTypes.toLowerCase());
-        } else {
-            return [];
-        }
+    @api get availableObjectTypes() {
+        return this._availableObjectTypes;
+    }
+
+    set availableObjectTypes(value) {
+        this._availableObjectTypes = value;
+        this.availableObjectTypesList = this._availableObjectTypes ? this.splitValues(this._supportedObjectTypes.toLowerCase()) : [this._objectType];
     }
 
     get isError() {
@@ -163,10 +175,6 @@ export default class PickObjectAndField extends LightningElement {
     }
 
     splitValues(originalString) {
-        if (originalString) {
-            return originalString.replace(/ /g, '').split(',');
-        } else {
-            return [];
-        }
+        return originalString ? originalString.replace(/ /g, '').split(',') : [];
     };
 }

@@ -207,18 +207,12 @@
         </fields>
         <fields>
             <name>candidateRecordDetail</name>
-            <extensionName>c:recordDetail</extensionName>
+            <extensionName>c:recordDetailFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>recordId</name>
                 <value>
                     <elementReference>curApprovalProcessInstance.approvalProcessCandidateRecordId__c</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>elementSize</name>
-                <value>
-                    <numberValue>6.0</numberValue>
                 </value>
             </inputParameters>
             <inputParameters>
