@@ -3,11 +3,11 @@ import {getRecord} from 'lightning/uiRecordApi';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 import NotSupportedMessage from '@salesforce/label/c.NotSupportedMessage';
 
-export default class recordDetail extends LightningElement {
+export default class recordDetailFSC extends LightningElement {
     @api recordId;
     @api mode = 'view';
-    @api elementSize = 6;
 
+    @track elementSize = 6;
     @track objectData;
     @track recordData;
     @track fieldsToDisplay = [];
@@ -60,8 +60,13 @@ export default class recordDetail extends LightningElement {
             console.log(error.body[0].message);
         } else if (data) {
             this.objectData = data;
-            this.loadFinished = true;
+
+            if (this.objectData && this.fieldsToDisplay && this.fieldsToDisplay.length === 0) {
+                this.fieldsToDisplay = Object.values(this.objectData.fields).map(curField => curField.apiName);
+            }
+
             this.notSupportedFields = this.getNotSupportedField(this.fieldsToDisplay);
+            this.loadFinished = true;
         }
     }
 
