@@ -6,7 +6,7 @@
                             label="Field"
                             variant="label-hidden"
                             placeholder="Field"
-                            options={fields}
+                            options={contextFields}
                             onchange={selectField}>
             </lightning-combobox>
             <lightning-combobox name="function" 
@@ -16,7 +16,7 @@
                                 options={functions}
                                 onchange={selectOperator}>
             </lightning-combobox>
-            <lightning-combobox name="operator" 
+            <lightning-combobox name="recordDetail.htmloperator"
                                 label="Operator"
                                 variant="label-hidden"
                                 placeholder="Operator"

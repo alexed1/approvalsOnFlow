@@ -72,8 +72,8 @@
     <assignments>
         <name>Assign_AP_Step_Field_Values</name>
         <label>Assign AP Step Field Values</label>
-        <locationX>982</locationX>
-        <locationY>733</locationY>
+        <locationX>984</locationX>
+        <locationY>732</locationY>
         <assignmentItems>
             <assignToReference>curApprovalProcessStepDefinition.EntryCriteria__c</assignToReference>
             <operator>Assign</operator>
@@ -538,7 +538,7 @@
     <screens>
         <name>Specify_Step_Criteria</name>
         <label>Specify Step Criteria</label>
-        <locationX>727</locationX>
+        <locationX>729</locationX>
         <locationY>49</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -679,6 +679,18 @@
                 <name>value</name>
                 <value>
                     <elementReference>EntryCriteria</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>contextRecordObjectName</name>
+                <value>
+                    <elementReference>contextObjectType</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>addButtonLabel</name>
+                <value>
+                    <stringValue>Add</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>

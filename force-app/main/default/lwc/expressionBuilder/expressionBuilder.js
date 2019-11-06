@@ -1,23 +1,26 @@
-import {LightningElement, track, api} from 'lwc';
+import {LightningElement, track, api, wire} from 'lwc';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 //import conditionLogicHelpText from '@salesforce/label/c.ConditionLogicHelpText';
 import assembleFormulaString from '@salesforce/apex/ExpressionBuilder.assembleFormulaString';
 import disassemblyFormulaString from '@salesforce/apex/ExpressionBuilder.disassemblyFormulaString';
-
+import describeSObjects from '@salesforce/apex/SearchUtils.describeSObjects';
 
 export default class expressionBuilder extends LightningElement {
 
     @api expressions;
     @api addButtonLabel = 'Add Condition';
     @api localVariables;
-    @api contextRecordObjectName = 'Account';
     @api systemVariables;
     @api availableRHSMergeFields;
 
+    @track objectName;
     @track expressionLines = [];
     @track customLogic = '';
     @track logicType = 'AND';
     @track convertedExpression;
+    @track contextFields = [];
+    @track contextTypes = [];
+    @track isLoading = true;
 
     @api
     get value() {
@@ -28,6 +31,55 @@ export default class expressionBuilder extends LightningElement {
         this.convertedExpression = value;
     }
 
+    @api
+    get contextRecordObjectName() {
+        return this._objectName;
+    }
+
+    set contextRecordObjectName(value) {
+        this._objectName = value;
+        if (!this.contextTypes || this.contextTypes.length === 0) {
+            this.contextTypes = [value];
+        }
+    }
+
+    @api //f.e. 'User,Organization,Profile'
+    get supportedContextTypes() {
+        return this.contextTypes.filter(curObject => curObject !== this._objectName).join(',');
+    }
+
+    set supportedContextTypes(value) {
+        this.contextTypes = [...[this._objectName], ...this.splitValues(value)];
+    }
+
+    @wire(describeSObjects, {types: '$contextTypes'})
+    _describeSObjects(result) {
+        if (result.error) {
+            console.log(result.error.body);
+        } else if (result.data) {
+            this.contextTypes.forEach(objType => {
+                let newContextFields = result.data[objType].map(curField => {
+                    return {
+                        ...curField, ...{
+                            label: objType + ': ' + curField.label,
+                            value: '$' + curField.type + '.' + curField.value
+                        }
+                    }
+                });
+
+                if (this.contextFields && this.contextFields.length > 0) {
+                    this.contextFields = this.contextFields.concat(newContextFields);
+                } else {
+                    this.contextFields = newContextFields;
+                }
+            });
+
+            if (this.contextFields && this.contextFields.length > 0) {
+                this.doDisassemblyFormulaString();
+            }
+        }
+    }
+
     lastExpressionIndex = 0;
     logicTypes = [
         {value: 'AND', label: 'All Conditions Are Met'},
@@ -36,7 +88,7 @@ export default class expressionBuilder extends LightningElement {
     ];
     conditionLogicHelpText = 'placeholder for conditionLogicHelpTest' //conditionLogicHelpText;
 
-    connectedCallback() {
+    doDisassemblyFormulaString() {
         let expressionsToDisassemble = this.convertedExpression ? this.convertedExpression : this.expressions;
         disassemblyFormulaString({expression: expressionsToDisassemble}).then(result => {
             if (result.logicType !== undefined) {
@@ -48,19 +100,22 @@ export default class expressionBuilder extends LightningElement {
             if (result.expressionLines !== undefined) {
                 let expressionLines = [];
                 result.expressionLines.forEach((line, index) => {
+                    let fieldData = this.contextFields.find(curField => curField.value === line.fieldName);
                     expressionLines.push({
                         ...this.generateNewExpression(), ...{
                             fieldName: line.fieldName,
                             id: index,
                             objectType: line.objectType,
                             operator: line.operator,
-                            parameter: line.parameter
+                            parameter: line.parameter,
+                            dataType: fieldData ? fieldData.dataType : null
                         }
                     });
                     this.lastExpressionIndex = index + 1
                 });
                 this.expressionLines = expressionLines;
             }
+            this.isLoading = false;
         })
     }
 
@@ -101,9 +156,13 @@ export default class expressionBuilder extends LightningElement {
                 expressionToModify[detailKey] = event.detail[detailKey];
             }
         }
-        if (event.detail.isInit !== true) {
+        if (event.detail.isInit !== true && this.isExpressionValid(expressionToModify)) {
             this.assembleFormula();
         }
+    }
+
+    isExpressionValid(expression) {
+        return !!(expression.fieldName && expression.operator && expression.parameter);
     }
 
     handleRemoveExpression(event) {
@@ -131,5 +190,9 @@ export default class expressionBuilder extends LightningElement {
 
     get disabledAddButton() {
         return this.expressionLines.length > 9;
+    }
+
+    splitValues(originalString) {
+        return originalString ? originalString.replace(/ /g, '').split(',') : [];
     }
 }
