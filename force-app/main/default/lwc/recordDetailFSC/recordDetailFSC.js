@@ -23,9 +23,11 @@ export default class recordDetailFSC extends LightningElement {
 
     get fieldData() {
         return this.fieldsToDisplay.map(curField => {
-            let isError = !!this.notSupportedFields.find(curNSField => curNSField === curField);
+            let isError = !!this.notSupportedFields.find(curNSField => curNSField === curField) || !curField;
             return {
-                fieldName: curField, isError: isError, errorMessage: isError ? NotSupportedMessage + ' ' + curField : ''
+                fieldName: curField,
+                isError: isError,
+                errorMessage: isError ? NotSupportedMessage + ' ' + (curField ? curField : 'null') : ''
             }
         });
     }
@@ -37,7 +39,7 @@ export default class recordDetailFSC extends LightningElement {
     set fields(value) {
         this.errors = [];
         if (value) {
-            let fieldsArray = value.replace(/ /g, '').split(',');
+            let fieldsArray = value.replace(/^[,\s]+|[,\s]+$/g, '').replace(/\s*,\s*/g, ',').split(',');
             this.fieldsToDisplay = fieldsArray;
         } else {
             this.fieldsToDisplay = [];
