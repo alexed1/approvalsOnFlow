@@ -264,7 +264,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <name>Get_ApprovalProcess_Step_Definitions</name>
         <label>Get ApprovalProcess Step Definitions</label>
         <locationX>1128</locationX>
-        <locationY>95</locationY>
+        <locationY>96</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Count_Step_Definitions</targetReference>
@@ -293,6 +293,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <queriedFields>Order__c</queriedFields>
         <queriedFields>RejectBehavior__c</queriedFields>
         <queriedFields>Label__c</queriedFields>
+        <queriedFields>DecisionCriteria__c</queriedFields>
         <sortField>Order__c</sortField>
         <sortOrder>Asc</sortOrder>
     </recordLookups>
@@ -310,7 +311,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <name>Configure_Approval_Form</name>
         <label>Configure Approval Form</label>
         <locationX>1053</locationX>
-        <locationY>627</locationY>
+        <locationY>626</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -502,6 +503,71 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <name>dispRouting</name>
             <fieldText>&lt;p&gt;&lt;b&gt;Routing&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>role_manager_next_automated_approver</name>
+            <extensionName>c:roleManager</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>managerName</name>
+                <value>
+                    <stringValue>ManageApprovalAutomatedApprover</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>curApprovalProcessDefinition.Id</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>availableObjectTypes</name>
+                <value>
+                    <stringValue>RelatedUsers</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionRequired</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>supportedAddCapabilities</name>
+                <value>
+                    <stringValue>Add</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>supportedEditCapabilities</name>
+                <value>
+                    <stringValue>Remove</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>addTabName</name>
+                <value>
+                    <stringValue>Set</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>editTabName</name>
+                <value>
+                    <stringValue>Modify</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Use_Approver_Field_of_Ship_Owner</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Use Approver Field of Ship Owner</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>

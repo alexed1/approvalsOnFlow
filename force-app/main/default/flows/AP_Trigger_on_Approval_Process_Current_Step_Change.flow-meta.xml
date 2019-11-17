@@ -63,8 +63,8 @@
         </inputParameters>
     </actionCalls>
     <decisions>
-        <name>isChangedDecision2_myRule_1_Id</name>
-        <label>isChangedDecision2_myRule_1_Id</label>
+        <name>isChangedDecision2_myRule_1_Current_Approval_Step_c</name>
+        <label>isChangedDecision2_myRule_1_Current_Approval_Step_c</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
@@ -72,7 +72,7 @@
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>isChangedRule_2_myRule_1_Id</name>
+            <name>isChangedRule_2_myRule_1_Current_Approval_Step_c</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>myVariable_old</leftValueReference>
@@ -82,16 +82,16 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>myVariable_old.Current_Approval_Step__r.Id</leftValueReference>
+                <leftValueReference>myVariable_old.Current_Approval_Step__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <elementReference>myVariable_current.Current_Approval_Step__r.Id</elementReference>
+                    <elementReference>myVariable_current.Current_Approval_Step__c</elementReference>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>myDecision</targetReference>
             </connector>
-            <label>isChangedRule_2_myRule_1_Id</label>
+            <label>isChangedRule_2_myRule_1_Current_Approval_Step_c</label>
         </rules>
     </decisions>
     <decisions>
@@ -117,6 +117,12 @@
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
+                    <name>leftHandSideReferenceTo</name>
+                    <value>
+                        <stringValue>ApprovalProcessStepDefinition__c</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
                     <name>leftHandSideType</name>
                     <value>
                         <stringValue>ID</stringValue>
@@ -134,7 +140,7 @@
                         <stringValue>Boolean</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>isChangedRule_2_myRule_1_Id</leftValueReference>
+                <leftValueReference>isChangedRule_2_myRule_1_Current_Approval_Step_c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -146,7 +152,7 @@
             <label>Has Step Changed?</label>
         </rules>
     </decisions>
-    <interviewLabel>AP_Trigger_on_Approval_Process_Current_Step_Change-1_InterviewLabel</interviewLabel>
+    <interviewLabel>AP_Trigger_on_Approval_Process_Current_Step_Change-2_InterviewLabel</interviewLabel>
     <label>AP Trigger on Approval Process Current Step Change</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -173,8 +179,8 @@
         </value>
     </processMetadataValues>
     <processType>Workflow</processType>
-    <startElementReference>isChangedDecision2_myRule_1_Id</startElementReference>
-    <status>Draft</status>
+    <startElementReference>isChangedDecision2_myRule_1_Current_Approval_Step_c</startElementReference>
+    <status>Active</status>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>
