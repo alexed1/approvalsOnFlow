@@ -144,7 +144,7 @@
         <choiceText>Approve or Reject based on the &lt;b&gt;MAJORITY&lt;/b&gt; of approvers</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>majority</stringValue>
+            <stringValue>MajorityNeeded</stringValue>
         </value>
     </choices>
     <choices>
@@ -152,7 +152,7 @@
         <choiceText>Require&amp;nbsp;&lt;b&gt;UNANIMOUS&lt;/b&gt;&amp;nbsp;approval from all selected approvers.</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>unanimous</stringValue>
+            <stringValue>UnanimousNeeded</stringValue>
         </value>
     </choices>
     <choices>
@@ -160,7 +160,7 @@
         <choiceText>Approve or Reject based on the &lt;b&gt;First&lt;/b&gt; response</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>first</stringValue>
+            <stringValue>OneApprovalNeeded</stringValue>
         </value>
     </choices>
     <decisions>

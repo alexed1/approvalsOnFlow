@@ -12,20 +12,12 @@
             </componentInstanceProperties>
             <componentName>flowruntime:interview</componentName>
         </componentInstances>
-        <name>region1</name>
+        <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
-    <flexiPageRegions>
-        <name>region2</name>
-        <type>Region</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
-        <name>region3</name>
-        <type>Region</type>
-    </flexiPageRegions>
-    <masterLabel>Approvals on Flow Home</masterLabel>
+    <masterLabel>Approvals on Flow</masterLabel>
     <template>
-        <name>flexipage:appHomeTemplateTwoColumnsStacked</name>
+        <name>flexipage:defaultAppHomeTemplate</name>
     </template>
     <type>AppPage</type>
 </FlexiPage>

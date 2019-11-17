@@ -7,10 +7,10 @@
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
-    <label>Approvals On Flow</label>
+    <label>Approvals on Flow 2</label>
     <navType>Console</navType>
+    <tabs>Approvals_on_Flow</tabs>
     <tabs>AP_AllowedSubmitter__c</tabs>
-    <tabs>Approvals_on_Flow_Home</tabs>
     <tabs>Approval_Process_Step_Task__c</tabs>
     <tabs>ApprovalInstanceHistory__c</tabs>
     <tabs>ApprovalProcessDefinition__c</tabs>
@@ -18,10 +18,8 @@
     <tabs>ApprovalProcessStepDefinition__c</tabs>
     <tabs>ApprovalProcessStepInstance__c</tabs>
     <tabs>Approver__c</tabs>
-    <tabs>standard-Account</tabs>
-    <tabs>standard-WorkOrder</tabs>
     <uiType>Lightning</uiType>
-    <utilityBar>Approvals_On_Flow_UtilityBar</utilityBar>
+    <utilityBar>Approvals_on_Flow_2_UtilityBar</utilityBar>
     <workspaceConfig>
         <mappings>
             <tab>AP_AllowedSubmitter__c</tab>
@@ -45,16 +43,10 @@
             <tab>Approval_Process_Step_Task__c</tab>
         </mappings>
         <mappings>
-            <tab>Approvals_on_Flow_Home</tab>
+            <tab>Approvals_on_Flow</tab>
         </mappings>
         <mappings>
             <tab>Approver__c</tab>
-        </mappings>
-        <mappings>
-            <tab>standard-Account</tab>
-        </mappings>
-        <mappings>
-            <tab>standard-WorkOrder</tab>
         </mappings>
     </workspaceConfig>
 </CustomApplication>
