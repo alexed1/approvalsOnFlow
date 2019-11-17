@@ -35,10 +35,6 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>curApprovalProcessStepDefinition.SingleApproverOrMultiple__c</assignToReference>
-            <operator>Assign</operator>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>curApprovalProcessStepDefinition.EntryCriteria__c</assignToReference>
             <operator>Assign</operator>
         </assignmentItems>
@@ -52,6 +48,20 @@
         <assignmentItems>
             <assignToReference>curApprovalProcessStepDefinition.EntryCriteriaDisplayType__c</assignToReference>
             <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessStepDefinition.ApproverType__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>adhoc</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessStepDefinition.DecisionCriteria__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>UnanimousNeeded</stringValue>
+            </value>
         </assignmentItems>
         <connector>
             <targetReference>Step_Added</targetReference>

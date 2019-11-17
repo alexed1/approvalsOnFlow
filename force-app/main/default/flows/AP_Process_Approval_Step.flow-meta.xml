@@ -467,7 +467,7 @@
             <targetReference>Extract_Email_Address</targetReference>
         </connector>
         <filters>
-            <field>Id</field>
+            <field>Username</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>curApprover.Name</elementReference>

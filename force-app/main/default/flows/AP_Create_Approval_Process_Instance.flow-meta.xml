@@ -173,7 +173,7 @@
             <field>Order__c</field>
             <operator>EqualTo</operator>
             <value>
-                <numberValue>1.0</numberValue>
+                <numberValue>0.0</numberValue>
             </value>
         </filters>
         <object>ApprovalProcessStepDefinition__c</object>
