@@ -1,0 +1,992 @@
+From dbb87be372caea4ca04c3a8445ea787ac8a927be Mon Sep 17 00:00:00 2001
+From: Alex Edelstein <aedelstein@salesforce.comm>
+Date: Sun, 29 Sep 2019 11:06:14 -0700
+Subject: [PATCH 1/4] fixes
+
+---
+ .../classes/FindRecordsInCollection.cls       |  36 ++--
+ ...FromLists.cls => GetStringsFromLists2.cls} |   5 +-
+ ....xml => GetStringsFromLists2.cls-meta.xml} |   2 +-
+ .../AP_Edit_Approval_Processes.flow-meta.xml  |  75 ++++++--
+ ...Initialize_Approval_Instance.flow-meta.xml |   6 +-
+ ...Manage_Approval_Process_Step.flow-meta.xml |  31 ++-
+ .../AP_Process_Approval_Step.flow-meta.xml    | 179 ++++++++++++++++--
+ ...e_Plan__c-Case Plan Layout.layout-meta.xml | 108 -----------
+ ...e_Step__c-Case Step Layout.layout-meta.xml | 105 ----------
+ ...n_Step__c-Plan Step Layout.layout-meta.xml | 117 ------------
+ .../AP_AllowedSubmitter__c.object-meta.xml    |   2 +-
+ ...pprovalProcessDefinition.listView-meta.xml |  10 -
+ .../ApprovalsOnFlow.permissionset-meta.xml    |   5 +
+ 13 files changed, 274 insertions(+), 407 deletions(-)
+ rename force-app/main/default/classes/{GetStringsFromLists.cls => GetStringsFromLists2.cls} (92%)
+ rename force-app/main/default/classes/{GetStringsFromLists.cls-meta.xml => GetStringsFromLists2.cls-meta.xml} (57%)
+ delete mode 100644 force-app/main/default/layouts/Case_Plan__c-Case Plan Layout.layout-meta.xml
+ delete mode 100644 force-app/main/default/layouts/Case_Step__c-Case Step Layout.layout-meta.xml
+ delete mode 100644 force-app/main/default/layouts/Plan_Step__c-Plan Step Layout.layout-meta.xml
+ delete mode 100644 force-app/main/default/objects/ApprovalProcessDefinition__c/listViews/testqueue1_ApprovalProcessDefinition.listView-meta.xml
+
+diff --git a/force-app/main/default/classes/FindRecordsInCollection.cls b/force-app/main/default/classes/FindRecordsInCollection.cls
+index a9eeb70..157f4dc 100644
+--- a/force-app/main/default/classes/FindRecordsInCollection.cls
++++ b/force-app/main/default/classes/FindRecordsInCollection.cls
+@@ -10,24 +10,30 @@ public with sharing class FindRecordsInCollection {
+ 
+         //Create a Results object to hold the return values
+         Results response = new Results();
+-
+-
+-        //given a list of items, and a search string, find all of the matches
+-        //iterate through input collection
+-        //check the value of the current input  
+-        Schema.SobjectField curField = getFieldByName(targetObject,targetField);
+-        for(ApprovalProcessStepDefinition__c curApprovalProcessStepDefinition : inputCollection) {
+-            String value = (String)curApprovalProcessStepDefinition.get(curField);
+-            if (value == targetValue){
+-                response.multipleOutputMembers.add(curApprovalProcessStepDefinition);
++		System.debug('inputCollection.size() is: ' + inputCollection.size());
++        System.debug(inputCollection[0]);
++        if(inputCollection.size() > 0) {
++            
++            //TRACE HERE
++            //
++            //given a list of items, and a search string, find all of the matches
++            //iterate through input collection
++            //check the value of the current input  
++            Schema.SobjectField curField = getFieldByName(targetObject,targetField);
++            for(ApprovalProcessStepDefinition__c curApprovalProcessStepDefinition : inputCollection) {
++                String value = (String)curApprovalProcessStepDefinition.get(curField);
++                if (value == targetValue){
++                    response.multipleOutputMembers.add(curApprovalProcessStepDefinition);
++                }
+             }
+-        }
+ 
+-        //because a lot of flow manipulations are easier if you're dealing with a single record
+-        //instead of a collection, we provide a single record return value if there's only one hit.
+-        if(response.multipleOutputMembers.size() == 1) {
+-            response.singleOutputMember = response.multipleOutputMembers[0];
++            //because a lot of flow manipulations are easier if you're dealing with a single record
++            //instead of a collection, we provide a single record return value if there's only one hit.
++            if(response.multipleOutputMembers.size() == 1) {
++                response.singleOutputMember = response.multipleOutputMembers[0];
++            }
+         }
++        
+ 
+         //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
+         List<Results> responseWrapper= new List<Results>();
+diff --git a/force-app/main/default/classes/GetStringsFromLists.cls b/force-app/main/default/classes/GetStringsFromLists2.cls
+similarity index 92%
+rename from force-app/main/default/classes/GetStringsFromLists.cls
+rename to force-app/main/default/classes/GetStringsFromLists2.cls
+index 3ba297a..58a0be3 100644
+--- a/force-app/main/default/classes/GetStringsFromLists.cls
++++ b/force-app/main/default/classes/GetStringsFromLists2.cls
+@@ -1,5 +1,4 @@
+-//Given a list of SObjects, return a list of Strings corresponding to a specified fieldname
+-public with sharing class GetStringsFromLists {
++public with sharing class GetStringsFromLists2 {
+ 
+   
+     @InvocableMethod
+@@ -57,4 +56,4 @@ public with sharing class GetStringsFromLists {
+ 
+     }
+ 
+-}
+\ No newline at end of file
++}
+diff --git a/force-app/main/default/classes/GetStringsFromLists.cls-meta.xml b/force-app/main/default/classes/GetStringsFromLists2.cls-meta.xml
+similarity index 57%
+rename from force-app/main/default/classes/GetStringsFromLists.cls-meta.xml
+rename to force-app/main/default/classes/GetStringsFromLists2.cls-meta.xml
+index 91b23b8..2ee0218 100644
+--- a/force-app/main/default/classes/GetStringsFromLists.cls-meta.xml
++++ b/force-app/main/default/classes/GetStringsFromLists2.cls-meta.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<ApexClass xmlns="http://soap.sforce.com/2006/04/metadata">
++<ApexClass xmlns="urn:metadata.tooling.soap.sforce.com" fqn="GetStringsFromLists2">
+     <apiVersion>46.0</apiVersion>
+     <status>Active</status>
+ </ApexClass>
+diff --git a/force-app/main/default/flows/AP_Edit_Approval_Processes.flow-meta.xml b/force-app/main/default/flows/AP_Edit_Approval_Processes.flow-meta.xml
+index 70226ff..abd6476 100644
+--- a/force-app/main/default/flows/AP_Edit_Approval_Processes.flow-meta.xml
++++ b/force-app/main/default/flows/AP_Edit_Approval_Processes.flow-meta.xml
+@@ -62,6 +62,22 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
+             <name>outputMember</name>
+         </outputParameters>
+     </actionCalls>
++    <assignments>
++        <name>Count_Step_Definitions</name>
++        <label>Count Step Definitions</label>
++        <locationX>1156</locationX>
++        <locationY>160</locationY>
++        <assignmentItems>
++            <assignToReference>numStepDefs</assignToReference>
++            <operator>AssignCount</operator>
++            <value>
++                <elementReference>curApprovalProcessStepDefs</elementReference>
++            </value>
++        </assignmentItems>
++        <connector>
++            <targetReference>Manage_Approval_Process_Steps</targetReference>
++        </connector>
++    </assignments>
+     <choices>
+         <name>AddStep</name>
+         <choiceText>Add</choiceText>
+@@ -210,11 +226,11 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
+     <recordLookups>
+         <name>Get_ApprovalProcess_Step_Definitions</name>
+         <label>Get ApprovalProcess Step Definitions</label>
+-        <locationX>1134</locationX>
+-        <locationY>145</locationY>
++        <locationX>1041</locationX>
++        <locationY>82</locationY>
+         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+         <connector>
+-            <targetReference>Manage_Approval_Process_Steps</targetReference>
++            <targetReference>Count_Step_Definitions</targetReference>
+         </connector>
+         <filters>
+             <field>ApprovalProcessDefinition__c</field>
+@@ -252,7 +268,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
+         <allowFinish>true</allowFinish>
+         <allowPause>true</allowPause>
+         <connector>
+-            <targetReference>Configure_Initial_Submitters</targetReference>
++            <targetReference>Get_ApprovalProcess_Step_Definitions</targetReference>
+         </connector>
+         <fields>
+             <name>dispSpecifyEntryCriteria_0</name>
+@@ -262,20 +278,6 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
+         <showFooter>true</showFooter>
+         <showHeader>true</showHeader>
+     </screens>
+-    <screens>
+-        <name>Configure_Initial_Submitters</name>
+-        <label>Configure Initial Submitters</label>
+-        <locationX>1056</locationX>
+-        <locationY>262</locationY>
+-        <allowBack>true</allowBack>
+-        <allowFinish>true</allowFinish>
+-        <allowPause>true</allowPause>
+-        <connector>
+-            <targetReference>Get_ApprovalProcess_Step_Definitions</targetReference>
+-        </connector>
+-        <showFooter>true</showFooter>
+-        <showHeader>true</showHeader>
+-    </screens>
+     <screens>
+         <name>Configure_Qualified_Submitters</name>
+         <label>Configure Qualified Submitters</label>
+@@ -396,6 +398,31 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
+                 <assignToReference>selectedStepDefinitionId</assignToReference>
+                 <name>recordId</name>
+             </outputParameters>
++            <visibilityRule>
++                <conditionLogic>and</conditionLogic>
++                <conditions>
++                    <leftValueReference>numStepDefs</leftValueReference>
++                    <operator>GreaterThan</operator>
++                    <rightValue>
++                        <numberValue>0.0</numberValue>
++                    </rightValue>
++                </conditions>
++            </visibilityRule>
++        </fields>
++        <fields>
++            <name>warnNoSteps</name>
++            <fieldText>&lt;p&gt;No steps are defined. Click Add to start creating them.&lt;/p&gt;</fieldText>
++            <fieldType>DisplayText</fieldType>
++            <visibilityRule>
++                <conditionLogic>and</conditionLogic>
++                <conditions>
++                    <leftValueReference>numStepDefs</leftValueReference>
++                    <operator>EqualTo</operator>
++                    <rightValue>
++                        <numberValue>0.0</numberValue>
++                    </rightValue>
++                </conditions>
++            </visibilityRule>
+         </fields>
+         <fields>
+             <name>What_Kind_Of_Modification_Needed</name>
+@@ -462,8 +489,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
+     <subflows>
+         <name>Manage_Specific_Step</name>
+         <label>Manage Specific Step</label>
+-        <locationX>1325</locationX>
+-        <locationY>162</locationY>
++        <locationX>1363</locationX>
++        <locationY>52</locationY>
+         <connector>
+             <targetReference>Get_ApprovalProcess_Step_Definitions</targetReference>
+         </connector>
+@@ -576,6 +603,14 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
+         <isOutput>true</isOutput>
+         <objectType>ApprovalProcessStepDefinition__c</objectType>
+     </variables>
++    <variables>
++        <name>numStepDefs</name>
++        <dataType>Number</dataType>
++        <isCollection>false</isCollection>
++        <isInput>false</isInput>
++        <isOutput>false</isOutput>
++        <scale>0</scale>
++    </variables>
+     <variables>
+         <name>Output</name>
+         <dataType>String</dataType>
+diff --git a/force-app/main/default/flows/AP_Initialize_Approval_Instance.flow-meta.xml b/force-app/main/default/flows/AP_Initialize_Approval_Instance.flow-meta.xml
+index b269a1b..858b8d1 100644
+--- a/force-app/main/default/flows/AP_Initialize_Approval_Instance.flow-meta.xml
++++ b/force-app/main/default/flows/AP_Initialize_Approval_Instance.flow-meta.xml
+@@ -26,7 +26,7 @@
+         <label>GetNamesFromGroupSubmitters</label>
+         <locationX>553</locationX>
+         <locationY>460</locationY>
+-        <actionName>GetStringsFromLists</actionName>
++        <actionName>GetStringsFromLists2</actionName>
+         <actionType>apex</actionType>
+         <connector>
+             <targetReference>ExtractUserSubmitters</targetReference>
+@@ -53,7 +53,7 @@
+         <label>GetRoleNamesFromRoleSubmitters</label>
+         <locationX>521</locationX>
+         <locationY>311</locationY>
+-        <actionName>GetStringsFromLists</actionName>
++        <actionName>GetStringsFromLists2</actionName>
+         <actionType>apex</actionType>
+         <connector>
+             <targetReference>ExtractGroupSubmitters</targetReference>
+@@ -80,7 +80,7 @@
+         <label>GetUserNamesFromSubmitters</label>
+         <locationX>540</locationX>
+         <locationY>632</locationY>
+-        <actionName>GetStringsFromLists</actionName>
++        <actionName>GetStringsFromLists2</actionName>
+         <actionType>apex</actionType>
+         <connector>
+             <targetReference>Is_Current_User_an_Approved_Submitter</targetReference>
+diff --git a/force-app/main/default/flows/AP_Manage_Approval_Process_Step.flow-meta.xml b/force-app/main/default/flows/AP_Manage_Approval_Process_Step.flow-meta.xml
+index 5683c04..2af731f 100644
+--- a/force-app/main/default/flows/AP_Manage_Approval_Process_Step.flow-meta.xml
++++ b/force-app/main/default/flows/AP_Manage_Approval_Process_Step.flow-meta.xml
+@@ -198,8 +198,11 @@
+     <recordCreates>
+         <name>Create_Approval_Process_Step_Record</name>
+         <label>Create Approval Process Step Record</label>
+-        <locationX>586</locationX>
+-        <locationY>511</locationY>
++        <locationX>583</locationX>
++        <locationY>517</locationY>
++        <connector>
++            <targetReference>Step_Added</targetReference>
++        </connector>
+         <inputAssignments>
+             <field>ApprovalProcessDefinition__c</field>
+             <value>
+@@ -292,13 +295,6 @@
+             <fieldType>InputField</fieldType>
+             <isRequired>true</isRequired>
+         </fields>
+-        <fields>
+-            <name>Is_Required</name>
+-            <dataType>Boolean</dataType>
+-            <fieldText>Make this step required. Its associated flow must be completed before the case can transition to the next case status.</fieldText>
+-            <fieldType>InputField</fieldType>
+-            <isRequired>true</isRequired>
+-        </fields>
+         <showFooter>true</showFooter>
+         <showHeader>false</showHeader>
+     </screens>
+@@ -417,6 +413,23 @@
+         <showFooter>true</showFooter>
+         <showHeader>false</showHeader>
+     </screens>
++    <screens>
++        <description>IMPORTANT! This screen forces an important transaction. removing this will cause bugs.</description>
++        <name>Step_Added</name>
++        <label>Step Added</label>
++        <locationX>734</locationX>
++        <locationY>520</locationY>
++        <allowBack>true</allowBack>
++        <allowFinish>true</allowFinish>
++        <allowPause>true</allowPause>
++        <fields>
++            <name>dispAddComplete</name>
++            <fieldText>&lt;p&gt;Step added.&lt;/p&gt;</fieldText>
++            <fieldType>DisplayText</fieldType>
++        </fields>
++        <showFooter>true</showFooter>
++        <showHeader>true</showHeader>
++    </screens>
+     <screens>
+         <name>Updated_Successfully</name>
+         <label>Updated Successfully</label>
+diff --git a/force-app/main/default/flows/AP_Process_Approval_Step.flow-meta.xml b/force-app/main/default/flows/AP_Process_Approval_Step.flow-meta.xml
+index ee956d9..2342b45 100644
+--- a/force-app/main/default/flows/AP_Process_Approval_Step.flow-meta.xml
++++ b/force-app/main/default/flows/AP_Process_Approval_Step.flow-meta.xml
+@@ -63,6 +63,32 @@
+             </value>
+         </inputParameters>
+     </actionCalls>
++    <actionCalls>
++        <name>Post_Chatter_Error</name>
++        <label>Post Chatter Error</label>
++        <locationX>141</locationX>
++        <locationY>811</locationY>
++        <actionName>chatterPost</actionName>
++        <actionType>chatterPost</actionType>
++        <inputParameters>
++            <name>text</name>
++            <value>
++                <elementReference>emailErrorText</elementReference>
++            </value>
++        </inputParameters>
++        <inputParameters>
++            <name>subjectNameOrId</name>
++            <value>
++                <elementReference>curUsername</elementReference>
++            </value>
++        </inputParameters>
++        <inputParameters>
++            <name>type</name>
++            <value>
++                <stringValue>User</stringValue>
++            </value>
++        </inputParameters>
++    </actionCalls>
+     <actionCalls>
+         <name>Send_Email_Notification</name>
+         <label>Send Email Notification</label>
+@@ -71,38 +97,46 @@
+         <actionName>SendHTMLEmail</actionName>
+         <actionType>apex</actionType>
+         <connector>
+-            <targetReference>Iterate_Over_Approvers</targetReference>
++            <targetReference>Email_Sent_Successfully</targetReference>
+         </connector>
+         <inputParameters>
+-            <name>SendTOthisOneEmailAddress</name>
++            <name>HTMLbody</name>
+             <value>
+-                <elementReference>curEmailAddress</elementReference>
++                <elementReference>templateEmailBody</elementReference>
+             </value>
+         </inputParameters>
+         <inputParameters>
+-            <name>subject</name>
++            <name>plainTextBody</name>
+             <value>
+-                <stringValue>test subject</stringValue>
++                <stringValue>Approval Request</stringValue>
+             </value>
+         </inputParameters>
+         <inputParameters>
+-            <name>plainTextBody</name>
++            <name>subject</name>
+             <value>
+-                <stringValue>Approval Request</stringValue>
++                <stringValue>test subject</stringValue>
+             </value>
+         </inputParameters>
+         <inputParameters>
+-            <name>HTMLbody</name>
++            <name>SendTOthisOneEmailAddress</name>
+             <value>
+-                <elementReference>templateEmailBody</elementReference>
++                <elementReference>curEmailAddress</elementReference>
+             </value>
+         </inputParameters>
++        <outputParameters>
++            <assignToReference>emailErrorText</assignToReference>
++            <name>errors</name>
++        </outputParameters>
++        <outputParameters>
++            <assignToReference>emailSentSuccessfully</assignToReference>
++            <name>isSuccess</name>
++        </outputParameters>
+     </actionCalls>
+     <assignments>
+         <name>Extract_Email_Address</name>
+         <label>Extract Email Address</label>
+-        <locationX>639</locationX>
+-        <locationY>583</locationY>
++        <locationX>546</locationX>
++        <locationY>584</locationY>
+         <assignmentItems>
+             <assignToReference>curEmailAddress</assignToReference>
+             <operator>Assign</operator>
+@@ -111,7 +145,7 @@
+             </value>
+         </assignmentItems>
+         <connector>
+-            <targetReference>Create_Step_Task</targetReference>
++            <targetReference>Get_Step_Task_If_Extant</targetReference>
+         </connector>
+     </assignments>
+     <assignments>
+@@ -146,6 +180,72 @@
+             <targetReference>placeholder_for_Evaluate_Formula</targetReference>
+         </connector>
+     </assignments>
++    <assignments>
++        <name>Use_StepTaskId</name>
++        <label>Use StepTaskId</label>
++        <locationX>951</locationX>
++        <locationY>421</locationY>
++        <assignmentItems>
++            <assignToReference>curApproverStepTaskId</assignToReference>
++            <operator>Assign</operator>
++            <value>
++                <elementReference>curStepTask.Id</elementReference>
++            </value>
++        </assignmentItems>
++        <connector>
++            <targetReference>Generate_Response_Link</targetReference>
++        </connector>
++    </assignments>
++    <decisions>
++        <name>Does_Step_Task_Already_Exist</name>
++        <label>Does Step Task Already Exist?</label>
++        <locationX>806</locationX>
++        <locationY>417</locationY>
++        <defaultConnector>
++            <targetReference>Create_Step_Task</targetReference>
++        </defaultConnector>
++        <defaultConnectorLabel>No</defaultConnectorLabel>
++        <rules>
++            <name>Yes_steptask_exists</name>
++            <conditionLogic>and</conditionLogic>
++            <conditions>
++                <leftValueReference>curStepTask</leftValueReference>
++                <operator>IsNull</operator>
++                <rightValue>
++                    <booleanValue>false</booleanValue>
++                </rightValue>
++            </conditions>
++            <connector>
++                <targetReference>Use_StepTaskId</targetReference>
++            </connector>
++            <label>Yes</label>
++        </rules>
++    </decisions>
++    <decisions>
++        <name>Email_Sent_Successfully</name>
++        <label>Email Sent Successfully?</label>
++        <locationX>331</locationX>
++        <locationY>812</locationY>
++        <defaultConnector>
++            <targetReference>Post_Chatter_Error</targetReference>
++        </defaultConnector>
++        <defaultConnectorLabel>Email Error</defaultConnectorLabel>
++        <rules>
++            <name>Yes_Email_Success</name>
++            <conditionLogic>and</conditionLogic>
++            <conditions>
++                <leftValueReference>emailSentSuccessfully</leftValueReference>
++                <operator>EqualTo</operator>
++                <rightValue>
++                    <booleanValue>true</booleanValue>
++                </rightValue>
++            </conditions>
++            <connector>
++                <targetReference>Iterate_Over_Approvers</targetReference>
++            </connector>
++            <label>Yes</label>
++        </rules>
++    </decisions>
+     <decisions>
+         <name>Enter_Step</name>
+         <label>Enter Step?</label>
+@@ -223,8 +323,8 @@
+         <description>A StepTask is created for each target approver to track their responses (or lack thereof)</description>
+         <name>Create_Step_Task</name>
+         <label>Create Step Task</label>
+-        <locationX>815</locationX>
+-        <locationY>587</locationY>
++        <locationX>822</locationX>
++        <locationY>641</locationY>
+         <assignRecordIdToReference>curApproverStepTaskId</assignRecordIdToReference>
+         <connector>
+             <targetReference>Generate_Response_Link</targetReference>
+@@ -330,6 +430,33 @@
+         <queriedFields>Name</queriedFields>
+         <queriedFields>Type__c</queriedFields>
+     </recordLookups>
++    <recordLookups>
++        <name>Get_Step_Task_If_Extant</name>
++        <label>Get Step Task If Extant</label>
++        <locationX>672</locationX>
++        <locationY>415</locationY>
++        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
++        <connector>
++            <targetReference>Does_Step_Task_Already_Exist</targetReference>
++        </connector>
++        <filters>
++            <field>Approval_Process_Step_Instance__c</field>
++            <operator>EqualTo</operator>
++            <value>
++                <elementReference>curAPStepInstance.Id</elementReference>
++            </value>
++        </filters>
++        <filters>
++            <field>Assigned_User__c</field>
++            <operator>EqualTo</operator>
++            <value>
++                <elementReference>curUser.Id</elementReference>
++            </value>
++        </filters>
++        <object>Approval_Process_Step_Task__c</object>
++        <outputReference>curStepTask</outputReference>
++        <queriedFields>Id</queriedFields>
++    </recordLookups>
+     <recordLookups>
+         <name>Get_User</name>
+         <label>Get User</label>
+@@ -358,7 +485,7 @@
+             <targetReference>Log_Status</targetReference>
+         </connector>
+     </start>
+-    <status>Draft</status>
++    <status>Active</status>
+     <textTemplates>
+         <name>StatusUpdate</name>
+         <text>&lt;p&gt;Process Approval Step has executed.&lt;/p&gt;&lt;p&gt;Cur Approval Process Instance is:  {!curProcessInstanceId}&lt;/p&gt;</text>
+@@ -420,6 +547,14 @@
+         <isOutput>false</isOutput>
+         <objectType>Approver__c</objectType>
+     </variables>
++    <variables>
++        <name>curStepTask</name>
++        <dataType>SObject</dataType>
++        <isCollection>false</isCollection>
++        <isInput>false</isInput>
++        <isOutput>false</isOutput>
++        <objectType>Approval_Process_Step_Task__c</objectType>
++    </variables>
+     <variables>
+         <name>curUser</name>
+         <dataType>SObject</dataType>
+@@ -428,6 +563,20 @@
+         <isOutput>false</isOutput>
+         <objectType>User</objectType>
+     </variables>
++    <variables>
++        <name>emailErrorText</name>
++        <dataType>String</dataType>
++        <isCollection>false</isCollection>
++        <isInput>false</isInput>
++        <isOutput>false</isOutput>
++    </variables>
++    <variables>
++        <name>emailSentSuccessfully</name>
++        <dataType>Boolean</dataType>
++        <isCollection>false</isCollection>
++        <isInput>false</isInput>
++        <isOutput>false</isOutput>
++    </variables>
+     <variables>
+         <name>EntryCriteriaMet</name>
+         <dataType>Boolean</dataType>
+diff --git a/force-app/main/default/layouts/Case_Plan__c-Case Plan Layout.layout-meta.xml b/force-app/main/default/layouts/Case_Plan__c-Case Plan Layout.layout-meta.xml
+deleted file mode 100644
+index 2a8de94..0000000
+--- a/force-app/main/default/layouts/Case_Plan__c-Case Plan Layout.layout-meta.xml	
++++ /dev/null
+@@ -1,108 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+-    <excludeButtons>Submit</excludeButtons>
+-    <layoutSections>
+-        <customLabel>false</customLabel>
+-        <detailHeading>false</detailHeading>
+-        <editHeading>true</editHeading>
+-        <label>Information</label>
+-        <layoutColumns>
+-            <layoutItems>
+-                <behavior>Required</behavior>
+-                <field>Name</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>RecordType_SupportProcess__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>RecordTypeId__c</field>
+-            </layoutItems>
+-        </layoutColumns>
+-        <layoutColumns>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>OwnerId</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>CaseStatusOrdering__c</field>
+-            </layoutItems>
+-        </layoutColumns>
+-        <style>TwoColumnsTopToBottom</style>
+-    </layoutSections>
+-    <layoutSections>
+-        <customLabel>false</customLabel>
+-        <detailHeading>false</detailHeading>
+-        <editHeading>true</editHeading>
+-        <label>System Information</label>
+-        <layoutColumns>
+-            <layoutItems>
+-                <behavior>Readonly</behavior>
+-                <field>CreatedById</field>
+-            </layoutItems>
+-        </layoutColumns>
+-        <layoutColumns>
+-            <layoutItems>
+-                <behavior>Readonly</behavior>
+-                <field>LastModifiedById</field>
+-            </layoutItems>
+-        </layoutColumns>
+-        <style>TwoColumnsTopToBottom</style>
+-    </layoutSections>
+-    <layoutSections>
+-        <customLabel>true</customLabel>
+-        <detailHeading>false</detailHeading>
+-        <editHeading>true</editHeading>
+-        <label>Custom Links</label>
+-        <layoutColumns/>
+-        <layoutColumns/>
+-        <layoutColumns/>
+-        <style>CustomLinks</style>
+-    </layoutSections>
+-    <relatedLists>
+-        <fields>TASK.SUBJECT</fields>
+-        <fields>TASK.WHO_NAME</fields>
+-        <fields>ACTIVITY.TASK</fields>
+-        <fields>TASK.DUE_DATE</fields>
+-        <fields>TASK.STATUS</fields>
+-        <fields>TASK.PRIORITY</fields>
+-        <fields>CORE.USERS.FULL_NAME</fields>
+-        <relatedList>RelatedActivityList</relatedList>
+-    </relatedLists>
+-    <relatedLists>
+-        <fields>TASK.SUBJECT</fields>
+-        <fields>TASK.WHO_NAME</fields>
+-        <fields>ACTIVITY.TASK</fields>
+-        <fields>TASK.DUE_DATE</fields>
+-        <fields>CORE.USERS.FULL_NAME</fields>
+-        <fields>TASK.LAST_UPDATE</fields>
+-        <relatedList>RelatedHistoryList</relatedList>
+-    </relatedLists>
+-    <relatedLists>
+-        <relatedList>RelatedNoteList</relatedList>
+-    </relatedLists>
+-    <relatedLists>
+-        <fields>NAME</fields>
+-        <relatedList>Plan_Step__c.Case_Plan__c</relatedList>
+-    </relatedLists>
+-    <relatedLists>
+-        <fields>CASES.CASE_NUMBER</fields>
+-        <fields>CASES.SUBJECT</fields>
+-        <fields>CASES.CREATED_DATE</fields>
+-        <fields>CASES.PRIORITY</fields>
+-        <relatedList>Case.Case_Plan__c</relatedList>
+-    </relatedLists>
+-    <showEmailCheckbox>false</showEmailCheckbox>
+-    <showHighlightsPanel>false</showHighlightsPanel>
+-    <showInteractionLogPanel>false</showInteractionLogPanel>
+-    <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
+-    <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
+-    <summaryLayout>
+-        <masterLabel>00hB0000001kZRA</masterLabel>
+-        <sizeX>4</sizeX>
+-        <sizeY>0</sizeY>
+-        <summaryLayoutStyle>Default</summaryLayoutStyle>
+-    </summaryLayout>
+-</Layout>
+diff --git a/force-app/main/default/layouts/Case_Step__c-Case Step Layout.layout-meta.xml b/force-app/main/default/layouts/Case_Step__c-Case Step Layout.layout-meta.xml
+deleted file mode 100644
+index 556953c..0000000
+--- a/force-app/main/default/layouts/Case_Step__c-Case Step Layout.layout-meta.xml	
++++ /dev/null
+@@ -1,105 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+-    <layoutSections>
+-        <customLabel>false</customLabel>
+-        <detailHeading>false</detailHeading>
+-        <editHeading>true</editHeading>
+-        <label>Information</label>
+-        <layoutColumns>
+-            <layoutItems>
+-                <behavior>Required</behavior>
+-                <field>Name</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>Case__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>IsCompleted__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>Is_Pending__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>Plan_Step__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>PlanStepOrder__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>Associated_Status__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>Flow_By_User__c</field>
+-            </layoutItems>
+-        </layoutColumns>
+-        <layoutColumns>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>OwnerId</field>
+-            </layoutItems>
+-        </layoutColumns>
+-        <style>TwoColumnsTopToBottom</style>
+-    </layoutSections>
+-    <layoutSections>
+-        <customLabel>false</customLabel>
+-        <detailHeading>false</detailHeading>
+-        <editHeading>true</editHeading>
+-        <label>System Information</label>
+-        <layoutColumns>
+-            <layoutItems>
+-                <behavior>Readonly</behavior>
+-                <field>CreatedById</field>
+-            </layoutItems>
+-        </layoutColumns>
+-        <layoutColumns>
+-            <layoutItems>
+-                <behavior>Readonly</behavior>
+-                <field>LastModifiedById</field>
+-            </layoutItems>
+-        </layoutColumns>
+-        <style>TwoColumnsTopToBottom</style>
+-    </layoutSections>
+-    <layoutSections>
+-        <customLabel>false</customLabel>
+-        <detailHeading>false</detailHeading>
+-        <editHeading>true</editHeading>
+-        <layoutColumns/>
+-        <layoutColumns/>
+-        <layoutColumns/>
+-        <style>CustomLinks</style>
+-    </layoutSections>
+-    <relatedLists>
+-        <fields>TASK.SUBJECT</fields>
+-        <fields>TASK.WHO_NAME</fields>
+-        <fields>ACTIVITY.TASK</fields>
+-        <fields>TASK.DUE_DATE</fields>
+-        <fields>TASK.STATUS</fields>
+-        <fields>TASK.PRIORITY</fields>
+-        <fields>CORE.USERS.FULL_NAME</fields>
+-        <relatedList>RelatedActivityList</relatedList>
+-    </relatedLists>
+-    <relatedLists>
+-        <fields>TASK.SUBJECT</fields>
+-        <fields>TASK.WHO_NAME</fields>
+-        <fields>ACTIVITY.TASK</fields>
+-        <fields>TASK.DUE_DATE</fields>
+-        <fields>CORE.USERS.FULL_NAME</fields>
+-        <fields>TASK.LAST_UPDATE</fields>
+-        <relatedList>RelatedHistoryList</relatedList>
+-    </relatedLists>
+-    <relatedLists>
+-        <relatedList>RelatedNoteList</relatedList>
+-    </relatedLists>
+-    <showEmailCheckbox>false</showEmailCheckbox>
+-    <showHighlightsPanel>false</showHighlightsPanel>
+-    <showInteractionLogPanel>false</showInteractionLogPanel>
+-    <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
+-    <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
+-</Layout>
+diff --git a/force-app/main/default/layouts/Plan_Step__c-Plan Step Layout.layout-meta.xml b/force-app/main/default/layouts/Plan_Step__c-Plan Step Layout.layout-meta.xml
+deleted file mode 100644
+index 73f8de4..0000000
+--- a/force-app/main/default/layouts/Plan_Step__c-Plan Step Layout.layout-meta.xml	
++++ /dev/null
+@@ -1,117 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Layout xmlns="http://soap.sforce.com/2006/04/metadata">
+-    <layoutSections>
+-        <customLabel>false</customLabel>
+-        <detailHeading>false</detailHeading>
+-        <editHeading>true</editHeading>
+-        <label>Information</label>
+-        <layoutColumns>
+-            <layoutItems>
+-                <behavior>Required</behavior>
+-                <field>Name</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>Case_Plan__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>Associate_Case_Status__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>Error_Message__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>Flow__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>Is_Required__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Readonly</behavior>
+-                <field>Object_API_Name__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>Picklist_Field_API_Name__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>Start_When__c</field>
+-            </layoutItems>
+-            <layoutItems>
+-                <behavior>Readonly</behavior>
+-                <field>Unique_Name__c</field>
+-            </layoutItems>
+-        </layoutColumns>
+-        <layoutColumns>
+-            <layoutItems>
+-                <behavior>Edit</behavior>
+-                <field>OwnerId</field>
+-            </layoutItems>
+-        </layoutColumns>
+-        <style>TwoColumnsTopToBottom</style>
+-    </layoutSections>
+-    <layoutSections>
+-        <customLabel>false</customLabel>
+-        <detailHeading>false</detailHeading>
+-        <editHeading>true</editHeading>
+-        <label>System Information</label>
+-        <layoutColumns>
+-            <layoutItems>
+-                <behavior>Readonly</behavior>
+-                <field>CreatedById</field>
+-            </layoutItems>
+-        </layoutColumns>
+-        <layoutColumns>
+-            <layoutItems>
+-                <behavior>Readonly</behavior>
+-                <field>LastModifiedById</field>
+-            </layoutItems>
+-        </layoutColumns>
+-        <style>TwoColumnsTopToBottom</style>
+-    </layoutSections>
+-    <layoutSections>
+-        <customLabel>false</customLabel>
+-        <detailHeading>false</detailHeading>
+-        <editHeading>true</editHeading>
+-        <layoutColumns/>
+-        <layoutColumns/>
+-        <layoutColumns/>
+-        <style>CustomLinks</style>
+-    </layoutSections>
+-    <relatedLists>
+-        <fields>TASK.SUBJECT</fields>
+-        <fields>TASK.WHO_NAME</fields>
+-        <fields>ACTIVITY.TASK</fields>
+-        <fields>TASK.DUE_DATE</fields>
+-        <fields>TASK.STATUS</fields>
+-        <fields>TASK.PRIORITY</fields>
+-        <fields>CORE.USERS.FULL_NAME</fields>
+-        <relatedList>RelatedActivityList</relatedList>
+-    </relatedLists>
+-    <relatedLists>
+-        <fields>TASK.SUBJECT</fields>
+-        <fields>TASK.WHO_NAME</fields>
+-        <fields>ACTIVITY.TASK</fields>
+-        <fields>TASK.DUE_DATE</fields>
+-        <fields>CORE.USERS.FULL_NAME</fields>
+-        <fields>TASK.LAST_UPDATE</fields>
+-        <relatedList>RelatedHistoryList</relatedList>
+-    </relatedLists>
+-    <relatedLists>
+-        <relatedList>RelatedNoteList</relatedList>
+-    </relatedLists>
+-    <relatedLists>
+-        <fields>NAME</fields>
+-        <relatedList>Case_Step__c.Plan_Step__c</relatedList>
+-    </relatedLists>
+-    <showEmailCheckbox>false</showEmailCheckbox>
+-    <showHighlightsPanel>false</showHighlightsPanel>
+-    <showInteractionLogPanel>false</showInteractionLogPanel>
+-    <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
+-    <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
+-</Layout>
+diff --git a/force-app/main/default/objects/AP_AllowedSubmitter__c/AP_AllowedSubmitter__c.object-meta.xml b/force-app/main/default/objects/AP_AllowedSubmitter__c/AP_AllowedSubmitter__c.object-meta.xml
+index b6ee538..452bd58 100644
+--- a/force-app/main/default/objects/AP_AllowedSubmitter__c/AP_AllowedSubmitter__c.object-meta.xml
++++ b/force-app/main/default/objects/AP_AllowedSubmitter__c/AP_AllowedSubmitter__c.object-meta.xml
+@@ -159,7 +159,7 @@
+     </nameField>
+     <pluralLabel>AP_AllowedSubmitters</pluralLabel>
+     <searchLayouts/>
+-    <sharingModel>ControlledByParent</sharingModel>
++    <sharingModel>ReadWrite</sharingModel>
+     <startsWith>Vowel</startsWith>
+     <visibility>Public</visibility>
+ </CustomObject>
+diff --git a/force-app/main/default/objects/ApprovalProcessDefinition__c/listViews/testqueue1_ApprovalProcessDefinition.listView-meta.xml b/force-app/main/default/objects/ApprovalProcessDefinition__c/listViews/testqueue1_ApprovalProcessDefinition.listView-meta.xml
+deleted file mode 100644
+index 09eec45..0000000
+--- a/force-app/main/default/objects/ApprovalProcessDefinition__c/listViews/testqueue1_ApprovalProcessDefinition.listView-meta.xml
++++ /dev/null
+@@ -1,10 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+-    <fullName>testqueue1_ApprovalProcessDefinition</fullName>
+-    <filterScope>Queue</filterScope>
+-    <label>testqueue1</label>
+-    <queue>testqueue1</queue>
+-    <sharedTo>
+-        <allInternalUsers/>
+-    </sharedTo>
+-</ListView>
+diff --git a/force-app/main/default/permissionsets/ApprovalsOnFlow.permissionset-meta.xml b/force-app/main/default/permissionsets/ApprovalsOnFlow.permissionset-meta.xml
+index c8207bf..53e2b46 100644
+--- a/force-app/main/default/permissionsets/ApprovalsOnFlow.permissionset-meta.xml
++++ b/force-app/main/default/permissionsets/ApprovalsOnFlow.permissionset-meta.xml
+@@ -160,6 +160,11 @@
+         <field>ApprovalProcessStepDefinition__c.Label__c</field>
+         <readable>true</readable>
+     </fieldPermissions>
++    <fieldPermissions>
++        <editable>true</editable>
++        <field>ApprovalProcessStepDefinition__c.RejectBehavior__c</field>
++        <readable>true</readable>
++    </fieldPermissions>
+     <fieldPermissions>
+         <editable>true</editable>
+         <field>ApprovalProcessStepDefinition__c.RejectionFlow_API_Name__c</field>
+-- 
+2.21.0 (Apple Git-120)
+

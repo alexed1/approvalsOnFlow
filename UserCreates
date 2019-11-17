@@ -1,0 +1,33 @@
+public static User generateUserMikeManager() {
+        Profile profileId = [SELECT Id FROM Profile WHERE Name = 'Standard User' LIMIT 1];
+  
+        User userMikeManager = new User(LastName = 'Manager',
+                     FirstName='Mike',
+                     Alias = 'tumm',
+                     Email = 'aedelstein@salesforce.com',
+                     Username = 'mikeManager@aof.org',
+                     ProfileId = profileId.id,
+                     TimeZoneSidKey = 'GMT',
+                     LanguageLocaleKey = 'en_US',
+                     EmailEncodingKey = 'UTF-8',
+                     LocaleSidKey = 'en_US'
+                     );
+        return userMikeManager;
+    }
+
+    public static User generateUserDianneDirector() {
+        Profile profileId = [SELECT Id FROM Profile WHERE Name = 'Standard User' LIMIT 1];
+  
+        User userDianneDirector = new User(LastName = 'Director',
+                     FirstName='Dianne',
+                     Alias = 'tudd',
+                     Email = 'aedelstein@salesforce.com',
+                     Username = 'dianneDirector@aof.org',
+                     ProfileId = profileId.id,
+                     TimeZoneSidKey = 'GMT',
+                     LanguageLocaleKey = 'en_US',
+                     EmailEncodingKey = 'UTF-8',
+                     LocaleSidKey = 'en_US'
+                     );
+        return userDianneDirector;
+    }

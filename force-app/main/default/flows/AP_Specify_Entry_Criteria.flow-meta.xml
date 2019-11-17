@@ -770,6 +770,9 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+        <value>
+            <elementReference>AlwaysEnter</elementReference>
+        </value>
     </variables>
     <variables>
         <name>contextObjectType</name>
@@ -857,6 +860,9 @@ enterIfCriteriaTrueElseApprove	Enter if True, otherwise Approve. This state is v
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+        <value>
+            <elementReference>EnterStep</elementReference>
+        </value>
     </variables>
     <variables>
         <description>If Criteria Labels</description>

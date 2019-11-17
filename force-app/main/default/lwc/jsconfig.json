@@ -24,8 +24,8 @@
             "c/expressionLine": [
                 "expressionLine/expressionLine.js"
             ],
-            "c/fieldPicker": [
-                "fieldPicker/fieldPicker.js"
+            "c/flowPickerFSC": [
+                "flowPickerFSC/flowPickerFSC.js"
             ],
             "c/formulaBuilder": [
                 "formulaBuilder/formulaBuilder.js"
@@ -42,8 +42,11 @@
             "c/orderedListBox": [
                 "orderedListBox/orderedListBox.js"
             ],
-            "c/recordDetail": [
-                "recordDetail/recordDetail.js"
+            "c/pickObjectAndFieldFSC": [
+                "pickObjectAndFieldFSC/pickObjectAndFieldFSC.js"
+            ],
+            "c/recordDetailFSC": [
+                "recordDetailFSC/recordDetailFSC.js"
             ],
             "c/roleManager": [
                 "roleManager/roleManager.js"
