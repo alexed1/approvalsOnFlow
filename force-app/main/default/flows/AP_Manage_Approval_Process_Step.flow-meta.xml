@@ -45,6 +45,9 @@
         <assignmentItems>
             <assignToReference>curApprovalProcessStepDefinition.EntryCriteriaMode__c</assignToReference>
             <operator>Assign</operator>
+            <value>
+                <stringValue>Always Enter</stringValue>
+            </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>curApprovalProcessStepDefinition.EntryCriteriaDisplayType__c</assignToReference>
@@ -253,7 +256,7 @@
         <name>Create_Approval_Process_Step_Record</name>
         <label>Create Approval Process Step Record</label>
         <locationX>592</locationX>
-        <locationY>522</locationY>
+        <locationY>523</locationY>
         <assignRecordIdToReference>curApprovalProcessStepDefinition.Id</assignRecordIdToReference>
         <connector>
             <targetReference>Assign_Name_to</targetReference>
@@ -269,6 +272,9 @@
         </inputAssignments>
         <inputAssignments>
             <field>EntryCriteriaMode__c</field>
+            <value>
+                <stringValue>Always Enter</stringValue>
+            </value>
         </inputAssignments>
         <inputAssignments>
             <field>EntryCriteria__c</field>
