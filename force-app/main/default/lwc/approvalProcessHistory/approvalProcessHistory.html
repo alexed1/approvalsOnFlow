@@ -2,13 +2,13 @@
     <template if:true={data}>
         <div class="slds-card slds-p-around--small">
             <template for:each={data} for:item="curHistory">
-                <div key={curHistory.Id} class="slds-table--bordered slds-p-around--xxx-small">
+                <div key={curHistory.id} class="slds-table--bordered slds-p-around--xxx-small">
                     <lightning-layout class="step-header" multiple-rows="true">
                         <lightning-layout-item  size="11" onclick={toggleStep}
-                                               data-id={curHistory.Id}>
+                                               data-id={curHistory.id}>
                             <lightning-icon icon-name={curHistory.iconName}
                             ></lightning-icon>
-                            {curHistory.Name}
+                            {curHistory.name}
                         </lightning-layout-item>
                         <lightning-layout-item size="1">
                             <div class={curHistory.statusClass}>{curHistory.Status__c}</div>
@@ -19,7 +19,7 @@
                                 <lightning-datatable
                                         onrowaction={handleRowAction}
                                         key-field="Id"
-                                        data={curHistory.AP_ApprovalInstanceHistoryItems__r.records}
+                                        data={curHistory.items}
                                         columns={columns}
                                         hide-checkbox-column>
                                 </lightning-datatable>

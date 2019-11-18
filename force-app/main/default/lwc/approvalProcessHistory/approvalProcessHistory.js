@@ -18,6 +18,7 @@ export default class approvalProcessHistory extends NavigationMixin(LightningEle
             this.errors.push(error.body.message);
         } else if (data) {
             this.historyData = JSON.parse(data);
+            this.historyData.sort(this.sortByField('order', -1));
         }
     }
 
@@ -38,7 +39,7 @@ export default class approvalProcessHistory extends NavigationMixin(LightningEle
         if (this.historyData) {
             return this.historyData.map(curData => {
                 let tempData = JSON.parse(JSON.stringify(curData));
-                tempData.AP_ApprovalInstanceHistoryItems__r.records = tempData.AP_ApprovalInstanceHistoryItems__r.records.map(curHistoryItem => {
+                tempData.items = tempData.items.map(curHistoryItem => {
                     let url = this.generateUrl('standard__objectPage', 'User', curHistoryItem.Assigned_User__c);
                     return {
                         ...curHistoryItem, ...{
@@ -49,16 +50,23 @@ export default class approvalProcessHistory extends NavigationMixin(LightningEle
                         }
                     };
                 });
+                tempData.items.sort(this.sortByField('CreatedDate', -1));
                 return {
                     ...tempData, ...{
-                        selected: this.openSteps.includes(curData.Id),
-                        iconName: this.openSteps.includes(curData.Id) ? 'utility:chevrondown' : 'utility:chevronright',
-                        statusClass: this.getStatusClass(curData.Status__c)
+                        selected: this.openSteps.includes(curData.id),
+                        iconName: this.openSteps.includes(curData.id) ? 'utility:chevrondown' : 'utility:chevronright',
+                        statusClass: this.getStatusClass(curData.status)
                     }
                 };
             });
         } else {
             return [];
+        }
+    }
+
+    sortByField(fieldName, order) {
+        return (a, b) => {
+            return (order * ((a[fieldName] > b[fieldName]) ? 1 : ((b[fieldName] > a[fieldName]) ? -1 : 0)));
         }
     }
 
