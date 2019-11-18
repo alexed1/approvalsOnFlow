@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Evaluate_Formula</name>
         <label>Evaluate Formula</label>
-        <locationX>612</locationX>
-        <locationY>216</locationY>
+        <locationX>636</locationX>
+        <locationY>285</locationY>
         <actionName>FlowFormulaEvaluator</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -51,8 +51,8 @@
     <actionCalls>
         <name>GetNamesFromGroupSubmitters</name>
         <label>GetNamesFromGroupSubmitters</label>
-        <locationX>553</locationX>
-        <locationY>460</locationY>
+        <locationX>471</locationX>
+        <locationY>543</locationY>
         <actionName>GetStringsFromLists2</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -78,8 +78,8 @@
     <actionCalls>
         <name>GetRoleNamesFromRoleSubmitters</name>
         <label>GetRoleNamesFromRoleSubmitters</label>
-        <locationX>521</locationX>
-        <locationY>311</locationY>
+        <locationX>477</locationX>
+        <locationY>430</locationY>
         <actionName>GetStringsFromLists2</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -105,8 +105,8 @@
     <actionCalls>
         <name>GetUserNamesFromSubmitters</name>
         <label>GetUserNamesFromSubmitters</label>
-        <locationX>540</locationX>
-        <locationY>632</locationY>
+        <locationX>470</locationX>
+        <locationY>663</locationY>
         <actionName>GetStringsFromLists2</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -194,10 +194,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Is_Always_Enter</name>
+        <label>Is Always Enter</label>
+        <locationX>617</locationX>
+        <locationY>147</locationY>
+        <defaultConnector>
+            <targetReference>Evaluate_Formula</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>curProcessDef.EntryCriteriaMode__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Always Enter</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ExtractRoleSubmitters</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_Formula_True</name>
         <label>Is Formula True</label>
-        <locationX>459</locationX>
-        <locationY>217</locationY>
+        <locationX>473</locationX>
+        <locationY>257</locationY>
         <defaultConnector>
             <targetReference>Iterate_Process_Defs</targetReference>
         </defaultConnector>
@@ -234,7 +259,7 @@
         <collectionReference>curApprovalDefs</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Evaluate_Formula</targetReference>
+            <targetReference>Is_Always_Enter</targetReference>
         </nextValueConnector>
     </loops>
     <processMetadataValues>
@@ -253,8 +278,8 @@
     <recordLookups>
         <name>ExtractGroupSubmitters</name>
         <label>ExtractGroupSubmitters</label>
-        <locationX>350</locationX>
-        <locationY>447</locationY>
+        <locationX>176</locationX>
+        <locationY>516</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GetNamesFromGroupSubmitters</targetReference>
@@ -274,8 +299,8 @@
     <recordLookups>
         <name>ExtractRoleSubmitters</name>
         <label>ExtractRoleSubmitters</label>
-        <locationX>351</locationX>
-        <locationY>304</locationY>
+        <locationX>181</locationX>
+        <locationY>373</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GetRoleNamesFromRoleSubmitters</targetReference>
@@ -310,8 +335,8 @@
     <recordLookups>
         <name>ExtractUserSubmitters</name>
         <label>ExtractUserSubmitters</label>
-        <locationX>353</locationX>
-        <locationY>623</locationY>
+        <locationX>169</locationX>
+        <locationY>659</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>GetUserNamesFromSubmitters</targetReference>
@@ -378,6 +403,7 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>Name</queriedFields>
         <queriedFields>EntryCriteria__c</queriedFields>
+        <queriedFields>EntryCriteriaMode__c</queriedFields>
     </recordLookups>
     <start>
         <locationX>50</locationX>
