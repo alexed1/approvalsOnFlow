@@ -15,12 +15,12 @@ public with sharing class GetFieldValue {
                 objectType = recordId.getSobjectType().getDescribe().getName();
             }
 
-            String query = 'SELECT ' + fieldName + ' FROM ' + objectType + ' WHERE ' + filterField + '=:filterValue LIMIT 1';
+            String query = 'SELECT ' + String.escapeSingleQuotes(fieldName) + ' FROM ' + String.escapeSingleQuotes(objectType) + ' WHERE ' + String.escapeSingleQuotes(filterField) + '=:filterValue LIMIT 1';
             List<sObject> objects = Database.query(query);
             if (!objects.isEmpty()) {
                 String fieldValue = (String) objects[0].get(fieldName);
                 response.fieldValue = fieldValue;
-            }else{
+            } else {
                 response.errors = 'Query returned no results';
             }
 
