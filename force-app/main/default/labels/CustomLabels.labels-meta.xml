@@ -345,6 +345,14 @@
         <value>Related Users</value>
     </labels>
     <labels>
+        <fullName>RelatedFields</fullName>
+        <categories>labels</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RelatedFields</shortDescription>
+        <value>Related Fields</value>
+    </labels>
+    <labels>
         <fullName>ConditionLogicHelpText</fullName>
         <categories>labels</categories>
         <language>en_US</language>

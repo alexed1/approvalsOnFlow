@@ -4,8 +4,8 @@
         <description>This is the url that will go in the body of the notification email being sent out.</description>
         <name>Generate_Response_Link</name>
         <label>Generate Response Link</label>
-        <locationX>826</locationX>
-        <locationY>978</locationY>
+        <locationX>705</locationX>
+        <locationY>962</locationY>
         <actionName>GenerateFlowLink</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -32,6 +32,84 @@
         <outputParameters>
             <assignToReference>responseFlowLink</assignToReference>
             <name>flowLink</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Get_Approver_User_Id</name>
+        <label>Get Approver User Id</label>
+        <locationX>1271</locationX>
+        <locationY>466</locationY>
+        <actionName>GetFieldValue</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Is_Hierarchy_Field_Populated</targetReference>
+        </connector>
+        <inputParameters>
+            <name>fieldName</name>
+            <value>
+                <elementReference>curAPDefinition.Automated_Approver_Role__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>filterField</name>
+            <value>
+                <stringValue>Id</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>filterValue</name>
+            <value>
+                <elementReference>candidate_record_owner_id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>candidate_record_owner_id</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>hierarchy_user_id</assignToReference>
+            <name>fieldValue</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Get_Candidate_Record_Owner</name>
+        <label>Get Candidate Record Owner</label>
+        <locationX>1269</locationX>
+        <locationY>232</locationY>
+        <actionName>GetFieldValue</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Get_Approver_User_Id</targetReference>
+        </connector>
+        <inputParameters>
+            <name>fieldName</name>
+            <value>
+                <stringValue>OwnerId</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>filterField</name>
+            <value>
+                <stringValue>Id</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>filterValue</name>
+            <value>
+                <elementReference>curApprovalProcessInstance.approvalProcessCandidateRecordId__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>curApprovalProcessInstance.approvalProcessCandidateRecordId__c</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>candidate_record_owner_id</assignToReference>
+            <name>fieldValue</name>
         </outputParameters>
     </actionCalls>
     <actionCalls>
@@ -135,8 +213,8 @@
     <assignments>
         <name>Extract_Email_Address</name>
         <label>Extract Email Address</label>
-        <locationX>546</locationX>
-        <locationY>584</locationY>
+        <locationX>552</locationX>
+        <locationY>421</locationY>
         <assignmentItems>
             <assignToReference>curEmailAddress</assignToReference>
             <operator>Assign</operator>
@@ -151,8 +229,8 @@
     <assignments>
         <name>placeholder_for_Evaluate_Formula</name>
         <label>placeholder for Evaluate Formula</label>
-        <locationX>685</locationX>
-        <locationY>54</locationY>
+        <locationX>806</locationX>
+        <locationY>227</locationY>
         <assignmentItems>
             <assignToReference>placeholder</assignToReference>
             <operator>Assign</operator>
@@ -167,8 +245,8 @@
     <assignments>
         <name>placeholder_for_Lock_Record</name>
         <label>placeholder for Lock Record</label>
-        <locationX>531</locationX>
-        <locationY>55</locationY>
+        <locationX>952</locationX>
+        <locationY>231</locationY>
         <assignmentItems>
             <assignToReference>placeholder</assignToReference>
             <operator>Assign</operator>
@@ -183,8 +261,8 @@
     <assignments>
         <name>Use_StepTaskId</name>
         <label>Use StepTaskId</label>
-        <locationX>951</locationX>
-        <locationY>421</locationY>
+        <locationX>861</locationX>
+        <locationY>762</locationY>
         <assignmentItems>
             <assignToReference>curApproverStepTaskId</assignToReference>
             <operator>Assign</operator>
@@ -199,8 +277,8 @@
     <decisions>
         <name>Does_Step_Task_Already_Exist</name>
         <label>Does Step Task Already Exist?</label>
-        <locationX>806</locationX>
-        <locationY>417</locationY>
+        <locationX>772</locationX>
+        <locationY>533</locationY>
         <defaultConnector>
             <targetReference>Create_Step_Task</targetReference>
         </defaultConnector>
@@ -241,7 +319,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Iterate_Over_Approvers</targetReference>
+                <targetReference>Is_Hierarchy_Based_0</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -266,10 +344,107 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Is_Hierarchy_Based</name>
+        <label>Is Hierarchy Based</label>
+        <locationX>944</locationX>
+        <locationY>56</locationY>
+        <defaultConnector>
+            <targetReference>placeholder_for_Lock_Record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Hierarcy_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>curAPStepDefinition.ApproverType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>hierarchy-based</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_AP_Definition</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Hierarchy_Based_0</name>
+        <label>Is Hierarchy Based</label>
+        <locationX>220</locationX>
+        <locationY>589</locationY>
+        <defaultConnector>
+            <targetReference>Iterate_Over_Approvers</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Hierarcy_Yes_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>curAPStepDefinition.ApproverType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>hierarchy-based</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Hierarchy_Field_Populated</name>
+        <label>Is Hierarchy Field Populated</label>
+        <locationX>1141</locationX>
+        <locationY>471</locationY>
+        <defaultConnector>
+            <targetReference>placeholder_for_Lock_Record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Is_Hierarchy_Field_Populated_YES</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>hierarchy_user_id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_User_Hierarchy</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Use_Approver_Field_on_Record_Owner</name>
+        <label>Use Approver Field on Record Owner</label>
+        <locationX>1142</locationX>
+        <locationY>236</locationY>
+        <defaultConnector>
+            <targetReference>placeholder_for_Lock_Record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Use_Approver_Field_on_Record_Owner_YES</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>curAPDefinition.useApproverFieldOfRecordOwner__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Candidate_Record_Owner</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>What_Type_of_Approver</name>
         <label>What Type of Approver?</label>
-        <locationX>426</locationX>
-        <locationY>363</locationY>
+        <locationX>415</locationX>
+        <locationY>375</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>User</name>
@@ -323,8 +498,8 @@
         <description>A StepTask is created for each target approver to track their responses (or lack thereof)</description>
         <name>Create_Step_Task</name>
         <label>Create Step Task</label>
-        <locationX>822</locationX>
-        <locationY>641</locationY>
+        <locationX>691</locationX>
+        <locationY>768</locationY>
         <assignRecordIdToReference>curApproverStepTaskId</assignRecordIdToReference>
         <connector>
             <targetReference>Generate_Response_Link</targetReference>
@@ -356,13 +531,57 @@
         <object>Approval_Process_Step_Task__c</object>
     </recordCreates>
     <recordLookups>
-        <name>Get_AP_Step_Instance</name>
-        <label>Get Current AP Step</label>
-        <locationX>385</locationX>
-        <locationY>54</locationY>
+        <name>Get_AP_Definition</name>
+        <label>Get AP Definition</label>
+        <locationX>1150</locationX>
+        <locationY>49</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>placeholder_for_Lock_Record</targetReference>
+            <targetReference>Use_Approver_Field_on_Record_Owner</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curAPStepDefinition.ApprovalProcessDefinition__c</elementReference>
+            </value>
+        </filters>
+        <object>ApprovalProcessDefinition__c</object>
+        <outputReference>curAPDefinition</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Automated_Approver_Role__c</queriedFields>
+        <queriedFields>useApproverFieldOfRecordOwner__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_AP_Step_Definition</name>
+        <label>Get AP Step Definition</label>
+        <locationX>562</locationX>
+        <locationY>55</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_Hierarchy_Based</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curApprovalProcessInstance.Current_Approval_Step__c</elementReference>
+            </value>
+        </filters>
+        <object>ApprovalProcessStepDefinition__c</object>
+        <outputReference>curAPStepDefinition</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ApproverType__c</queriedFields>
+        <queriedFields>ApprovalProcessDefinition__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_AP_Step_Instance</name>
+        <label>Get Current AP Step</label>
+        <locationX>395</locationX>
+        <locationY>53</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_AP_Step_Definition</targetReference>
         </connector>
         <filters>
             <field>Approval_Process_Step_Definition__c</field>
@@ -406,6 +625,7 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>Name</queriedFields>
         <queriedFields>Current_Approval_Step__c</queriedFields>
+        <queriedFields>approvalProcessCandidateRecordId__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <description>These are all of the entities allowed to approve this step.</description>
@@ -433,8 +653,8 @@
     <recordLookups>
         <name>Get_Step_Task_If_Extant</name>
         <label>Get Step Task If Extant</label>
-        <locationX>672</locationX>
-        <locationY>415</locationY>
+        <locationX>559</locationX>
+        <locationY>645</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Does_Step_Task_Already_Exist</targetReference>
@@ -460,8 +680,8 @@
     <recordLookups>
         <name>Get_User</name>
         <label>Get User</label>
-        <locationX>430</locationX>
-        <locationY>583</locationY>
+        <locationX>432</locationX>
+        <locationY>657</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Extract_Email_Address</targetReference>
@@ -471,6 +691,27 @@
             <operator>EqualTo</operator>
             <value>
                 <elementReference>curApprover.Name</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputReference>curUser</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Email</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_User_Hierarchy</name>
+        <label>Get User Hierarchy</label>
+        <locationX>1149</locationX>
+        <locationY>624</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Extract_Email_Address</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>hierarchy_user_id</elementReference>
             </value>
         </filters>
         <object>User</object>
@@ -495,6 +736,21 @@
         <text>&lt;p&gt;Click here to approve or reject: {!responseFlowLink}&lt;/p&gt;</text>
     </textTemplates>
     <variables>
+        <name>candidate_record_owner_id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>curAPDefinition</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>ApprovalProcessDefinition__c</objectType>
+    </variables>
+    <variables>
         <name>curApprovalProcessInstance</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
@@ -516,6 +772,14 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>curAPStepDefinition</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>
         <name>curAPStepInstance</name>
@@ -583,6 +847,13 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>hierarchy_user_id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>placeholder</name>

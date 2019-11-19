@@ -95,6 +95,13 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
                 <elementReference>selectedFlowRecall</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.useApproverFieldOfRecordOwner__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Use_Approver_Field_of_Record_Owner</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Configure_Approval_Form</targetReference>
         </connector>
@@ -501,7 +508,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </connector>
         <fields>
             <name>dispRouting</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;Routing&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b&gt;Select Field Used for Automated Approval Routing&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -515,15 +522,9 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>recordId</name>
-                <value>
-                    <elementReference>curApprovalProcessDefinition.Id</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
                 <name>availableObjectTypes</name>
                 <value>
-                    <stringValue>RelatedUsers</stringValue>
+                    <stringValue>RelatedFields</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -547,25 +548,43 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <inputParameters>
                 <name>addTabName</name>
                 <value>
-                    <stringValue>Set</stringValue>
+                    <stringValue>Select Field</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>editTabName</name>
                 <value>
-                    <stringValue>Modify</stringValue>
+                    <stringValue>Modify Field</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectApiName</name>
+                <value>
+                    <stringValue>User</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>curApprovalProcessDefinition.Id</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>relationTypes</name>
+                <value>
+                    <stringValue>User</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
-            <name>Use_Approver_Field_of_Ship_Owner</name>
+            <name>Use_Approver_Field_of_Record_Owner</name>
             <dataType>Boolean</dataType>
             <defaultValue>
-                <booleanValue>false</booleanValue>
+                <elementReference>curApprovalProcessDefinition.useApproverFieldOfRecordOwner__c</elementReference>
             </defaultValue>
-            <fieldText>Use Approver Field of Ship Owner</fieldText>
+            <fieldText>Use Approver Field of Record Owner</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
@@ -748,7 +767,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <targetReference>Specify_Entry_Criteria</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>Manage_Specific_Step</name>
         <label>Manage Specific Step</label>
