@@ -73,9 +73,21 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>ApprovalProcessStepInstance__c</field>
+            <value>
+                <elementReference>curApprovalProcessStepTask.Approval_Process_Step_Instance__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>ApprovalProcessStepTaskId__c</field>
             <value>
                 <elementReference>curApprovalProcessStepTask.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Approval_Process_Instance__c</field>
+            <value>
+                <elementReference>curApprovalProcessInstance.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
