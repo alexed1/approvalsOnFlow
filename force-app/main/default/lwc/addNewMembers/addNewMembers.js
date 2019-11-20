@@ -33,6 +33,7 @@ export default class addNewMembers extends LightningElement {
     @api objectData;
     @api typeMapping;
     @api customTypes;
+    @api relationTypes;
     @track label = {
         Search,
         TooManyResultsMessage,
@@ -87,13 +88,14 @@ export default class addNewMembers extends LightningElement {
         this.isSearchApplied = false;
     }
 
-    searchRelatedUsers(searchString) {
+    searchRelatedFields(searchString, fieldTypes) {
         let fields = this.objectData.fields;
         let searchableFields = [];
         for (let fieldName in fields) {
             if (fields[fieldName].referenceToInfos.length !== 0) {
                 fields[fieldName].referenceToInfos.forEach(curReference => {
-                    if (curReference.apiName === 'User' && (!searchString || fields[fieldName].label.includes(searchString))) {
+                    let fieldTypeFilter = fieldTypes? fieldTypes.includes(curReference.apiName) : true;
+                    if (fieldTypeFilter && (!searchString || fields[fieldName].label.includes(searchString))) {
                         searchableFields.push({
                             label: fields[fieldName].label,
                             value: fieldName
@@ -112,7 +114,9 @@ export default class addNewMembers extends LightningElement {
         this.searchDisabled = true;
         let results = new Object();
         if (this.selectedType === 'RelatedUsers') {
-            results[this.selectedType] = this.searchRelatedUsers(this.searchString);
+            results[this.selectedType] = this.searchRelatedFields(this.searchString, 'User');
+        } else if (this.selectedType === 'RelatedFields') {
+            results[this.selectedType] = this.searchRelatedFields(this.searchString, this.relationTypes);
         } else if (this.customTypes[this.selectedType] != null) {
             results[this.selectedType] = [{
                 label: this.selectedType,

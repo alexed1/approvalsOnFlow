@@ -72,6 +72,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ApprovalProcessDefinition__c.Automated_Approver_Role__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ApprovalProcessDefinition__c.ClassicEmailTemplateName__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -133,6 +138,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>ApprovalProcessDefinition__c.ShowApprovalHistory__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ApprovalProcessDefinition__c.useApproverFieldOfRecordOwner__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

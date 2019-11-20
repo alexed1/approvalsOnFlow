@@ -51,6 +51,13 @@
                 <stringValue>Always Enter</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.useApproverFieldOfRecordOwner__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Create_Approval_Process_Definition</targetReference>
         </connector>
@@ -278,6 +285,7 @@
         <queriedFields>EntryCriteria__c</queriedFields>
         <queriedFields>EntryCriteriaDisplayType__c</queriedFields>
         <queriedFields>EntryCriteriaMode__c</queriedFields>
+        <queriedFields>useApproverFieldOfRecordOwner__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_Similiar_Record</name>

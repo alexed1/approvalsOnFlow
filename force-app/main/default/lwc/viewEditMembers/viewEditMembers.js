@@ -18,6 +18,7 @@ export default class ViewEditMembers extends LightningElement {
     @api memberData;
     @api objectData;
     @api typeMapping;
+    @api relationTypes;
 
     labels = {
         NoMembersAddedMessage: NoMembersAddedMessage
@@ -46,15 +47,11 @@ export default class ViewEditMembers extends LightningElement {
     }
 
     get isNoResults() {
-        if (!this.tableData || this.tableData.length == 0) {
-            return true
-        } else {
-            return false;
-        }
+        return !this.tableData || this.tableData.length === 0;
     }
 
     setLabels(result) {
-        if (this.customTypes.hasOwnProperty(result.record.Type__c) && this.objectData.fields[result.recordId]) {
+        if (this.objectData.fields[result.recordId]) {
             return {
                 ...result,
                 label: this.objectData.fields[result.recordId].label.replace(' ID', '')

@@ -15,6 +15,7 @@ import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 
 import Queues from '@salesforce/label/c.Queues';
 import RelatedUsers from '@salesforce/label/c.RelatedUsers';
+import RelatedFields from '@salesforce/label/c.RelatedFields';
 import PublicGroups from '@salesforce/label/c.PublicGroups';
 import Roles from '@salesforce/label/c.Roles';
 import Users from '@salesforce/label/c.Users';
@@ -30,8 +31,8 @@ import {
 
 export default class RoleManager extends LightningElement {
     @api recordId;
-    @api editTabName;
-    @api addTabName;
+    @api editTabName = 'Edit';
+    @api addTabName = 'Add';
     @api availableObjectTypes;
     @api managerName;
     @api supportedAddCapabilities;
@@ -39,6 +40,7 @@ export default class RoleManager extends LightningElement {
     @api layout = 'Tabbed';
     @api memberParams;
     @api selectionRequired;
+    @api relationTypes;
     @track existingMembers;
     @track supportedButtons;
     @api ruleName;
@@ -50,7 +52,7 @@ export default class RoleManager extends LightningElement {
     @track errors = [];
     @track memberData;
     @track objectData;
-    @track objectApiName;
+    @track _objectApiName;
 
     typeMapping = {
         Group: PublicGroups,
@@ -58,6 +60,7 @@ export default class RoleManager extends LightningElement {
         User: Users,
         Queue: Queues,
         RelatedUsers: RelatedUsers,
+        RelatedFields: RelatedFields,
         Owner: Owner,
         Creator: Creator
     };
@@ -104,11 +107,13 @@ export default class RoleManager extends LightningElement {
             this.toastTheError(error, this.source);
         } else if (data) {
             this.memberData = data;
-            this.objectApiName = data.apiName;
+            if(!this.relationTypes && !this._objectApiName){
+                this._objectApiName = data.apiName;
+            }
         }
     }
 
-    @wire(getObjectInfo, {objectApiName: '$objectApiName'})
+    @wire(getObjectInfo, {objectApiName: '$_objectApiName'})
     _getObjectInfo({error, data}) {
         this.isFieldLoadFinished = false;
         if (error) {
@@ -117,6 +122,14 @@ export default class RoleManager extends LightningElement {
             this.objectData = data;
             this.isObjectDataLoaded = true;
         }
+    }
+
+    @api get objectApiName() {
+        return this._objectApiName;
+    }
+
+    set objectApiName(value) {
+            this._objectApiName = value;
     }
 
     @api
