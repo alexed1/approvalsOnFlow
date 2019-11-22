@@ -1,6 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Get_Approved_Rejected_Count</name>
+        <label>Get Rejected Tasks Count</label>
+        <locationX>860</locationX>
+        <locationY>191</locationY>
+        <actionName>CountFieldValues</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Get_Process_Instance</targetReference>
+        </connector>
+        <inputParameters>
+            <name>fieldName</name>
+            <value>
+                <stringValue>Status__c</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>fieldValue</name>
+            <value>
+                <stringValue>Rejected</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>records</name>
+            <value>
+                <elementReference>all_step_tasks</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>step_tasks_total_counter</assignToReference>
+            <name>totalNumber</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>step_tasks_rejected_counter</assignToReference>
+            <name>matchedNumber</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Get_Approved_Tasks_Count</name>
+        <label>Get Approved Tasks Count</label>
+        <locationX>861</locationX>
+        <locationY>49</locationY>
+        <actionName>CountFieldValues</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Get_Approved_Rejected_Count</targetReference>
+        </connector>
+        <inputParameters>
+            <name>fieldName</name>
+            <value>
+                <stringValue>Status__c</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>fieldValue</name>
+            <value>
+                <stringValue>Approved</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>records</name>
+            <value>
+                <elementReference>all_step_tasks</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>step_tasks_total_counter</assignToReference>
+            <name>totalNumber</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>step_tasks_approved_counter</assignToReference>
+            <name>matchedNumber</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>Run_Approval_Flow</name>
         <label>Run Approval Flow</label>
         <locationX>767</locationX>
@@ -54,8 +128,8 @@
     <actionCalls>
         <name>Run_Rejection_Flow</name>
         <label>Run Rejection Flow</label>
-        <locationX>323</locationX>
-        <locationY>514</locationY>
+        <locationX>328</locationX>
+        <locationY>583</locationY>
         <actionName>AutolaunchFlow</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -103,8 +177,8 @@
     <assignments>
         <name>Set_Process_Instance_Current_Step2</name>
         <label>Set Process Instance Current Step</label>
-        <locationX>654</locationX>
-        <locationY>698</locationY>
+        <locationX>663</locationX>
+        <locationY>693</locationY>
         <assignmentItems>
             <assignToReference>curApprovalProcessInstance.Current_Approval_Step__c</assignToReference>
             <operator>Assign</operator>
@@ -135,8 +209,8 @@
     <decisions>
         <name>Action_Taken</name>
         <label>Action Taken?</label>
-        <locationX>317</locationX>
-        <locationY>326</locationY>
+        <locationX>318</locationX>
+        <locationY>327</locationY>
         <defaultConnectorLabel>Recall</defaultConnectorLabel>
         <rules>
             <name>Approve</name>
@@ -145,7 +219,7 @@
                 <leftValueReference>TakenAction</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Approve</stringValue>
+                    <stringValue>Approved</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -160,7 +234,7 @@
                 <leftValueReference>TakenAction</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Reject</stringValue>
+                    <stringValue>Rejected</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -172,8 +246,8 @@
     <decisions>
         <name>Final_Rejection_or_Back_One_Step</name>
         <label>Final Rejection or Back One Step</label>
-        <locationX>499</locationX>
-        <locationY>516</locationY>
+        <locationX>498</locationX>
+        <locationY>488</locationY>
         <defaultConnectorLabel>Default</defaultConnectorLabel>
         <rules>
             <name>Final_Rejection</name>
@@ -232,10 +306,82 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Majority_and_Approved</name>
+        <label>Majority and Approved</label>
+        <locationX>964</locationX>
+        <locationY>490</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Majority_and_Approved_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>approved_percent</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>50.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Run_Approval_Flow</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Unanimous_and_Approved</name>
+        <label>Unanimous and Approved</label>
+        <locationX>815</locationX>
+        <locationY>546</locationY>
+        <defaultConnector>
+            <targetReference>Unanimous_and_Rejected</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Unanimous_and_Approved_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>approved_percent</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>100.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Run_Approval_Flow</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Unanimous_and_Rejected</name>
+        <label>Unanimous and Rejected</label>
+        <locationX>814</locationX>
+        <locationY>782</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Unanimous_and_Rejected_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>rejected_percent</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Run_Rejection_Flow</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Which_Decisioning_Process</name>
         <label>Which Decisioning Process?</label>
-        <locationX>504</locationX>
-        <locationY>326</locationY>
+        <locationX>513</locationX>
+        <locationY>360</locationY>
+        <defaultConnector>
+            <targetReference>Majority_and_Approved</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Majority rules</defaultConnectorLabel>
         <rules>
             <name>Use_First_Received_Response</name>
@@ -262,9 +408,18 @@
                     <stringValue>UnanimousNeeded</stringValue>
                 </rightValue>
             </conditions>
+            <connector>
+                <targetReference>Unanimous_and_Approved</targetReference>
+            </connector>
             <label>Must be unanimous</label>
         </rules>
     </decisions>
+    <formulas>
+        <name>approved_percent</name>
+        <dataType>Number</dataType>
+        <expression>{!step_tasks_approved_counter} / {!step_tasks_total_counter} * 100</expression>
+        <scale>2</scale>
+    </formulas>
     <formulas>
         <description>The Order of the next step</description>
         <name>nextStepOrderValue</name>
@@ -276,6 +431,12 @@
         <name>previousStepOrderValue</name>
         <dataType>Number</dataType>
         <expression>IF({!curApprovalProcessStepDefinition.Order__c} == 0,0,{!curApprovalProcessStepDefinition.Order__c} - 1)</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>rejected_percent</name>
+        <dataType>Number</dataType>
+        <expression>{!step_tasks_rejected_counter} / {!step_tasks_total_counter} * 100</expression>
         <scale>2</scale>
     </formulas>
     <interviewLabel>AP Main Response Handler {!$Flow.CurrentDateTime}</interviewLabel>
@@ -298,6 +459,12 @@
         <label>Log Step Transition</label>
         <locationX>1592</locationX>
         <locationY>325</locationY>
+        <inputAssignments>
+            <field>ApprovalCandidateRecordId__c</field>
+            <value>
+                <elementReference>curApprovalProcessInstance.approvalProcessCandidateRecordId__c</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>ApprovalProcessStepInstance__c</field>
             <value>
@@ -327,8 +494,8 @@
     <recordCreates>
         <name>Log_Step_Transition2</name>
         <label>Log Step Transition</label>
-        <locationX>784</locationX>
-        <locationY>912</locationY>
+        <locationX>783</locationX>
+        <locationY>913</locationY>
         <inputAssignments>
             <field>ApprovalCandidateRecordId__c</field>
             <value>
@@ -362,6 +529,27 @@
         <object>ApprovalInstanceHistory__c</object>
     </recordCreates>
     <recordLookups>
+        <name>Get_All_Step_Tasks</name>
+        <label>Get All Step Tasks</label>
+        <locationX>710</locationX>
+        <locationY>49</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Approved_Tasks_Count</targetReference>
+        </connector>
+        <filters>
+            <field>Approval_Process_Step_Instance__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curApprovalProcessStepTask.Approval_Process_Step_Instance__c</elementReference>
+            </value>
+        </filters>
+        <object>Approval_Process_Step_Task__c</object>
+        <outputReference>all_step_tasks</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Status__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <description>Needed to pull information about scenarios like final approval</description>
         <name>Get_Approval_Process_Definition</name>
         <label>Get Approval Process Definition</label>
@@ -369,7 +557,7 @@
         <locationY>49</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Process_Instance</targetReference>
+            <targetReference>Get_All_Step_Tasks</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -413,13 +601,14 @@
         <queriedFields>RejectBehavior__c</queriedFields>
         <queriedFields>ApprovalProcessDefinition__c</queriedFields>
         <queriedFields>Order__c</queriedFields>
+        <queriedFields>DecisionCriteria__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <description>Something has happened that warrants updating the process instance itself</description>
         <name>Get_Process_Instance</name>
         <label>Get Process Instance</label>
-        <locationX>603</locationX>
-        <locationY>241</locationY>
+        <locationX>653</locationX>
+        <locationY>190</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Action_Taken</targetReference>
@@ -520,8 +709,8 @@
     <recordLookups>
         <name>Try_To_Get_Previous_Step</name>
         <label>Try To Get Previous Step</label>
-        <locationX>655</locationX>
-        <locationY>522</locationY>
+        <locationX>662</locationX>
+        <locationY>490</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Set_Process_Instance_Current_Step2</targetReference>
@@ -559,8 +748,8 @@
     <recordUpdates>
         <name>Update_Process_Instance2</name>
         <label>Update Process Instance</label>
-        <locationX>654</locationX>
-        <locationY>912</locationY>
+        <locationX>663</locationX>
+        <locationY>913</locationY>
         <connector>
             <targetReference>Log_Step_Transition2</targetReference>
         </connector>
@@ -574,6 +763,14 @@
         </connector>
     </start>
     <status>Draft</status>
+    <variables>
+        <name>all_step_tasks</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Approval_Process_Step_Task__c</objectType>
+    </variables>
     <variables>
         <name>curApprovalProcessDefinition</name>
         <dataType>SObject</dataType>
@@ -635,6 +832,30 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>step_tasks_approved_counter</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>step_tasks_rejected_counter</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>step_tasks_total_counter</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <scale>0</scale>
     </variables>
     <variables>
         <name>TakenAction</name>
