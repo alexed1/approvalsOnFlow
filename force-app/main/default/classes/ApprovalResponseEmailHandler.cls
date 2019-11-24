@@ -1,7 +1,7 @@
 global class ApprovalResponseEmailHandler implements Messaging.InboundEmailHandler {
 
-    private static final String ACTION_APPROVE = 'approve';
-    private static final String ACTION_REJECT = 'reject';
+    private static final String ACTION_APPROVE = 'Approved';
+    private static final String ACTION_REJECT = 'Rejected';
     private static final String RECORD_ID_PREFIX = '#APST';
     private static final String RECORD_ID_SUFIX = '\n';
 

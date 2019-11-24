@@ -61,8 +61,8 @@
         <description>This essentially logs the user activity</description>
         <name>Create_History_Item</name>
         <label>Create History Item</label>
-        <locationX>881</locationX>
-        <locationY>250</locationY>
+        <locationX>1128</locationX>
+        <locationY>189</locationY>
         <connector>
             <targetReference>screenFinishMessage</targetReference>
         </connector>
@@ -197,7 +197,7 @@
         <locationX>992</locationX>
         <locationY>53</locationY>
         <connector>
-            <targetReference>Create_History_Item</targetReference>
+            <targetReference>Run_Response_Handler</targetReference>
         </connector>
         <inputReference>curApprovalProcessStepTask</inputReference>
     </recordUpdates>
@@ -268,7 +268,7 @@
             <inputParameters>
                 <name>buttonLabels</name>
                 <value>
-                    <stringValue>Approve, Reject</stringValue>
+                    <stringValue>Approved, Rejected</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -295,8 +295,8 @@
     <screens>
         <name>screenFinishMessage</name>
         <label>screenFinishMessage</label>
-        <locationX>1030</locationX>
-        <locationY>250</locationY>
+        <locationX>1129</locationX>
+        <locationY>353</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -316,6 +316,28 @@
         </connector>
     </start>
     <status>Draft</status>
+    <subflows>
+        <name>Run_Response_Handler</name>
+        <label>Run Response Handler</label>
+        <locationX>1125</locationX>
+        <locationY>53</locationY>
+        <connector>
+            <targetReference>Create_History_Item</targetReference>
+        </connector>
+        <flowName>AP_Main_Response_Handler</flowName>
+        <inputAssignments>
+            <name>CurrentStepTaskId</name>
+            <value>
+                <elementReference>curApprovalProcessStepTask.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>TakenAction</name>
+            <value>
+                <elementReference>requestedAction</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>curApprovalProcessHistoryItem</name>
         <dataType>SObject</dataType>
