@@ -131,7 +131,7 @@
             <assignToReference>EntryCriteria</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>expression_builder_lwc.value</elementReference>
+                <elementReference>expression_builder_lwc.formulaString</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -147,7 +147,7 @@
             <assignToReference>EntryCriteria</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>formula_builder_lwc.formulaValue</elementReference>
+                <elementReference>formula_builder_lwc.formulaString</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -647,13 +647,13 @@
             <extensionName>c:formulaBuilder</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
-                <name>objectName</name>
+                <name>contextObjectType</name>
                 <value>
                     <elementReference>contextObjectType</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>formulaValue</name>
+                <name>formulaString</name>
                 <value>
                     <elementReference>EntryCriteria</elementReference>
                 </value>
@@ -676,13 +676,13 @@
             <extensionName>c:expressionBuilder</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
-                <name>value</name>
+                <name>formulaString</name>
                 <value>
                     <elementReference>EntryCriteria</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>contextRecordObjectName</name>
+                <name>contextObjectType</name>
                 <value>
                     <elementReference>contextObjectType</elementReference>
                 </value>
