@@ -137,6 +137,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>ApprovalProcessDefinition__c.Record_Detail_Fields__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ApprovalProcessDefinition__c.ShowApprovalHistory__c</field>
         <readable>true</readable>
     </fieldPermissions>
