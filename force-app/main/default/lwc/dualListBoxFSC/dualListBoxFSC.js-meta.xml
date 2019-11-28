@@ -21,14 +21,13 @@
             <property name="requiredOptions" type="String" role="inputOnly"> </property>
             <property name="options" type="apex://FieldDescriptor[]" role="inputOnly"> </property>
             <property name="useValueAsOutput" type="Boolean" role="inputOnly"> </property>
-            <property name="selectedItemsStringList" type="String[]" role="inputOnly"> </property>
             <property name="fullItemSetStringList" type="String[]" role="inputOnly"> </property>
             <property name="valueFieldName" type="String" role="inputOnly"> </property>
             <property name="labelFieldName" type="String" role="inputOnly"> </property>
+            <property name="fullItemSetCSV" type="String" role="inputOnly"> </property>
             <property name="values" type="apex://FieldDescriptor[]"> </property>
-            <property name="fullItemSetCSV" type="String"> </property>
             <property name="selectedItemsCSV" type="String"> </property>
-
+            <property name="selectedItemsStringList" type="String[]"> </property>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

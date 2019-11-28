@@ -355,7 +355,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </connector>
         <fields>
             <name>choose_record_detail_fields_help_text</name>
-            <fieldText>&lt;p&gt;Select Fields approver should be able to see on approve/reject screen&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b&gt;Select Fields approver should be able to see on approve/reject screen&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
