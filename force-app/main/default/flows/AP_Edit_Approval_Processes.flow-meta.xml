@@ -360,7 +360,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </fields>
         <fields>
             <name>choose_record_detail_fields_lwc3</name>
-            <extensionName>c:dualListBoxFSC</extensionName>
+            <extensionName>c:enhancedDualListBoxFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>disableReordering</name>
@@ -369,7 +369,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>options</name>
+                <name>allOptionsFieldDescriptorList</name>
                 <value>
                     <elementReference>field_descriptors</elementReference>
                 </value>
@@ -381,25 +381,25 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>selectedItemsCSV</name>
+                <name>selectedOptionsCSV</name>
                 <value>
                     <elementReference>curApprovalProcessDefinition.Record_Detail_Fields__c</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>useValueAsOutput</name>
+                <name>useObjectValueAsOutput</name>
                 <value>
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>valueFieldName</name>
+                <name>useWhichObjectKeyForData</name>
                 <value>
                     <stringValue>name</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>labelFieldName</name>
+                <name>useWhichObjectKeyForLabel</name>
                 <value>
                     <stringValue>label</stringValue>
                 </value>
@@ -407,7 +407,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>selected_field_api_names</assignToReference>
-                <name>selectedItemsCSV</name>
+                <name>selectedOptionsCSV</name>
             </outputParameters>
         </fields>
         <showFooter>true</showFooter>
