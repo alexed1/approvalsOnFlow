@@ -1,11 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <actionCalls>
+        <name>Get_Last_AP_Step_Definition</name>
+        <label>Get Last AP Step Definition</label>
+        <locationX>831</locationX>
+        <locationY>788</locationY>
+        <actionName>GetFirstFromCollection</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Assign_Next_Order_Value</targetReference>
+        </connector>
+        <inputParameters>
+            <name>inputCollection</name>
+            <value>
+                <elementReference>all_ap_step_definitions</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>last_ap_step_definition</assignToReference>
+            <name>outputMember</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Sort_Steps_By_Order</name>
+        <label>Sort Steps By Order</label>
+        <locationX>685</locationX>
+        <locationY>788</locationY>
+        <actionName>SortCollection</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Get_Last_AP_Step_Definition</targetReference>
+        </connector>
+        <inputParameters>
+            <name>inputCollection</name>
+            <value>
+                <elementReference>all_ap_step_definitions</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sortKeys</name>
+            <value>
+                <stringValue>{&quot;sortKeys&quot;: [{&quot;field&quot;:&quot;Order__c&quot;, &quot;direction&quot;:&quot;DESC&quot;}]}</stringValue>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>all_ap_step_definitions</assignToReference>
+            <name>outputCollection</name>
+        </outputParameters>
+    </actionCalls>
     <assignments>
         <description>On an edit the full Step Def is passed in from the parent. In the case of an Add, we&#39;ve just received the Name and generated the ID. The ID has just been overwritten onto the main Step Def variable, and now we need to add the Name.</description>
         <name>Assign_Name_to</name>
         <label>Update Current Step Def</label>
-        <locationX>738</locationX>
-        <locationY>523</locationY>
+        <locationX>982</locationX>
+        <locationY>450</locationY>
         <assignmentItems>
             <assignToReference>curApprovalProcessStepDefinition.Name</assignToReference>
             <operator>Assign</operator>
@@ -65,6 +113,29 @@
         </assignmentItems>
         <connector>
             <targetReference>Step_Added</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Next_Order_Value</name>
+        <label>Assign Next Order Value</label>
+        <locationX>980</locationX>
+        <locationY>789</locationY>
+        <assignmentItems>
+            <assignToReference>next_order_value</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>next_order_value</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>last_ap_step_definition.Order__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Approval_Process_Step_Record</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -166,12 +237,37 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Is_This_First_Step</name>
+        <label>Is This First Step</label>
+        <locationX>513</locationX>
+        <locationY>756</locationY>
+        <defaultConnector>
+            <targetReference>Sort_Steps_By_Order</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Is_This_First_Step_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>all_ap_step_definitions</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Approval_Process_Step_Record</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Similar_Name_Exist</name>
         <label>Similar Name Exist</label>
         <locationX>369</locationX>
         <locationY>518</locationY>
         <defaultConnector>
-            <targetReference>Create_Approval_Process_Step_Record</targetReference>
+            <targetReference>Get_All_AP_Step_Definitions</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Doesn&#39;t Exist</defaultConnectorLabel>
         <rules>
@@ -265,8 +361,8 @@
     <recordCreates>
         <name>Create_Approval_Process_Step_Record</name>
         <label>Create Approval Process Step Record</label>
-        <locationX>592</locationX>
-        <locationY>523</locationY>
+        <locationX>979</locationX>
+        <locationY>620</locationY>
         <assignRecordIdToReference>curApprovalProcessStepDefinition.Id</assignRecordIdToReference>
         <connector>
             <targetReference>Assign_Name_to</targetReference>
@@ -295,13 +391,40 @@
                 <elementReference>Proposed_Step_Name</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>Order__c</field>
+            <value>
+                <elementReference>next_order_value</elementReference>
+            </value>
+        </inputAssignments>
         <object>ApprovalProcessStepDefinition__c</object>
     </recordCreates>
     <recordLookups>
+        <name>Get_All_AP_Step_Definitions</name>
+        <label>Get All AP Step Definitions</label>
+        <locationX>379</locationX>
+        <locationY>754</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_This_First_Step</targetReference>
+        </connector>
+        <filters>
+            <field>ApprovalProcessDefinition__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curApprovalProcessDefinition.Id</elementReference>
+            </value>
+        </filters>
+        <object>ApprovalProcessStepDefinition__c</object>
+        <outputReference>all_ap_step_definitions</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Order__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Similar_Name_Record</name>
         <label>Get Similar Name Record</label>
-        <locationX>420</locationX>
-        <locationY>311</locationY>
+        <locationX>377</locationX>
+        <locationY>314</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Similar_Name_Exist</targetReference>
@@ -522,8 +645,8 @@
         <description>IMPORTANT! This screen forces an important transaction. removing this will cause bugs.</description>
         <name>Step_Added</name>
         <label>Step Added</label>
-        <locationX>876</locationX>
-        <locationY>523</locationY>
+        <locationX>984</locationX>
+        <locationY>300</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -623,6 +746,14 @@
         </outputAssignments>
     </subflows>
     <variables>
+        <name>all_ap_step_definitions</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>ApprovalProcessStepDefinition__c</objectType>
+    </variables>
+    <variables>
         <name>approvalFlowName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -653,6 +784,14 @@
         <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>
+        <name>last_ap_step_definition</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>ApprovalProcessStepDefinition__c</objectType>
+    </variables>
+    <variables>
         <description>Used to check for duplicate names</description>
         <name>matchingApprovalProcessStepDefinition</name>
         <dataType>SObject</dataType>
@@ -660,6 +799,17 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ApprovalProcessStepDefinition__c</objectType>
+    </variables>
+    <variables>
+        <name>next_order_value</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <scale>2</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
     </variables>
     <variables>
         <name>rejectionFlowName</name>
