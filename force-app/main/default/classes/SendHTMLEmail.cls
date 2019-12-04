@@ -43,8 +43,10 @@ public with sharing class SendHTMLEmail {
         mail.setCcAddresses(ccAddresses);
         mail.setBccAddresses(bccAddresses);
 
-        // Specify the address used when the recipients reply to the email. 
-        mail.setReplyTo(replyEmailAddress);
+        // Specify the address used when the recipients reply to the email.
+        if(!String.isBlank(replyEmailAddress)){
+            mail.setReplyTo(replyEmailAddress);
+        }
 
         // Specify the name used as the display name.
         mail.setSenderDisplayName(senderDisplayName);

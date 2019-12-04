@@ -4,12 +4,12 @@
         <description>This is the url that will go in the body of the notification email being sent out.</description>
         <name>Generate_Response_Link</name>
         <label>Generate Response Link</label>
-        <locationX>705</locationX>
-        <locationY>962</locationY>
+        <locationX>749</locationX>
+        <locationY>966</locationY>
         <actionName>GenerateFlowLink</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Send_Email_Notification</targetReference>
+            <targetReference>Get_Email_Service_Function</targetReference>
         </connector>
         <inputParameters>
             <name>param1Value</name>
@@ -170,8 +170,8 @@
     <actionCalls>
         <name>Send_Email_Notification</name>
         <label>Send Email Notification</label>
-        <locationX>496</locationX>
-        <locationY>980</locationY>
+        <locationX>338</locationX>
+        <locationY>967</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -190,15 +190,21 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>subject</name>
+            <name>replyEmailAddress</name>
             <value>
-                <stringValue>test subject</stringValue>
+                <elementReference>reply_to_email</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
             <name>SendTOthisOneEmailAddress</name>
             <value>
                 <elementReference>curEmailAddress</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subject</name>
+            <value>
+                <stringValue>test subject</stringValue>
             </value>
         </inputParameters>
         <outputParameters>
@@ -210,6 +216,36 @@
             <name>isSuccess</name>
         </outputParameters>
     </actionCalls>
+    <assignments>
+        <name>Assign_Email_Service_Address</name>
+        <label>Assign Email Service Address</label>
+        <locationX>330</locationX>
+        <locationY>1164</locationY>
+        <assignmentItems>
+            <assignToReference>reply_to_email</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>email_server_address_descriptor.LocalPart</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>reply_to_email</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>@</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>reply_to_email</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>email_server_address_descriptor.EmailDomainName</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Send_Email_Notification</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <name>Extract_Email_Address</name>
         <label>Extract Email Address</label>
@@ -320,6 +356,31 @@
             </conditions>
             <connector>
                 <targetReference>Is_Hierarchy_Based_0</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Email_Service_Exists</name>
+        <label>Email Service Exists</label>
+        <locationX>486</locationX>
+        <locationY>1118</locationY>
+        <defaultConnector>
+            <targetReference>Send_Email_Notification</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Email_Service_Exists_yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>email_server_address_descriptor</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Email_Service_Address</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -466,6 +527,11 @@
         <name>curUsername</name>
         <dataType>String</dataType>
         <expression>{!$User.Username}</expression>
+    </formulas>
+    <formulas>
+        <name>reply_to_email_address</name>
+        <dataType>String</dataType>
+        <expression>If({!email_server_address_descriptor.LocalPart}=null,null,{!email_server_address_descriptor.LocalPart}&amp;&quot;@&quot;&amp;{!email_server_address_descriptor.EmailDomainName})</expression>
     </formulas>
     <interviewLabel>AP Process Approval Step {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AP Process Approval Step</label>
@@ -626,6 +692,49 @@
         <queriedFields>Name</queriedFields>
         <queriedFields>Current_Approval_Step__c</queriedFields>
         <queriedFields>approvalProcessCandidateRecordId__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Approve_Or_Reject_Email_Address</name>
+        <label>Get Approve Or Reject Email Address</label>
+        <locationX>493</locationX>
+        <locationY>964</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Email_Service_Exists</targetReference>
+        </connector>
+        <filters>
+            <field>FunctionId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Email_Service_Function.Id</elementReference>
+            </value>
+        </filters>
+        <object>EmailServicesAddress</object>
+        <outputReference>email_server_address_descriptor</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>LocalPart</queriedFields>
+        <queriedFields>EmailDomainName</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Email_Service_Function</name>
+        <label>Get Email Service Function</label>
+        <locationX>607</locationX>
+        <locationY>966</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Approve_Or_Reject_Email_Address</targetReference>
+        </connector>
+        <filters>
+            <field>FunctionName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Approve or Reject</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>EmailServicesFunction</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
         <description>These are all of the entities allowed to approve this step.</description>
@@ -828,6 +937,14 @@
         <objectType>User</objectType>
     </variables>
     <variables>
+        <name>email_server_address_descriptor</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>EmailServicesAddress</objectType>
+    </variables>
+    <variables>
         <name>emailErrorText</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -861,6 +978,13 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>reply_to_email</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>responseFlowLink</name>
