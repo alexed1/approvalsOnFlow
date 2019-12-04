@@ -29,9 +29,5 @@ Thumbs.db
 ehthumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
-/force-app/main/default/approvalProcesses/
-/force-app/main/default/layouts/
-/force-app/main/default/objects/Account/fields/
-/force-app/main/default/settings/
 /.idea/
 /IlluminatedCloud/
