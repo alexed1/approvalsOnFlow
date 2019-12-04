@@ -40,6 +40,27 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
+        <name>get_field_information</name>
+        <label>Get Field Information</label>
+        <locationX>875</locationX>
+        <locationY>134</locationY>
+        <actionName>GetFieldInformation</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Choose_Record_Detail_Fields</targetReference>
+        </connector>
+        <inputParameters>
+            <name>objectName</name>
+            <value>
+                <elementReference>curApprovalProcessDefinition.ContextObjectTypeName__c</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>field_descriptors</assignToReference>
+            <name>fields</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <description>Datatable returns a collection of rows. This extracts the first one.
 TODO: implement the enforceSingleMember flag and detect returned errors</description>
         <name>Get_Selected_Step</name>
@@ -65,8 +86,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <assignments>
         <name>Assign_Action_Flows</name>
         <label>Assign Action Flows</label>
-        <locationX>834</locationX>
-        <locationY>627</locationY>
+        <locationX>854</locationX>
+        <locationY>629</locationY>
         <assignmentItems>
             <assignToReference>curApprovalProcessDefinition.ActionFlow_FinalApproval__c</assignToReference>
             <operator>Assign</operator>
@@ -100,6 +121,13 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <operator>Assign</operator>
             <value>
                 <elementReference>Use_Approver_Field_of_Record_Owner</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curApprovalProcessDefinition.Record_Detail_Fields__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>selected_field_api_names</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -315,6 +343,77 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <inputReference>curApprovalProcessDefinition</inputReference>
     </recordUpdates>
     <screens>
+        <name>Choose_Record_Detail_Fields</name>
+        <label>Choose Record Detail Fields</label>
+        <locationX>860</locationX>
+        <locationY>269</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Specify_Actions</targetReference>
+        </connector>
+        <fields>
+            <name>choose_record_detail_fields_help_text</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;Select Fields approver should be able to see on approve/reject screen&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>choose_record_detail_fields_lwc3</name>
+            <extensionName>c:enhancedDualListBoxFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>disableReordering</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>allOptionsFieldDescriptorList</name>
+                <value>
+                    <elementReference>field_descriptors</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectedOptionsCSV</name>
+                <value>
+                    <elementReference>curApprovalProcessDefinition.Record_Detail_Fields__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>useObjectValueAsOutput</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>useWhichObjectKeyForData</name>
+                <value>
+                    <stringValue>name</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>useWhichObjectKeyForLabel</name>
+                <value>
+                    <stringValue>label</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>selected_field_api_names</assignToReference>
+                <name>selectedOptionsCSV</name>
+            </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>Configure_Approval_Form</name>
         <label>Configure Approval Form</label>
         <locationX>1053</locationX>
@@ -504,7 +603,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Specify_Actions</targetReference>
+            <targetReference>get_field_information</targetReference>
         </connector>
         <fields>
             <name>dispRouting</name>
@@ -613,8 +712,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
     <screens>
         <name>Specify_Actions</name>
         <label>Specify Actions</label>
-        <locationX>834</locationX>
-        <locationY>412</locationY>
+        <locationX>854</locationX>
+        <locationY>410</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -767,7 +866,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             <targetReference>Specify_Entry_Criteria</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <subflows>
         <name>Manage_Specific_Step</name>
         <label>Manage Specific Step</label>
@@ -904,6 +1003,14 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <objectType>ApprovalProcessStepDefinition__c</objectType>
     </variables>
     <variables>
+        <name>field_descriptors</name>
+        <apexClass>FieldDescriptor</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>numStepDefs</name>
         <dataType>Number</dataType>
         <isCollection>false</isCollection>
@@ -933,6 +1040,13 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ApprovalProcessDefinition__c</objectType>
+    </variables>
+    <variables>
+        <name>selected_field_api_names</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>selectedFlowFinalApproval</name>

@@ -117,13 +117,34 @@
         <object>ApprovalInstanceHistory__c</object>
     </recordCreates>
     <recordLookups>
-        <name>Get_Approval_Process_Instance</name>
-        <label>Get Approval Process Instance</label>
-        <locationX>318</locationX>
-        <locationY>301</locationY>
+        <name>Get_AP_Definition</name>
+        <label>Get AP Definition</label>
+        <locationX>340</locationX>
+        <locationY>312</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Show_History</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>curApprovalProcessInstance.ApprovalProcessDefinition__c</elementReference>
+            </value>
+        </filters>
+        <object>ApprovalProcessDefinition__c</object>
+        <outputReference>curAPDefinition</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Record_Detail_Fields__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Approval_Process_Instance</name>
+        <label>Get Approval Process Instance</label>
+        <locationX>186</locationX>
+        <locationY>305</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_AP_Definition</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -169,8 +190,8 @@
         <description>The Step Task represents a particular request made to a particular approver for a particular step instance.</description>
         <name>Get_Approval_Process_Step_Task</name>
         <label>Get Approval Process Step Task</label>
-        <locationX>157</locationX>
-        <locationY>301</locationY>
+        <locationX>50</locationX>
+        <locationY>304</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Approval_Process_Instance</targetReference>
@@ -236,7 +257,7 @@
             <inputParameters>
                 <name>fields</name>
                 <value>
-                    <stringValue>Status, Priority, Subject, Discount, Duration, ContactId, CaseId, AssetId, AccountId</stringValue>
+                    <elementReference>curAPDefinition.Record_Detail_Fields__c</elementReference>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -338,6 +359,14 @@
             </value>
         </inputAssignments>
     </subflows>
+    <variables>
+        <name>curAPDefinition</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>ApprovalProcessDefinition__c</objectType>
+    </variables>
     <variables>
         <name>curApprovalProcessHistoryItem</name>
         <dataType>SObject</dataType>

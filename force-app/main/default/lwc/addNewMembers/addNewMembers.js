@@ -91,16 +91,20 @@ export default class addNewMembers extends LightningElement {
     searchRelatedFields(searchString, fieldTypes) {
         let fields = this.objectData.fields;
         let searchableFields = [];
+
         for (let fieldName in fields) {
-            if (fields[fieldName].referenceToInfos.length !== 0) {
+            let fieldTypeFilter;
+            if (fields[fieldName].referenceToInfos && fields[fieldName].referenceToInfos.length !== 0) {
                 fields[fieldName].referenceToInfos.forEach(curReference => {
-                    let fieldTypeFilter = fieldTypes? fieldTypes.includes(curReference.apiName) : true;
-                    if (fieldTypeFilter && (!searchString || fields[fieldName].label.includes(searchString))) {
-                        searchableFields.push({
-                            label: fields[fieldName].label,
-                            value: fieldName
-                        });
-                    }
+                    fieldTypeFilter = fieldTypes ? fieldTypes.includes(curReference.apiName) : true;
+                });
+            }else{
+                fieldTypeFilter = !fieldTypes;
+            }
+            if (fieldTypeFilter && (!searchString || fields[fieldName].label.toLowerCase().includes(searchString.toLowerCase()))) {
+                searchableFields.push({
+                    label: fields[fieldName].label,
+                    value: fieldName
                 });
             }
         }
