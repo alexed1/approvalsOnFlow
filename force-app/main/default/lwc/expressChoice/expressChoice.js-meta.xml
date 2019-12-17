@@ -18,7 +18,7 @@
             <property name="approvalProcessDefinitions" label="Approval Process Definitions" type="String"></property>
             <property name="useWhichFieldForValue" label="Use Which Field for Value" type="String"></property>
             <property name="useWhichFieldForLabel" label="User Which Field for Label" type="String"></property>
-            <property name="inputMode" label="Input Mode" type="String" datasource="Choice labels,Approval process step definitions,Approval process definitions"></property>
+            <property name="inputMode" label="Input Mode" type="String" default="Choice labels" required="true"> </property>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

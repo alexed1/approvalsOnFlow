@@ -10,7 +10,7 @@ export default class ExpressChoice extends LightningElement {
     @api approvalProcessDefinitions;
     @api useWhichFieldForValue;
     @api useWhichFieldForLabel;
-    @api inputMode;
+    @api inputMode = 'Choice labels';
     @api required;
     // @api value;
 
