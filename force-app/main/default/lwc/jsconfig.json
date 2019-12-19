@@ -15,6 +15,12 @@
             "c/buttonUtils": [
                 "buttonUtils/buttonUtils.js"
             ],
+            "c/enhancedDualListBox": [
+                "enhancedDualListBox/enhancedDualListBox.js"
+            ],
+            "c/enhancedDualListBoxFSC": [
+                "enhancedDualListBoxFSC/enhancedDualListBoxFSC.js"
+            ],
             "c/expressChoice": [
                 "expressChoice/expressChoice.js"
             ],

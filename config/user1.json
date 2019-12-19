@@ -1,0 +1,13 @@
+{
+    "Username": "MikeManager@approvalsalexed.org",
+    "LastName": "Manager",
+    "Email": "alexsalesforcedemo@gmail.com",
+    "Alias": "tester1",
+    "TimeZoneSidKey": "America/Denver",
+    "LocaleSidKey": "en_US",
+    "EmailEncodingKey": "UTF-8",
+    "LanguageLocaleKey": "en_US",
+    "profileName": "Standard Platform User",
+    "permsets": ["ApprovalsOnFlow"],
+    "generatePassword": true
+}

@@ -282,6 +282,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>PurchaseOrder__c.Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>PurchaseOrder__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>WorkOrder.AccountId</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -495,7 +505,7 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>WorkOrder</object>
+        <object>PurchaseOrder__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <tabSettings>
@@ -528,6 +538,10 @@
     </tabSettings>
     <tabSettings>
         <tab>Approver__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>PurchaseOrder__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>

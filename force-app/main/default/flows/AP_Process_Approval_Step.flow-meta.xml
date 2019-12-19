@@ -171,28 +171,16 @@
         <name>Send_Email_Notification</name>
         <label>Send Email Notification</label>
         <locationX>338</locationX>
-        <locationY>967</locationY>
+        <locationY>966</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Email_Sent_Successfully</targetReference>
         </connector>
         <inputParameters>
-            <name>replyEmailAddress</name>
+            <name>contentDocumentAttachments</name>
             <value>
-                <elementReference>reply_to_email</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>plainTextBody</name>
-            <value>
-                <stringValue>Approval Request</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>subject</name>
-            <value>
-                <stringValue>test subject</stringValue>
+                <elementReference>all_related_files</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -202,9 +190,15 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>contentDocumentAttachments</name>
+            <name>plainTextBody</name>
             <value>
-                <elementReference>all_related_files</elementReference>
+                <stringValue>Approval Request</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>replyEmailAddress</name>
+            <value>
+                <elementReference>reply_to_email</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -213,13 +207,19 @@
                 <elementReference>curEmailAddress</elementReference>
             </value>
         </inputParameters>
-        <outputParameters>
-            <assignToReference>emailSentSuccessfully</assignToReference>
-            <name>isSuccess</name>
-        </outputParameters>
+        <inputParameters>
+            <name>subject</name>
+            <value>
+                <stringValue>Please Approve This Purchase Order</stringValue>
+            </value>
+        </inputParameters>
         <outputParameters>
             <assignToReference>emailErrorText</assignToReference>
             <name>errors</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>emailSentSuccessfully</assignToReference>
+            <name>isSuccess</name>
         </outputParameters>
     </actionCalls>
     <assignments>
@@ -878,14 +878,14 @@
             <targetReference>Log_Status</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>StatusUpdate</name>
         <text>&lt;p&gt;Process Approval Step has executed.&lt;/p&gt;&lt;p&gt;Cur Approval Process Instance is:  {!curProcessInstanceId}&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
         <name>templateEmailBody</name>
-        <text>&lt;p&gt;Click here to approve or reject: {!responseFlowLink}&lt;/p&gt;</text>
+        <text>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;A Purchase Order has been submitted for approval.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please click here to approve or reject: {!responseFlowLink}&lt;/p&gt;&lt;p&gt;Or you can reply to this email with Approve or Reject&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>all_related_files</name>

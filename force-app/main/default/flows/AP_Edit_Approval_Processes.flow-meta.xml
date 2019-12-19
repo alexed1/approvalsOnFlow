@@ -131,7 +131,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Configure_Approval_Form</targetReference>
+            <targetReference>Update_Process_Definition</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -355,7 +355,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </connector>
         <fields>
             <name>choose_record_detail_fields_help_text</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;Select Fields approver should be able to see on approve/reject screen&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 20px;&quot;&gt;Approval Page Layout&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Show which fields to approvers:&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -414,27 +414,8 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Configure_Approval_Form</name>
-        <label>Configure Approval Form</label>
-        <locationX>1053</locationX>
-        <locationY>626</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Update_Process_Definition</targetReference>
-        </connector>
-        <fields>
-            <name>dispSpecifyEntryCriteria_0</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Configure Approval Form&lt;/b&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
         <name>Configure_Qualified_Submitters</name>
-        <label>Configure Qualified Submitters</label>
+        <label>Qualified Submitters</label>
         <locationX>360</locationX>
         <locationY>395</locationY>
         <allowBack>true</allowBack>
@@ -445,7 +426,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </connector>
         <fields>
             <name>ConfigureQualifiedSubmitters</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Configure Qualified Submitters&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 20px;&quot;&gt;Configure Qualified Submitters&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -518,7 +499,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </connector>
         <fields>
             <name>dispSelectModify</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;Select Step to Modify:&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 20px;&quot;&gt;Approval Steps&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Select Step to Modify:&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -607,7 +588,7 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         </connector>
         <fields>
             <name>dispRouting</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;Select Field Used for Automated Approval Routing&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 20px;&quot;&gt;Automated Routing&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Select Field Used for Automated Approval Routing&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -720,6 +701,11 @@ TODO: implement the enforceSingleMember flag and detect returned errors</descrip
         <connector>
             <targetReference>Assign_Action_Flows</targetReference>
         </connector>
+        <fields>
+            <name>dispGlobal</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 20px;&quot;&gt;Global Approval Flows&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>flowInitialSubmission2</name>
             <extensionName>c:flowPickerFSC</extensionName>
